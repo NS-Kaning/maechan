@@ -44,7 +44,7 @@ export default {
     getLands: async function (district_id) {
       if (district_id) {
         let response = await frappe.call({
-          method: "maechan_core.api.land_chart",
+          method: "maechan.maechan_core.api.land_chart",
           args: {
             district_id: district_id
           },
@@ -53,7 +53,7 @@ export default {
         return lands;
       }else {
         let response = await frappe.call({
-          method: "maechan_core.api.land_chart",
+          method: "maechan.maechan_core.api.land_chart",
           args: {
           },
         })

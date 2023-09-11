@@ -3,9 +3,9 @@
 
 import frappe
 from frappe.model.document import Document
-from maechan_core.doctype.amphure.amphure import Amphure
-from maechan_core.doctype.tambon.tambon import Tambon
-from maechan_core.doctype.province.province import Province
+from maechan.maechan_core.doctype.amphure.amphure import Amphure
+from maechan.maechan_core.doctype.tambon.tambon import Tambon
+from maechan.maechan_core.doctype.province.province import Province
 
 from typing import NewType
 

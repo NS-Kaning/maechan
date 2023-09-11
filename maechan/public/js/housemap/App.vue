@@ -32,7 +32,7 @@ export default {
     getHouses: async function (district_id) {
       if (district_id) {
         let response = await frappe.call({
-          method: "maechan_core.api.house_chart",
+          method: "maechan.maechan_core.api.house_chart",
           args: {
             district_id: district_id
           },
