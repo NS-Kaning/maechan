@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "underscore": "^1.13.6",
+    "utm-latlng": "^1.0.7",
+    "vue": "^3.3.4",
+    "vue-multiselect": "^3.0.0-beta.2",
+    "vue3-google-map": "^0.17.0"
+  }
+}

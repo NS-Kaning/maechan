@@ -1,0 +1,174 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-29 14:23:02.677721",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_tab",
+  "basic_information",
+  "license_type",
+  "license_applicant",
+  "house_id",
+  "payment_information",
+  "license_fee",
+  "column_break_cftw",
+  "license_receipt_number",
+  "column_break_icmk",
+  "receipt_date",
+  "license_date_information",
+  "license_start_date",
+  "column_break_wwil",
+  "license_end_date",
+  "extra_information",
+  "license_extra",
+  "license_issuer",
+  "issuer_name",
+  "column_break_khsa",
+  "issue_position",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "license_type",
+   "fieldtype": "Link",
+   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
+   "options": "LicenseType"
+  },
+  {
+   "fieldname": "license_applicant",
+   "fieldtype": "Data",
+   "label": "\u0e1c\u0e39\u0e49\u0e44\u0e14\u0e49\u0e23\u0e31\u0e1a\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15 (\u0e1c\u0e39\u0e49\u0e02\u0e2d\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15)"
+  },
+  {
+   "fieldname": "house_id",
+   "fieldtype": "Link",
+   "label": "\u0e17\u0e35\u0e48\u0e15\u0e31\u0e49\u0e07\u0e2a\u0e16\u0e32\u0e19\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e32\u0e23",
+   "options": "House"
+  },
+  {
+   "fieldname": "basic_information",
+   "fieldtype": "Section Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e1a\u0e37\u0e49\u0e2d\u0e07\u0e15\u0e49\u0e19"
+  },
+  {
+   "fieldname": "payment_information",
+   "fieldtype": "Section Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19"
+  },
+  {
+   "fieldname": "license_fee",
+   "fieldtype": "Currency",
+   "label": "\u0e04\u0e48\u0e32\u0e18\u0e23\u0e23\u0e21\u0e40\u0e19\u0e35\u0e22\u0e21 (\u0e1a\u0e32\u0e17/\u0e1b\u0e35)",
+   "non_negative": 1,
+   "precision": "0"
+  },
+  {
+   "fieldname": "column_break_cftw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "license_receipt_number",
+   "fieldtype": "Data",
+   "label": "\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e23\u0e31\u0e1a\u0e40\u0e07\u0e34\u0e19\u0e40\u0e25\u0e48\u0e21\u0e17\u0e35\u0e48"
+  },
+  {
+   "fieldname": "column_break_icmk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receipt_date",
+   "fieldtype": "Data",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e15\u0e32\u0e21\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e23\u0e31\u0e1a\u0e40\u0e07\u0e34\u0e19"
+  },
+  {
+   "fieldname": "license_date_information",
+   "fieldtype": "Section Break",
+   "label": "\u0e27\u0e31\u0e19\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "default": "Today",
+   "fieldname": "license_start_date",
+   "fieldtype": "Date",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "column_break_wwil",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "license_end_date",
+   "fieldtype": "Date",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e2a\u0e34\u0e49\u0e19\u0e2a\u0e38\u0e14\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "extra_information",
+   "fieldtype": "Section Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a"
+  },
+  {
+   "columns": 4,
+   "fieldname": "license_extra",
+   "fieldtype": "Table",
+   "options": "LicenseDetail"
+  },
+  {
+   "fieldname": "column_break_khsa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "basic_tab",
+   "fieldtype": "Tab Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e02\u0e2d\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "license_issuer",
+   "fieldtype": "Tab Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e43\u0e2b\u0e49\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "issuer_name",
+   "fieldtype": "Data",
+   "label": "\u0e1c\u0e39\u0e49\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "issue_position",
+   "fieldtype": "Data",
+   "label": "\u0e15\u0e33\u0e41\u0e2b\u0e19\u0e48\u0e07"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "License",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-09-05 14:33:19.241660",
+ "modified_by": "Administrator",
+ "module": "maechan_core",
+ "name": "License",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

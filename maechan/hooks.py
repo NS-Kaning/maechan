@@ -11,8 +11,8 @@ app_license = "SE"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/maechan/css/maechan.css"
-# app_include_js = "/assets/maechan/js/maechan.js"
+app_include_css = []
+#app_include_js = ["main.bundle.js"]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/maechan/css/maechan.css"
