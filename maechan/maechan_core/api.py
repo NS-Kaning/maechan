@@ -1,5 +1,6 @@
 import frappe
 
+
 @frappe.whitelist(allow_guest=True)
 def land_chart():
 
@@ -29,3 +30,10 @@ def house_chart():
 
     frappe.response['message'] = houses
     # frappe.response['request'] = request
+
+
+def district_list():
+    request = frappe.form_dict
+    district = frappe.db.get_list("District", fields="*")
+    frappe.response['message'] = "District List"
+    frappe.response['data'] = district
