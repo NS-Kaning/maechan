@@ -54,6 +54,9 @@ class ImportLand(Document):
         if file:
             _file = frappe.get_doc("File", {"file_url": file})
             geojsonDict = jsonToDict(_file.get_full_path())
+            if geojsonDict == None or 'features' not in geojsonDict :
+                frappe.throw("Import file is not valid.")
+                return
             n = len(geojsonDict['features'])
             j = 0
             success = []
@@ -79,16 +82,16 @@ class ImportLand(Document):
                         }, fields=['*'],)
 
                         if len(land) == 1:
-                            land = frappe.get_doc("Land",i['properties']['PARCEL_COD'])
-                            pass
+                            land = frappe.get_doc(
+                                "Land", i['properties']['PARCEL_COD'])
                         else:
                             land = frappe.get_doc({
                                 'doctype': 'Land',
                                 "parcel_cod": i['properties']['PARCEL_COD'],
                                 "district_id": moo[0].name
                             })
-                        
-                        try : 
+
+                        try:
 
                             land.geojson = json.dumps(i)
                             land.lat, land.lng = getCenterLatLng(
@@ -102,9 +105,9 @@ class ImportLand(Document):
                             land.land_type = i['properties']['land_type']
                             land.save()
                             success.append(i)
-                        except Exception as e: 
+                        except Exception as e:
                             failed.append(i)
-                            return type(land),land
+                            return type(land), land
                 else:
                     failed.append(i)
                     # frappe.throw("District is inconsistency")

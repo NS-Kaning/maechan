@@ -7,6 +7,7 @@ export default {
   components: { GoogleMap, Polygon, Marker, InfoWindow, Multiselect },
   data() {
     return {
+      apiKey : null,
       lands: [],
       infos:[],
       districts: [],
@@ -26,6 +27,8 @@ export default {
       },
     }
   }, async mounted() {
+
+    this.apiKey = await frappe.db.get_single_value('MaechanConfig', 'google_api_key')
 
     let lands = await this.getLands()
     let districts = await frappe.db.get_list('District', { fields: ["*"] })
@@ -113,8 +116,8 @@ export default {
   </div>
 
   <div class="row mt-3">
-    <div class="col">
-      <GoogleMap api-key="AIzaSyCSlgz-a7BYdvlRVqNAMFWqtZdo7cqpOCk" style="width: 100%; height: 600px" :center="center"
+    <div class="col" v-if="apiKey">
+      <GoogleMap :api-key="apiKey" style="width: 100%; height: 600px" :center="center"
         :zoom="zoom">
 
         <Polygon :options="getPathOfLand(d)" v-for="d in lands" @click="showInfo(d)">
