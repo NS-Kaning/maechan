@@ -19,12 +19,12 @@ class House(Document):
     def before_save(self) :
         doc = self
         if doc.district_id :
-			district = frappe.get_doc("District",doc.district_id) # type: ignore
-			
-			doc.house_moo = district.moo
-			doc.tambon_th = district.tambon_th
-			doc.amphure_th = district.amphure_th
-			doc.province_th = district.province_th
-			
-			doc.text_display = f"{doc.house_no} หมู่ {doc.house_moo} {doc.tambon_th} {doc.amphure_th} {doc.province_th}"
-	pass
+            district = frappe.get_doc("District",doc.district_id) # type: ignore
+            
+            doc.house_moo = district.moo
+            doc.tambon_th = district.tambon_th
+            doc.amphure_th = district.amphure_th
+            doc.province_th = district.province_th
+            
+            doc.text_display = f"{doc.house_no} หมู่ {doc.house_moo} {doc.tambon_th} {doc.amphure_th} {doc.province_th}"
+    pass
