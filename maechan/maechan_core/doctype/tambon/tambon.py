@@ -6,4 +6,14 @@ from frappe.model.document import Document
 
 
 class Tambon(Document):
-	pass
+    
+    name_th : str
+    name_en : str
+    amphure_id : str
+    zipcode : str
+    province_id : str
+    amphure_th : str
+    province_th : str
+    
+    
+    pass

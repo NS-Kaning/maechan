@@ -6,4 +6,11 @@ from frappe.model.document import Document
 
 
 class Amphure(Document):
-	pass
+    
+    id : str
+    name_en : str
+    name_th : str
+    province_id : str
+    province_th : str
+    
+    pass

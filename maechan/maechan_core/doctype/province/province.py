@@ -6,4 +6,8 @@ from frappe.model.document import Document
 
 
 class Province(Document):
-	pass
+    
+    name_en : str
+    name_th : str
+    
+    pass
