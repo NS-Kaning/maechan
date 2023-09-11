@@ -4,4 +4,4 @@ Maechan App
 
 #### License
 
-SE
+SE University of Phayao
