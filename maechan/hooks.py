@@ -55,10 +55,10 @@ app_include_css = []
 # ----------
 
 # add methods and filters to jinja environment
-# jinja = {
-#	"methods": "maechan.utils.jinja_methods",
-#	"filters": "maechan.utils.jinja_filters"
-# }
+jinja = {
+	"methods": "maechan.maechan.utils.jinja_methods",
+	 "filters": "maechan.maechan.utils.jinja_filters"
+}
 
 # Installation
 # ------------

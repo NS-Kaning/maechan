@@ -29,26 +29,29 @@ frappe.ui.form.on('House', {
 	validate(frm) {
 	    // validte json
 	    try {
-	        console.log('json')
-    	    let house_json =  frm.doc.house_json
-	        let json = JSON.parse(house_json)
-	        if (json.properties.Name) {
-	            if(frm.doc.house_no != json.properties.Name){
-                    frappe.throw(__('บ้านเลขที่ไม่ตรงกับ geojson'))
-	            }
-	        }
-	        console.log('point')
-	        if (json.geometry.type == "Point" && json.geometry.coordinates) {
-	            if( frm.doc.house_lat != json.geometry.coordinates[1]){
-	                frappe.throw(__('lat ไม่ตรงกับ geojson'))
-
-	            }
-	           
-	            if( frm.doc.house_lng != json.geometry.coordinates[0]){
-                    frappe.throw(__('lng ไม่ตรงกับ geojson'))
-
-	            }
-	        }
+	        console.log('json',frm.doc.house_json)
+			if(frm.doc.house_json){
+				let house_json =  frm.doc.house_json
+				let json = JSON.parse(house_json)
+				if (json.properties.Name) {
+					if(frm.doc.house_no != json.properties.Name){
+						frappe.throw(__('บ้านเลขที่ไม่ตรงกับ geojson'))
+					}
+				}
+				console.log('point')
+				if (json.geometry.type == "Point" && json.geometry.coordinates) {
+					if( frm.doc.house_lat != json.geometry.coordinates[1]){
+						frappe.throw(__('lat ไม่ตรงกับ geojson'))
+	
+					}
+				   
+					if( frm.doc.house_lng != json.geometry.coordinates[0]){
+						frappe.throw(__('lng ไม่ตรงกับ geojson'))
+	
+					}
+				}
+			}
+    	    
 	    }catch(e){
 	        frappe.throw(__(e.message))
 

@@ -11,7 +11,8 @@
   "mayor_name",
   "applicataion_inforamtion",
   "google_api_key",
-  "column_break_txfx"
+  "column_break_txfx",
+  "garuda_logo"
  ],
  "fields": [
   {
@@ -49,12 +50,17 @@
   {
    "fieldname": "column_break_txfx",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "garuda_logo",
+   "fieldtype": "Attach Image",
+   "label": "\u0e04\u0e23\u0e38\u0e11"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-11 20:16:55.628601",
+ "modified": "2023-09-13 15:38:03.101324",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "MaechanConfig",

@@ -124,7 +124,7 @@ export default {
         </Polygon>
 
         <InfoWindow @closeclick="closeInfo(d)" v-for="d in infos" :options="{ position: { lat: d.lat, lng: d.lng} }"> 
-          LOT : {{d.lot}} <br/>
+          Name : {{d.land_owner}} <br/>
           PARCEL COD : {{ d.parcel_cod }}
         </InfoWindow>
       </GoogleMap>

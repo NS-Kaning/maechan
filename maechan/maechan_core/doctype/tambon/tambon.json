@@ -44,6 +44,7 @@
    "options": "Amphure"
   },
   {
+   "fetch_from": "amphure_id.name_th",
    "fieldname": "amphure_th",
    "fieldtype": "Data",
    "label": "Amphure (Thai)"
@@ -54,6 +55,7 @@
    "label": "Zip Code"
   },
   {
+   "fetch_from": "province_id.name_th",
    "fieldname": "province_th",
    "fieldtype": "Data",
    "label": "Province (Thai)"
@@ -76,7 +78,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-28 11:26:06.825621",
+ "modified": "2023-09-14 17:19:47.597273",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "Tambon",

@@ -8,10 +8,15 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "section_break_tqta",
   "house_no",
   "column_break_pcfk",
   "district_id",
   "house_moo",
+  "section_break_nfec",
+  "house_soi",
+  "column_break_fkmx",
+  "house_road",
   "section_break_lxza",
   "tambon_th",
   "column_break_eprk",
@@ -65,7 +70,8 @@
   },
   {
    "fieldname": "section_break_lxza",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hide_border": 1
   },
   {
    "fieldname": "section_break_kncp",
@@ -115,11 +121,35 @@
    "fieldname": "text_display",
    "fieldtype": "Data",
    "label": "\u0e02\u0e49\u0e2d\u0e04\u0e27\u0e32\u0e21\u0e41\u0e2a\u0e14\u0e07"
+  },
+  {
+   "fieldname": "section_break_tqta",
+   "fieldtype": "Section Break",
+   "hide_border": 1
+  },
+  {
+   "fieldname": "section_break_nfec",
+   "fieldtype": "Section Break",
+   "hide_border": 1
+  },
+  {
+   "fieldname": "house_soi",
+   "fieldtype": "Data",
+   "label": "\u0e15\u0e23\u0e2d\u0e01/\u0e0b\u0e2d\u0e22"
+  },
+  {
+   "fieldname": "column_break_fkmx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "house_road",
+   "fieldtype": "Data",
+   "label": "\u0e16\u0e19\u0e19"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-29 14:49:43.288063",
+ "modified": "2023-09-14 18:01:09.535255",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "House",

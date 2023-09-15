@@ -1,0 +1,18 @@
+{{ frappe.render_template('templates/license/header.html', {'doc':doc}) }}
+
+<div class="flex justify-center">
+    <div>
+        <img class="mx-auto" src="/files/thai_garuda.jpg" style="height:20mm" />
+    </div>
+</div>
+{% if doc.license_main_type == "ประกอบกิจการที่เป็นอันตรายต่อสุขภาพ" %}
+{{ frappe.render_template('templates/license/health_form.html', {'doc':doc}) }}
+{% elif doc.license_main_type == "จัดตั้งสถานที่จำหน่ายอาหารและสถานที่สะสมอาหารพื้นที่ไม่เกิน 200 ตารางเมตร" %}
+{{ frappe.render_template('templates/license/food_small.html', {'doc':doc}) }}
+{%endif%}
+
+{{ frappe.render_template('templates/license/footer.html', {'doc':doc}) }}
+
+
+<div class="col-xs-4 column-break text-right">
+</div>

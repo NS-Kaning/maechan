@@ -41,7 +41,7 @@ export default {
         return houses;
       }else {
         let response = await frappe.call({
-          method: "maechan_core.api.house_chart",
+          method: "maechan.maechan_core.api.house_chart",
           args: {
           },
         })

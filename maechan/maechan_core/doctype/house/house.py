@@ -1,9 +1,9 @@
 # Copyright (c) 2023, SE and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
-
+from maechan.maechan_core.doctype.district.district import District
 
 class House(Document):
     
@@ -19,7 +19,7 @@ class House(Document):
     def before_save(self) :
         doc = self
         if doc.district_id :
-            district = frappe.get_doc("District",doc.district_id) # type: ignore
+            district : District = frappe.get_doc("District",doc.district_id) # type: ignore
             
             doc.house_moo = district.moo
             doc.tambon_th = district.tambon_th
