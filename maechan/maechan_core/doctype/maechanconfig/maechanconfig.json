@@ -9,6 +9,7 @@
   "seal",
   "title",
   "mayor_name",
+  "mayor_position",
   "applicataion_inforamtion",
   "google_api_key",
   "column_break_txfx",
@@ -55,12 +56,17 @@
    "fieldname": "garuda_logo",
    "fieldtype": "Attach Image",
    "label": "\u0e04\u0e23\u0e38\u0e11"
+  },
+  {
+   "fieldname": "mayor_position",
+   "fieldtype": "Data",
+   "label": "\u0e15\u0e33\u0e41\u0e2b\u0e19\u0e48\u0e07"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-13 15:38:03.101324",
+ "modified": "2023-09-16 21:52:39.410996",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "MaechanConfig",

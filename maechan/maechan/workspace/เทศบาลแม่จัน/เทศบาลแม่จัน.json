@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"MSJp8ikka7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19</span>\",\"col\":12}},{\"id\":\"iMiPnEa0hh\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e25\u0e32\u0e07\",\"col\":3}},{\"id\":\"U3oblgpRSs\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e34\",\"col\":3}},{\"id\":\"3l1HzgCYFl\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1e\u0e37\u0e49\u0e19\u0e10\u0e32\u0e19\",\"col\":3}},{\"id\":\"nCMP00-7gR\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e21\u0e37\u0e2d\",\"col\":3}},{\"id\":\"qBw-9kIB-6\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19</b></span>\",\"col\":12}},{\"id\":\"Y5XEf6ViCh\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e41\u0e1c\u0e19\u0e17\u0e35\u0e48\",\"col\":3}},{\"id\":\"o3W0w-N4J_\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"\u0e08\u0e33\u0e19\u0e27\u0e19\u0e2b\u0e21\u0e39\u0e48\u0e1a\u0e49\u0e32\u0e19\u0e17\u0e35\u0e48\u0e14\u0e39\u0e41\u0e25\",\"col\":5}},{\"id\":\"PkgcZwOwT6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"\u0e08\u0e33\u0e19\u0e27\u0e19\u0e0a\u0e38\u0e21\u0e0a\u0e19\",\"col\":4}},{\"id\":\"RswLFsA9c3\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"test\",\"col\":12}},{\"id\":\"v7pixFsnjS\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"LandCustomHtmlBlock\",\"col\":12}}]",
+ "content": "[{\"id\":\"MSJp8ikka7\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19</span>\",\"col\":12}},{\"id\":\"iMiPnEa0hh\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e25\u0e32\u0e07\",\"col\":3}},{\"id\":\"U3oblgpRSs\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e34\",\"col\":3}},{\"id\":\"nCMP00-7gR\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e21\u0e37\u0e2d\",\"col\":3}},{\"id\":\"qBw-9kIB-6\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19</b></span>\",\"col\":12}},{\"id\":\"Y5XEf6ViCh\",\"type\":\"card\",\"data\":{\"card_name\":\"\u0e41\u0e1c\u0e19\u0e17\u0e35\u0e48\",\"col\":3}},{\"id\":\"o3W0w-N4J_\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"\u0e08\u0e33\u0e19\u0e27\u0e19\u0e2b\u0e21\u0e39\u0e48\u0e1a\u0e49\u0e32\u0e19\u0e17\u0e35\u0e48\u0e14\u0e39\u0e41\u0e25\",\"col\":5}},{\"id\":\"PkgcZwOwT6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"\u0e08\u0e33\u0e19\u0e27\u0e19\u0e0a\u0e38\u0e21\u0e0a\u0e19\",\"col\":4}},{\"id\":\"RswLFsA9c3\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"test\",\"col\":12}},{\"id\":\"v7pixFsnjS\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"LandCustomHtmlBlock\",\"col\":12}}]",
  "creation": "2023-08-23 23:09:25.958706",
  "custom_blocks": [
   {
@@ -21,54 +21,6 @@
  "is_hidden": 0,
  "label": "\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1e\u0e37\u0e49\u0e19\u0e10\u0e32\u0e19",
-   "link_count": 4,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e31\u0e48\u0e27\u0e44\u0e1b",
-   "link_count": 0,
-   "link_to": "MaechanConfig",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "\u0e15\u0e33\u0e1a\u0e25",
-   "link_count": 0,
-   "link_to": "Tambon",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d",
-   "link_count": 0,
-   "link_to": "Amphure",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14",
-   "link_count": 0,
-   "link_to": "Province",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -202,7 +154,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-09-11 20:20:27.062717",
+ "modified": "2023-09-16 19:46:59.075148",
  "modified_by": "Administrator",
  "module": "Maechan",
  "name": "\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19",

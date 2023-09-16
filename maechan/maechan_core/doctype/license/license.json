@@ -64,7 +64,10 @@
   "column_break_khsa",
   "issue_position",
   "amended_from",
-  "barcode_track"
+  "barcode_track",
+  "qr_code_base64",
+  "column_break_cpag",
+  "html_base64"
  ],
  "fields": [
   {
@@ -368,12 +371,27 @@
   {
    "fieldname": "license_signature_img",
    "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "column_break_cpag",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "html_base64",
+   "fieldtype": "HTML",
+   "label": "QR Code (Base64)",
+   "options": "<img src=\"{{doc.qr_code_base64}}\">"
+  },
+  {
+   "fieldname": "qr_code_base64",
+   "fieldtype": "Long Text",
+   "label": "Base64"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-15 19:12:25.621269",
+ "modified": "2023-09-16 21:04:59.344231",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",

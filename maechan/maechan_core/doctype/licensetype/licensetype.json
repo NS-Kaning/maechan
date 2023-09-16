@@ -2,7 +2,7 @@
  "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:title",
+ "autoname": "format:{license_type}-{group}-{title}",
  "creation": "2023-08-29 13:18:48.918757",
  "default_view": "List",
  "doctype": "DocType",
@@ -11,8 +11,8 @@
  "field_order": [
   "basic_information",
   "license_type",
-  "title",
   "group",
+  "title",
   "details",
   "html_tab",
   "html"
@@ -22,28 +22,30 @@
    "fieldname": "title",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e34",
+   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17",
    "reqd": 1,
-   "unique": 1
+   "search_index": 1
   },
   {
    "columns": 11,
    "fieldname": "details",
    "fieldtype": "Table",
-   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e2a\u0e23\u0e34\u0e21",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e2a\u0e23\u0e34\u0e21 (\u0e40\u0e23\u0e35\u0e22\u0e07\u0e15\u0e32\u0e21\u0e25\u0e33\u0e14\u0e31\u0e1a\u0e01\u0e48\u0e2d\u0e19\u0e2b\u0e25\u0e31\u0e07)",
    "options": "LicenseTypeDetail"
   },
   {
    "fieldname": "group",
-   "fieldtype": "Select",
-   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
-   "options": "\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e34\u0e08\u0e01\u0e32\u0e23\u0e17\u0e35\u0e48\u0e40\u0e1b\u0e47\u0e19\u0e2d\u0e31\u0e19\u0e15\u0e23\u0e32\u0e22\u0e15\u0e48\u0e2d\u0e2a\u0e38\u0e02\u0e20\u0e32\u0e1e\n\u0e08\u0e31\u0e14\u0e15\u0e31\u0e49\u0e07\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\u0e08\u0e33\u0e2b\u0e19\u0e48\u0e32\u0e22\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e41\u0e25\u0e30\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\u0e2a\u0e30\u0e2a\u0e21\u0e2d\u0e32\u0e2b\u0e32\u0e23\u0e1e\u0e37\u0e49\u0e19\u0e17\u0e35\u0e48\u0e44\u0e21\u0e48\u0e40\u0e01\u0e34\u0e19 200 \u0e15\u0e32\u0e23\u0e32\u0e07\u0e40\u0e21\u0e15\u0e23\n\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e34\u0e08\u0e01\u0e32\u0e23\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\u0e08\u0e33\u0e2b\u0e19\u0e48\u0e32\u0e22\u0e2d\u0e32\u0e2b\u0e32\u0e23 \u0e2b\u0e23\u0e37\u0e2d \u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\u0e2a\u0e30\u0e2a\u0e21\u0e2d\u0e32\u0e2b\u0e32\u0e23\n\u0e08\u0e33\u0e2b\u0e19\u0e48\u0e32\u0e22\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32\u0e43\u0e19\u0e17\u0e35\u0e48\u0e2b\u0e23\u0e37\u0e2d\u0e17\u0e32\u0e07\u0e2a\u0e32\u0e18\u0e32\u0e23\u0e13\u0e30\n\u0e43\u0e2b\u0e49\u0e40\u0e1b\u0e47\u0e19\u0e1c\u0e39\u0e49\u0e23\u0e31\u0e1a\u0e08\u0e49\u0e32\u0e07\u0e41\u0e15\u0e48\u0e07\u0e1c\u0e21",
-   "reqd": 1
+   "fieldtype": "Link",
+   "label": "\u0e01\u0e25\u0e38\u0e48\u0e21\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
+   "options": "LicenseGroup",
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "basic_information",
    "fieldtype": "Tab Break",
-   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e1a\u0e37\u0e49\u0e2d\u0e07\u0e15\u0e49\u0e19"
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e1a\u0e37\u0e49\u0e2d\u0e07\u0e15\u0e49\u0e19",
+   "search_index": 1
   },
   {
    "fieldname": "html_tab",
@@ -58,17 +60,19 @@
   {
    "fieldname": "license_type",
    "fieldtype": "Select",
-   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17",
-   "options": "\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d\u0e23\u0e31\u0e1a\u0e23\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e07"
+   "label": "\u0e0a\u0e19\u0e34\u0e14\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
+   "options": "\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d\u0e23\u0e31\u0e1a\u0e23\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e07",
+   "reqd": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-15 18:20:47.602120",
+ "modified": "2023-09-16 20:13:13.521102",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "LicenseType",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

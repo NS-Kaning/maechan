@@ -1,14 +1,41 @@
 {{ frappe.render_template('templates/license/header.html', {'doc':doc}) }}
 
-<div class="flex justify-center">
-    <div>
+<div class="flex justify-center static">
+    <div class="w-full relative  ">
         <img class="mx-auto" src="/files/thai_garuda.jpg" style="height:20mm" />
+        <div class="fixed top-1 left-1">
+            {% if doc.qr_code_base64 %}
+            <img class="w-24" src="{{doc.qr_code_base64}}"/>
+            {% endif %}
+        </div>
     </div>
 </div>
+
+{% set license = frappe.get_doc("LicenseType",doc.license_type) %}
+<div class="flex justify-center">
+    <div class="license-header mx-auto text-center">{{license.license_type}}
+        <br />
+        {{doc.license_main_type}}
+    </div>
+</div>
+
+<div class="flex justify-end text-right my-2">
+    สำนักงาน{{frappe.db.get_single_value("MaechanConfig", "title") }}
+</div>
+
 {% if doc.license_main_type == "ประกอบกิจการที่เป็นอันตรายต่อสุขภาพ" %}
 {{ frappe.render_template('templates/license/health_form.html', {'doc':doc}) }}
 {% elif doc.license_main_type == "จัดตั้งสถานที่จำหน่ายอาหารและสถานที่สะสมอาหารพื้นที่ไม่เกิน 200 ตารางเมตร" %}
 {{ frappe.render_template('templates/license/food_small.html', {'doc':doc}) }}
+{% else %}
+    {% set license_type = frappe.get_doc("LicenseType",doc.license_type)%}
+    {% set license_group = frappe.get_doc("LicenseGroup",license_type.group)%}
+    {% set template = license_group.template %}
+
+    {% if license_type != None and license_group != None and (template != "" or template != None) %}
+        {{frappe.render_template(template,{'doc' : doc})}}
+    {%endif%}
+
 {%endif%}
 
 {{ frappe.render_template('templates/license/footer.html', {'doc':doc}) }}

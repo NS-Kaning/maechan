@@ -5,10 +5,5 @@
 from frappe.model.document import Document
 
 
-class MaechanConfig(Document):
-    
-    seal : str
-    title : str
-    mayor_name : str
-    mayor_position : str
-    pass
+class LicenseGroup(Document):
+	pass
