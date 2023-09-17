@@ -3,9 +3,9 @@
 <div class="tw-flex tw-flex-row tw-mt-4">
     <div class="tw-w-1/2 tw-text-end">(ลงชื่อ)</div>
     <div class="tw-pl-6 tw-min-w-10 tw-flex tw-flex-col tw-text-center">
-        <div class="h-10">
+        <div class="tw-h-10">
             {% if doc.license_signature_img %}
-            <img class="h-10" src="{{doc.license_signature_img}}"/>
+            <img class="tw-h-10" src="{{doc.license_signature_img}}"/>
             {%endif%}
         </div>
         <div class="tw-font-medium tw-mt-1">({{doc.issuer_name | handleNone }})

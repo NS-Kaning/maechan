@@ -7,13 +7,6 @@ module.exports = {
     "./maechan/public/**/*.{html,js,vue}",
 
   ],
-  safelist: [
-    { pattern: /text-*/ },
-    { pattern: /font-*/ },
-    { pattern: /p-*/ },
-    { pattern: /w-*/ },
-    { pattern: /indent-*/ },
-  ],
   theme: {
     extend: {},
   },

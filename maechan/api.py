@@ -1,4 +1,5 @@
 import frappe
+import imgkit
 
 
 @frappe.whitelist(allow_guest=True)
