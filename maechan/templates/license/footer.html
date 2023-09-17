@@ -1,14 +1,14 @@
 
 
-<div class="flex flex-row   mt-4">
-    <div class="w-1/2 text-end">(ลงชื่อ)</div>
-    <div class="pl-6 min-w-10 flex flex-col text-center">
+<div class="tw-flex tw-flex-row tw-mt-4">
+    <div class="tw-w-1/2 tw-text-end">(ลงชื่อ)</div>
+    <div class="tw-pl-6 tw-min-w-10 tw-flex tw-flex-col tw-text-center">
         <div class="h-10">
             {% if doc.license_signature_img %}
             <img class="h-10" src="{{doc.license_signature_img}}"/>
             {%endif%}
         </div>
-        <div class="font-medium mt-1">({{doc.issuer_name | handleNone }})
+        <div class="tw-font-medium tw-mt-1">({{doc.issuer_name | handleNone }})
             <br />
             {{doc.issue_position | handleNone}}
         </div>
@@ -18,14 +18,14 @@
 
 
 
-<div class="flex">
-    <div class="border-solid border-2 border-red-500 text-3xl p-2 text-red-500 ">ปิดไว้ในที่เปิดเผย</div>
+<div class="tw-flex">
+    <div class="tw-border-solid tw-border-2 tw-border-red-500 tw-text-3xl tw-p-2 tw-text-red-500 ">ปิดไว้ในที่เปิดเผย</div>
 </div>
 
-<div class="flex flex-row mt-3">
-    <div class="w-36 font-medium">คำเตือน</div>
+<div class="tw-flex tw-flex-row tw-mt-3">
+    <div class="tw-w-36 tw-font-medium">คำเตือน</div>
     <div>
-        <ol class="list-decimal">
+        <ol class="tw-list-decimal">
             <li>ต้องแสดงใบอนุญาตนี้ไว้ในที่เปิดเผย ณ สถานที่ได้รับใบอนุญาตให้ประกอบกิจการ หากฝ่าฝืนมีโทษปรับไม่เกิน
                 2,500 บาท </li>
             <li>ผู้ใดดำเนินกิจการตามประเภทที่กำหนดให้เป็นกิจการที่ต้องมีการควบคุมตามเทศบัญญัติเทศบาลตำบลแม่จัน

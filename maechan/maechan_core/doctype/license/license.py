@@ -16,6 +16,9 @@ def getQrCodeBase64(type,name) :
 		"type" : type,
 		"name" : name
 	}
+    
+    qrdict = json.dumps(qrdict)
+    
     qr = QRCode(
 		version=1,
 		error_correction=qrcode.ERROR_CORRECT_L,

@@ -35,3 +35,20 @@ def house_chart():
 
     frappe.response['message'] = houses
     # frappe.response['request'] = request
+
+
+@frappe.whitelist(allow_guest=True)
+def license_preivew() :
+    request = frappe.form_dict
+    if request['type'] == "License" :\
+        
+        if 'name' in request :
+            doc_name = request['name']
+            doc = frappe.get_doc("License", doc_name)
+            
+            content = frappe.render_template('templates/license/licensedefault.html', {'doc':doc})
+            content = f"<html>{content}</html>"
+            return content
+        
+    frappe.throw("Request is invalid")
+    
