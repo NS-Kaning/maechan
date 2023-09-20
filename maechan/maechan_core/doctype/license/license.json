@@ -11,6 +11,8 @@
   "license_type",
   "license_main_type",
   "column_break_xrly",
+  "expired",
+  "remaining_days",
   "license_applicant_information",
   "license_applicant_type",
   "column_break_sckh",
@@ -406,12 +408,24 @@
    "fieldname": "license_seal",
    "fieldtype": "Attach Image",
    "label": "\u0e15\u0e23\u0e32\u0e1b\u0e23\u0e30\u0e17\u0e31\u0e1a"
+  },
+  {
+   "fieldname": "expired",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"
+  },
+  {
+   "fieldname": "remaining_days",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e40\u0e2b\u0e25\u0e37\u0e2d\u0e40\u0e27\u0e25\u0e32 (\u0e27\u0e31\u0e19)"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-20 19:09:45.264593",
+ "modified": "2023-09-20 21:16:55.453138",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",

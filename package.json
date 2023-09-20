@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dayjs": "^1.11.10",
     "tailwindcss": "^3.3.3",
     "underscore": "^1.13.6",
     "utm-latlng": "^1.0.7",

@@ -2,12 +2,14 @@
 # For license information, please see license.txt
 
 import frappe
+import frappe.utils
 from frappe.model.document import Document
 from qrcode.main import QRCode
 import qrcode
 import json
 from io import BytesIO
 import base64
+import datetime
 
 from maechan.maechan_core.doctype.maechanconfig.maechanconfig import MaechanConfig
 
@@ -43,6 +45,24 @@ class License(Document):
     issuer_name : str
     issue_position : str
     license_signature_img : str
+    license_end_date : datetime.date
+    
+    @property
+    def expired(self):
+        if self.license_end_date :
+            return 'ใบอนุญาตหมดอายุ' if datetime.date.today() > self.license_end_date  else 'กำลังใช้งาน'
+        return None
+    
+    @property
+    def remaining_days(self) :
+        if self.license_end_date :
+                
+            today = datetime.date.today()
+            enddate = self.license_end_date
+            delta = enddate - today
+            return delta.days if today < enddate  else 0
+        return None
+
     
     def before_submit(self) :
         if self.license_signature_img == None or self.license_signature_img == "" :
