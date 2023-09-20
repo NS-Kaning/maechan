@@ -566,8 +566,28 @@ video {
   top: -0.25rem;
 }
 
+.tw-right-32 {
+  right: 8rem;
+}
+
 .tw-top-1 {
   top: 0.25rem;
+}
+
+.tw-right-48 {
+  right: 12rem;
+}
+
+.tw-right-24 {
+  right: 6rem;
+}
+
+.tw-right-14 {
+  right: 3.5rem;
+}
+
+.-tw-top-8 {
+  top: -2rem;
 }
 
 .tw-mx-auto {
@@ -608,16 +628,21 @@ video {
   display: flex;
 }
 
-.tw-h-10 {
-  height: 2.5rem;
+.tw-h-12 {
+  height: 3rem;
 }
 
-.tw-h-1 {
-  height: 0.25rem;
+.tw-h-auto {
+  height: auto;
 }
 
-.tw-h-2 {
-  height: 0.5rem;
+.tw-h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.tw-max-h-16 {
+  max-height: 4rem;
 }
 
 .tw-w-1\/2 {
@@ -783,6 +808,10 @@ video {
   font-weight: 500;
 }
 
+.tw-font-semibold {
+  font-weight: 600;
+}
+
 .tw-ordinal {
   --tw-ordinal: ordinal;
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
@@ -801,6 +830,10 @@ video {
 .tw-text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.tw-opacity-50 {
+  opacity: 0.5;
 }
 
 .tw-ring-inset {

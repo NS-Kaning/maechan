@@ -42,6 +42,11 @@ class License(Document):
     
     issuer_name : str
     issue_position : str
+    license_signature_img : str
+    
+    def before_submit(self) :
+        if self.license_signature_img == None or self.license_signature_img == "" :
+           frappe.throw("ยังไม่ได้แนบลายเซ็นต์")
     
     def before_save(self) :
         
@@ -52,12 +57,18 @@ class License(Document):
         
         if self.issue_position == None  or self.issue_position == "":
             self.issue_position = maechanConfig.mayor_position
+            
+        if self.license_seal == None or self.license_seal == "" :
+           self.license_seal = maechanConfig.seal 
         
         
-        
-    def on_update(self) :
-        
+    def _update_qr_code(self) :
         qrcode_base64 = 'data: image/png;base64, '+getQrCodeBase64("License",self.name)
         self.db_set('qr_code_base64',qrcode_base64)
-    
-    pass
+
+        
+    def on_update(self) :
+        self._update_qr_code()
+
+    def after_rename(self) :
+        self._update_qr_code()

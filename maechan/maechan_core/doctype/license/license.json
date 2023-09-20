@@ -57,10 +57,12 @@
   "column_break_wwil",
   "license_end_date",
   "extra_information",
+  "btn_dialog_extra",
   "license_extra",
   "license_issuer",
   "issuer_name",
   "license_signature_img",
+  "license_seal",
   "column_break_khsa",
   "issue_position",
   "amended_from",
@@ -163,6 +165,7 @@
    "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e02\u0e2d\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
   },
   {
+   "depends_on": "eval:(frappe.user.has_role('Administrator') || frappe.user.has_role('Thedsaban Mayor'))\r\n\r\n\r\n",
    "fieldname": "license_issuer",
    "fieldtype": "Tab Break",
    "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e43\u0e2b\u0e49\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
@@ -194,7 +197,8 @@
   },
   {
    "fieldname": "section_break_yxqd",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e32\u0e23"
   },
   {
    "fieldname": "column_break_pvpo",
@@ -293,7 +297,8 @@
   },
   {
    "fieldname": "section_break_rgjj",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e1c\u0e39\u0e49\u0e44\u0e14\u0e49\u0e23\u0e31\u0e1a\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15 (\u0e1c\u0e39\u0e49\u0e02\u0e2d\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15)"
   },
   {
    "fieldname": "column_break_fwyl",
@@ -354,11 +359,13 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.license_applicant_type === \"\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32\"",
    "fieldname": "license_applicant_nationality",
    "fieldtype": "Data",
    "label": "\u0e2a\u0e31\u0e0d\u0e0a\u0e32\u0e15\u0e34"
   },
   {
+   "depends_on": "eval:doc.license_applicant_type === \"\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32\"",
    "fieldname": "license_applicant_ethnicity",
    "fieldtype": "Data",
    "label": "\u0e40\u0e0a\u0e37\u0e49\u0e2d\u0e0a\u0e32\u0e15\u0e34"
@@ -369,8 +376,10 @@
    "label": "Barcode Track"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "license_signature_img",
-   "fieldtype": "Attach Image"
+   "fieldtype": "Attach Image",
+   "label": "\u0e25\u0e32\u0e22\u0e40\u0e0b\u0e47\u0e19\u0e15\u0e4c"
   },
   {
    "fieldname": "column_break_cpag",
@@ -380,18 +389,29 @@
    "fieldname": "html_base64",
    "fieldtype": "HTML",
    "label": "QR Code (Base64)",
-   "options": "<img src=\"{{doc.qr_code_base64}}\">"
+   "options": "<img src=\"{{doc.qr_code_base64}}\">",
+   "read_only": 1
   },
   {
    "fieldname": "qr_code_base64",
    "fieldtype": "Long Text",
    "label": "Base64"
+  },
+  {
+   "fieldname": "btn_dialog_extra",
+   "fieldtype": "Button",
+   "label": "\u0e01\u0e23\u0e2d\u0e01\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a"
+  },
+  {
+   "fieldname": "license_seal",
+   "fieldtype": "Attach Image",
+   "label": "\u0e15\u0e23\u0e32\u0e1b\u0e23\u0e30\u0e17\u0e31\u0e1a"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-17 11:31:33.870607",
+ "modified": "2023-09-20 19:09:45.264593",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",
@@ -418,6 +438,19 @@
    "report": 1,
    "role": "Guest",
    "share": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Thedsaban Mayor",
+   "share": 1,
+   "submit": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",

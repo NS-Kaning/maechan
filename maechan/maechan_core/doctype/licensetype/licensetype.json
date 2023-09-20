@@ -1,5 +1,6 @@
 {
- "_liked_by": "[\"Administrator\"]",
+ "_comments": "[]",
+ "_liked_by": "[]",
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:{license_type}-{group}-{title}",
@@ -13,9 +14,7 @@
   "license_type",
   "group",
   "title",
-  "details",
-  "html_tab",
-  "html"
+  "details"
  ],
  "fields": [
   {
@@ -48,16 +47,6 @@
    "search_index": 1
   },
   {
-   "fieldname": "html_tab",
-   "fieldtype": "Tab Break",
-   "label": "\u0e23\u0e39\u0e1b\u0e41\u0e1a\u0e1a\u0e01\u0e32\u0e23\u0e41\u0e2a\u0e14\u0e07\u0e1c\u0e25"
-  },
-  {
-   "fieldname": "html",
-   "fieldtype": "HTML Editor",
-   "label": "Template"
-  },
-  {
    "fieldname": "license_type",
    "fieldtype": "Select",
    "label": "\u0e0a\u0e19\u0e34\u0e14\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
@@ -68,7 +57,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-16 20:13:13.521102",
+ "modified": "2023-09-19 11:01:28.798319",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "LicenseType",
