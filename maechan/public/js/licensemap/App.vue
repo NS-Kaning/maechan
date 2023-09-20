@@ -75,6 +75,7 @@ export default {
         licenses = response.message
       }
 
+      licenses = _.sortBy(licenses,(l)=>l.license_end_date).reverse()
       let test = _.groupBy(licenses, (l) => l.house_id)
       console.log(test);
       _.each(test, (v) => console.log(v));

@@ -52,7 +52,6 @@ def license_chart():
                         .inner_join(house_doctype)                                  # type: ignore
                         .on(license_doctype.house_id == house_doctype.name)         # type: ignore
                         .where(house_doctype.district_id == district_id)
-                        .order(License.license_end_date,Order.desc)                 # type: ignore
                         .select('*')).run(as_dict=True)                             # type: ignore
 
 
@@ -62,7 +61,6 @@ def license_chart():
         licenses = (frappe.qb.from_(license_doctype)                            # type: ignore
                         .inner_join(house_doctype)                              # type: ignore
                         .on(license_doctype.house_id == house_doctype.name)     # type: ignore
-                        .order(License.license_end_date,Order.desc)                 # type: ignore
                         .select('*')).run(as_dict=True) 
 
     frappe.response['message'] = licenses

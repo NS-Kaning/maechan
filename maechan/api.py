@@ -41,7 +41,7 @@ def house_chart():
 @frappe.whitelist(allow_guest=True)
 def license_preivew() :
     request = frappe.form_dict
-    if request['type'] == "License" :\
+    if request['type'] == "License" :
         
         if 'name' in request :
             doc_name = request['name']
