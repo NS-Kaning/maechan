@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:parcel_cod",
  "creation": "2023-08-30 15:41:46.854975",
  "doctype": "DocType",
@@ -94,7 +95,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-11 10:50:56.537441",
+ "modified": "2023-09-22 13:02:23.192036",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "Land",
