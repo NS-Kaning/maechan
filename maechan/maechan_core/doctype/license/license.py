@@ -89,10 +89,11 @@ class License(Document):
     def _update_qr_code(self) :
         qrcode_base64 = 'data: image/png;base64, '+getQrCodeBase64("License",self.name)
         self.db_set('qr_code_base64',qrcode_base64)
+        frappe.db.commit()
 
         
     def on_update(self) :
         self._update_qr_code()
 
-    def after_rename(self) :
+    def after_rename(self, old, new, merge=False):
         self._update_qr_code()

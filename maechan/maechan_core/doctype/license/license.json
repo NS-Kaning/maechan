@@ -433,7 +433,8 @@
   {
    "fieldname": "license_approve_status",
    "fieldtype": "Data",
-   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34"
+   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34",
+   "read_only": 1
   },
   {
    "fieldname": "license_approve_section",
@@ -444,7 +445,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-22 12:20:32.834558",
+ "modified": "2023-09-22 12:30:59.596972",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",
