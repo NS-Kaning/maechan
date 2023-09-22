@@ -5,8 +5,12 @@
         <div class="tw-mx-auto">
             {% if doc.docstatus == 0%}
             <div class="tw-text-center tw-font-bold">(ร่าง)</div>
-            {% elif doc.status == 2%}
+            {% elif doc.docstatus == 2%}
             <div class="tw-text-center tw-font-bold">(ยกเลิก)</div>
+            {% elif doc.docstatus == 1%}
+                {% if doc.license_approve_status and doc.license_approve_status == 'ยกเลิก' %}
+                <div class="tw-text-center tw-font-bold">(ยกเลิก)</div>
+                {% endif %}
             {% endif %}
             <img class="tw-mx-auto" src="/files/thai_garuda.jpg" style="height:20mm" />
         </div>

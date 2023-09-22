@@ -1,4 +1,6 @@
 {
+ "_comments": "[]",
+ "_liked_by": "[]",
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:{YYYY}-{MM}-{#####}",
@@ -62,12 +64,15 @@
   "btn_dialog_extra",
   "license_extra",
   "license_issuer",
+  "section_break_rxqc",
   "issuer_name",
   "license_signature_img",
   "license_seal",
   "column_break_khsa",
   "issue_position",
   "amended_from",
+  "license_approve_section",
+  "license_approve_status",
   "barcode_track",
   "qr_code_base64",
   "column_break_cpag",
@@ -420,12 +425,26 @@
    "fieldtype": "Data",
    "is_virtual": 1,
    "label": "\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e40\u0e2b\u0e25\u0e37\u0e2d\u0e40\u0e27\u0e25\u0e32 (\u0e27\u0e31\u0e19)"
+  },
+  {
+   "fieldname": "section_break_rxqc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "license_approve_status",
+   "fieldtype": "Data",
+   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34"
+  },
+  {
+   "fieldname": "license_approve_section",
+   "fieldtype": "Section Break",
+   "label": "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-20 21:16:55.453138",
+ "modified": "2023-09-22 12:20:32.834558",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",

@@ -46,6 +46,7 @@ class License(Document):
     issue_position : str
     license_signature_img : str
     license_end_date : datetime.date
+    license_approve_status : str
     
     @property
     def expired(self):
@@ -65,6 +66,9 @@ class License(Document):
 
     
     def before_submit(self) :
+        if(self.license_approve_status == "ยกเลิก") :
+            return
+        
         if self.license_signature_img == None or self.license_signature_img == "" :
            frappe.throw("ยังไม่ได้แนบลายเซ็นต์")
     
