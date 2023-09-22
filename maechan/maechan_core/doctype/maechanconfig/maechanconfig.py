@@ -11,4 +11,5 @@ class MaechanConfig(Document):
     title : str
     mayor_name : str
     mayor_position : str
+    mayor_signature : str
     pass

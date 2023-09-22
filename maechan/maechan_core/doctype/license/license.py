@@ -55,6 +55,23 @@ class License(Document):
         
         if self.license_signature_img == None or self.license_signature_img == "" :
            frappe.throw("ยังไม่ได้แนบลายเซ็นต์")
+           
+    def before_insert(self) :
+        
+        maechanConfig : MaechanConfig = frappe.get_single("MaechanConfig") # type: ignore
+        
+        if self.issuer_name == None  or self.issuer_name == "":
+            self.issuer_name = maechanConfig.mayor_name
+        
+        if self.issue_position == None  or self.issue_position == "":
+            self.issue_position = maechanConfig.mayor_position
+            
+        if self.license_seal == None or self.license_seal == "" :
+           self.license_seal = maechanConfig.seal 
+           
+        if self.license_signature_img == None or self.license_signature_img == "" :
+           self.license_signature_img = maechanConfig.mayor_signature 
+           
     
     def before_save(self) :
         
