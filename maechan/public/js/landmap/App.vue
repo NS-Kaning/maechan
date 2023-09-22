@@ -7,6 +7,9 @@ export default {
   components: { GoogleMap, Polygon, Marker, InfoWindow, Multiselect },
   data() {
     return {
+      colors : [
+      "#000000","#FF0000","#EE005F","#B62A8F","#6D4B9A","#325082","#0082FF","#009700"
+      ],
       apiKey : null,
       lands: [],
       infos:[],
@@ -63,6 +66,7 @@ export default {
       }
     },
     getPathOfLand: function (land) {
+      console.log(land)
       let json = JSON.parse(land.geojson)
       let utmLatLng = new UTMLatLng('Everest')
 
@@ -75,7 +79,10 @@ export default {
       })
 
       // console.log(coordinates_latlng)
-      return { ...this.options, paths: coordinates_latlng }
+      options =  { ...this.options, paths: coordinates_latlng }
+      options.strokeColor = this.colors[parseInt(land.district_id)]
+      options.fillColor = this.colors[parseInt(land.district_id)]
+      return options
 
     },
     filterLand: async function (option, id) {
