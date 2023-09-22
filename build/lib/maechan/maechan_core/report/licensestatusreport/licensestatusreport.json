@@ -1,0 +1,33 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2023-09-20 21:29:53.195938",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "modified": "2023-09-20 21:47:46.942498",
+ "modified_by": "Administrator",
+ "module": "maechan_core",
+ "name": "LicenseStatusReport",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "select \n    tabLicense.name,\n    case when tabLicense.docstatus = 0 then '\u0e23\u0e48\u0e32\u0e07' else '\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34' end as status,\n    case when DATEDIFF(tabLicense.license_end_date,curdate()) > 0 then '\u0e01\u0e33\u0e25\u0e31\u0e07\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19' else '\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38' end AS `active_expired`,\n    case when DATEDIFF(tabLicense.license_end_date,curdate()) > 0 then DATEDIFF(tabLicense.license_end_date,curdate()) else 0 end AS `expired in`,\n\n    tabLicense.license_main_type,\n    tabLicense.license_applicant,\n    tabLicense.license_applicant_title,\n    tabLicense.license_start_date,\n    tabLicense.license_end_date\n    \n\nfrom \n    tabLicense\n",
+ "ref_doctype": "License",
+ "reference_report": "",
+ "report_name": "LicenseStatusReport",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Guest"
+  },
+  {
+   "role": "Thedsaban Mayor"
+  }
+ ]
+}

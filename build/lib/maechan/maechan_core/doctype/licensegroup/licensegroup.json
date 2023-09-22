@@ -1,0 +1,112 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:title",
+ "creation": "2023-09-16 20:11:28.309905",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tab_basic_information",
+  "title",
+  "template",
+  "template_2",
+  "details",
+  "template_3",
+  "template_4",
+  "template_5",
+  "template_6",
+  "template_7",
+  "template_warning",
+  "tab_html_preview"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "unique": 1
+  },
+  {
+   "fieldname": "template",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e2a\u0e48\u0e27\u0e19\u0e1c\u0e39\u0e49\u0e02\u0e2d\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "tab_basic_information",
+   "fieldtype": "Tab Break",
+   "label": "Basic Information"
+  },
+  {
+   "fieldname": "tab_html_preview",
+   "fieldtype": "Tab Break",
+   "label": "HTML Preview",
+   "options": "\n\n\n\n\n\n"
+  },
+  {
+   "fieldname": "template_3",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e02\u0e49\u0e2d 1 (\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e2a\u0e23\u0e34\u0e21)"
+  },
+  {
+   "fieldname": "template_4",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e02\u0e49\u0e2d 2"
+  },
+  {
+   "fieldname": "template_5",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e02\u0e49\u0e2d 3"
+  },
+  {
+   "fieldname": "template_6",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e02\u0e49\u0e2d 4"
+  },
+  {
+   "fieldname": "template_7",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "fieldname": "template_2",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e02\u0e49\u0e2d 1"
+  },
+  {
+   "fieldname": "template_warning",
+   "fieldtype": "HTML Editor",
+   "label": "\u0e04\u0e33\u0e40\u0e15\u0e37\u0e2d\u0e19"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Table",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e2a\u0e23\u0e34\u0e21",
+   "options": "LicenseTypeDetail"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-09-19 11:04:15.219826",
+ "modified_by": "Administrator",
+ "module": "maechan_core",
+ "name": "LicenseGroup",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
