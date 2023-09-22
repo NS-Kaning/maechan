@@ -1,4 +1,13 @@
+import json
+
 import frappe
+import frappe.utils
+import frappe.utils.logger
+from frappe.utils.oauth import login_oauth_user, login_via_oauth2_id_token, get_info_via_oauth
+
+
+frappe.utils.logger.set_log_level("DEBUG")
+logger = frappe.logger("maechan.api", allow_site=True, file_count=50)
 
 
 @frappe.whitelist(allow_guest=True)
@@ -52,3 +61,16 @@ def license_preivew() :
         
     frappe.throw("Request is invalid")
     
+    
+@frappe.whitelist(allow_guest=True)
+def login_via_line(code: str, state: str):
+    provider = "line"
+    decoder=decoder_compat
+    info = get_info_via_oauth(provider, code, decoder, id_token=True)
+    logger.debug("TEST")
+    logger.debug(info)
+    login_oauth_user(info, provider=provider, state=state)
+
+def decoder_compat(b):
+	# https://github.com/litl/rauth/issues/145#issuecomment-31199471
+	return json.loads(bytes(b).decode("utf-8"))
