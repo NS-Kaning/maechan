@@ -48,22 +48,6 @@ class License(Document):
     license_end_date : datetime.date
     license_approve_status : str
     
-    @property
-    def expired(self):
-        if self.license_end_date :
-            return 'ใบอนุญาตหมดอายุ' if datetime.date.today() > self.license_end_date  else 'กำลังใช้งาน'
-        return None
-    
-    @property
-    def remaining_days(self) :
-        if self.license_end_date :
-                
-            today = datetime.date.today()
-            enddate = self.license_end_date
-            delta = enddate - today
-            return delta.days if today < enddate  else 0
-        return None
-
     
     def before_submit(self) :
         if(self.license_approve_status == "ยกเลิก") :
