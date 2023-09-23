@@ -70,6 +70,7 @@
   "issue_position",
   "amended_from",
   "license_approve_section",
+  "workflow_state",
   "license_approve_status",
   "barcode_track",
   "qr_code_base64",
@@ -415,21 +416,30 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "license_approve_status",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34",
-   "read_only": 1
+   "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32\n\u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34\n\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01\n\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"
   },
   {
    "fieldname": "license_approve_section",
    "fieldtype": "Section Break",
    "label": "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
+   "no_copy": 1,
+   "options": "Workflow State"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-22 22:30:48.838994",
+ "modified": "2023-09-23 14:41:38.461391",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",
@@ -468,6 +478,17 @@
    "role": "Thedsaban Mayor",
    "share": 1,
    "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Thedsaban Manager",
+   "share": 1,
    "write": 1
   }
  ],

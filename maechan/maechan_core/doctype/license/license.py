@@ -1,16 +1,17 @@
 # Copyright (c) 2023, SE and contributors
 # For license information, please see license.txt
+import qrcode
+import json
+import base64
+import datetime
+
+from io import BytesIO
 
 import frappe
 import frappe.utils
 from frappe.model.document import Document
+from frappe.types import DF
 from qrcode.main import QRCode
-import qrcode
-import json
-from io import BytesIO
-import base64
-import datetime
-
 from maechan.maechan_core.doctype.maechanconfig.maechanconfig import MaechanConfig
 
 def getQrCodeBase64(type,name) :
@@ -42,15 +43,15 @@ def getQrCodeBase64(type,name) :
 
 class License(Document):
     
-    issuer_name : str
-    issue_position : str
-    license_signature_img : str
-    license_end_date : datetime.date
-    license_approve_status : str
+    issuer_name : DF.Data
+    issue_position : DF.Data
+    license_signature_img : DF.Data
+    license_end_date : DF.Date
+    license_approve_status : DF.Data
     
     
     def before_submit(self) :
-        if(self.license_approve_status == "ยกเลิก") :
+        if(self.license_approve_status in ("สร้าง","ระหว่างการพิจารณา","รออนุมัติ","ยกเลิก")) :
             return
         
         if self.license_signature_img == None or self.license_signature_img == "" :
