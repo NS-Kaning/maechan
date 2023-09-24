@@ -7,6 +7,8 @@ app_description = "Maechan App"
 app_email = "chaow.po@up.ac.th"
 app_license = "SE"
 
+export_python_type_annotations = True
+
 # Includes in <head>
 # ------------------
 

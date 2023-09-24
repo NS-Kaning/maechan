@@ -1,11 +1,12 @@
 // Copyright (c) 2023, SE and contributors
 // For license information, please see license.txt
 
-function findExtra(key,list_extra){
+
+function findExtra(key, list_extra) {
     for (i = 0; i < list_extra.length; i++) {
         let x = list_extra[i];
         if (x.key == key) {
-           return x;
+            return x;
         }
     }
     return null;
@@ -13,20 +14,97 @@ function findExtra(key,list_extra){
 
 function findValue(key, list_extra) {
 
-    let x = findExtra(key,list_extra)
-    if(x!=null){
+    let x = findExtra(key, list_extra)
+    if (x != null) {
         return x.value
     }
     return null
-    
+
+}
+
+function formatDate(date) {
+    return (
+        [
+            date.getFullYear(),
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+        ].join('-') +
+        ' ' +
+        [
+            padTo2Digits(date.getHours()),
+            padTo2Digits(date.getMinutes()),
+            padTo2Digits(date.getSeconds()),
+        ].join(':')
+    );
+}
+
+function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
 }
 
 frappe.ui.form.on('License', {
     refresh(frm) {
+        console.log(frm)
         // your code here
         // frm.set_df_property("license_type", "read_only", frm.is_new() ? 0 : 1);
 
+
+        frm.refresh_field('approve_histories');
+
     },
+
+    async before_workflow_action(frm) {
+        console.log(frm)
+        frappe.dom.unfreeze();
+        let isCreatedState = frm.doc.workflow_state == "Created"
+        console.log(frm.doc.workflow_state)
+        if (isCreatedState) {
+            let today = new Date()
+            let row = frm.add_child('approve_histories', {
+                workflow_action: frm.selected_workflow_action,
+                workflow_user: frappe.session.user,
+                datetime: formatDate(today),
+                comment: '',
+
+            });
+            frappe.dom.freeze();
+            frm.refresh_field('approve_histories');
+            await  frm.save()
+        } else {
+            let wait = true;
+
+            const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+            frappe.prompt({
+                label: 'Comment',
+                fieldname: 'comment',
+                fieldtype: 'Text'
+            }, async (values) => {
+                let today = new Date()
+                let row = frm.add_child('approve_histories', {
+                    workflow_action: frm.selected_workflow_action,
+                    workflow_user: frappe.session.user,
+                    datetime: formatDate(today),
+                    comment: values.comment,
+
+                });
+                frm.refresh_field('approve_histories');
+                await frm.save()
+                frappe.dom.freeze();
+                wait = false
+            })
+
+            while(wait) {
+                await sleep(1000)
+            }
+            
+        }
+
+    },
+    after_workflow_action(frm) {
+
+    },
+
     btn_dialog_extra(frm) {
         console.log(frm.doc.license_type)
         if (frm.doc.license_type) {

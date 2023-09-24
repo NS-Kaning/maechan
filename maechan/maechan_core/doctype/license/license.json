@@ -6,6 +6,7 @@
  "autoname": "format:{YYYY}-{MM}-{#####}",
  "creation": "2023-08-29 14:23:02.677721",
  "doctype": "DocType",
+ "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
   "basic_tab",
@@ -69,13 +70,18 @@
   "column_break_khsa",
   "issue_position",
   "amended_from",
+  "license_state_tab",
   "license_approve_section",
   "workflow_state",
+  "column_break_dzqk",
   "license_approve_status",
+  "section_break_ayrt",
+  "approve_histories",
   "barcode_track",
-  "qr_code_base64",
+  "column_break_rbqi",
+  "html_base64",
   "column_break_cpag",
-  "html_base64"
+  "qr_code_base64"
  ],
  "fields": [
   {
@@ -171,6 +177,7 @@
    "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e02\u0e2d\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
   },
   {
+   "depends_on": "eval:frappe.user.has_role(\"Thedsaban Manager\") || frappe.user.has_role(\"Thedsaban Mayor\")",
    "fieldname": "license_issuer",
    "fieldtype": "Tab Break",
    "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e43\u0e2b\u0e49\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
@@ -397,6 +404,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:frappe.user.has_role(\"Thedsaban Manager\") || frappe.user.has_role(\"Thedsaban Mayor\")",
    "fieldname": "qr_code_base64",
    "fieldtype": "Long Text",
    "label": "Base64"
@@ -423,6 +431,7 @@
    "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32\n\u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34\n\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01\n\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"
   },
   {
+   "depends_on": "eval:frappe.user.has_role(\"Thedsaban Manager\") || frappe.user.has_role(\"Thedsaban Mayor\")",
    "fieldname": "license_approve_section",
    "fieldtype": "Section Break",
    "label": "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34"
@@ -434,12 +443,39 @@
    "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
    "no_copy": 1,
    "options": "Workflow State"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "license_state_tab",
+   "fieldtype": "Tab Break",
+   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23"
+  },
+  {
+   "fieldname": "column_break_dzqk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:frappe.user.has_role(\"Thedsaban Manager\") || frappe.user.has_role(\"Thedsaban Mayor\")",
+   "fieldname": "column_break_rbqi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "approve_histories",
+   "fieldtype": "Table",
+   "label": "\u0e1b\u0e23\u0e30\u0e27\u0e31\u0e15\u0e34\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34",
+   "options": "LicenseApproveHistory",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_ayrt",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-23 14:41:38.461391",
+ "modified": "2023-09-24 15:36:19.525577",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",
@@ -457,15 +493,6 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
-  },
-  {
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Guest",
-   "share": 1
   },
   {
    "amend": 1,
@@ -489,6 +516,16 @@
    "report": 1,
    "role": "Thedsaban Manager",
    "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "if_owner": 1,
+   "read": 1,
+   "role": "All",
+   "select": 1,
+   "submit": 1,
    "write": 1
   }
  ],

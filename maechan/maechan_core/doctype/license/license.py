@@ -42,13 +42,55 @@ def getQrCodeBase64(type,name) :
 
 
 class License(Document):
-    
-    issuer_name : DF.Data
-    issue_position : DF.Data
-    license_signature_img : DF.Data
-    license_end_date : DF.Date
-    license_approve_status : DF.Data
-    
+    # begin: auto-generated types
+    # This code is auto-generated. Do not modify anything in this block.
+
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        from frappe.types import DF
+        from maechan.maechan_core.doctype.licenseapprovehistory.licenseapprovehistory import LicenseApproveHistory
+        from maechan.maechan_core.doctype.licensedetail.licensedetail import LicenseDetail
+
+        amended_from: DF.Link | None
+        approve_histories: DF.Table[LicenseApproveHistory]
+        house_id: DF.Link | None
+        issue_position: DF.Data | None
+        issuer_name: DF.Data | None
+        license_applicant: DF.Data | None
+        license_applicant_address_amphur: DF.Link | None
+        license_applicant_address_amphur_th: DF.Data | None
+        license_applicant_address_district: DF.Link | None
+        license_applicant_address_district_th: DF.Data | None
+        license_applicant_address_moo: DF.Data | None
+        license_applicant_address_no: DF.Data | None
+        license_applicant_address_province: DF.Link | None
+        license_applicant_address_province_th: DF.Data | None
+        license_applicant_address_road: DF.Data | None
+        license_applicant_address_soi: DF.Data | None
+        license_applicant_by: DF.Data | None
+        license_applicant_ethnicity: DF.Data | None
+        license_applicant_fax: DF.Data | None
+        license_applicant_nationality: DF.Data | None
+        license_applicant_telephone: DF.Data | None
+        license_applicant_title: DF.Data | None
+        license_applicant_type: DF.Literal['บุคคลธรรมดา', 'นิติบุคคล']
+        license_approve_status: DF.Literal['สร้าง', 'ระหว่างการพิจารณา', 'รออนุมัติ', 'อนุมัติ', 'ยกเลิก', 'หมดอายุ']
+        license_end_date: DF.Date | None
+        license_extra: DF.Table[LicenseDetail]
+        license_fee: DF.Currency
+        license_main_type: DF.Data | None
+        license_receipt_number: DF.Data | None
+        license_seal: DF.AttachImage | None
+        license_signature_img: DF.AttachImage | None
+        license_start_date: DF.Date | None
+        license_type: DF.Link | None
+        qr_code_base64: DF.LongText | None
+        receipt_date: DF.Date | None
+        telephone: DF.Data | None
+        workflow_state: DF.Link | None
+    # end: auto-generated types
+        
     
     def before_submit(self) :
         if(self.license_approve_status in ("สร้าง","ระหว่างการพิจารณา","รออนุมัติ","ยกเลิก")) :
