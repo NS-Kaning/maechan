@@ -16,18 +16,18 @@ from maechan.maechan_core.doctype.maechanconfig.maechanconfig import MaechanConf
 
 def getQrCodeBase64(type,name) :
     qrdict = {
-		"type" : type,
-		"name" : name
-	}
+        "type" : type,
+        "name" : name
+    }
     
     qrdict = json.dumps(qrdict)
     
     qr = QRCode(
-		version=1,
-		error_correction=qrcode.ERROR_CORRECT_L,
-		box_size=10,
-		border=4,
-	)
+        version=1,
+        error_correction=qrcode.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
     qr.add_data(qrdict)
     qr.make(fit=True)
     img = qr.make_image()
@@ -97,7 +97,16 @@ class License(Document):
             return
         
         if self.license_signature_img == None or self.license_signature_img == "" :
-           frappe.throw("ยังไม่ได้แนบลายเซ็นต์")
+            
+            signatures = frappe.db.get_list('MaechanUserProfile',fields = "*",filters={
+                "signature_owner" : frappe.session.user
+            })
+            
+            if(len(signatures) == 0 ):
+                frappe.throw("ยังไม่ได้แนบลายเซ็นต์")
+            else :
+                sig = signatures[0]
+                self.license_signature_img = sig['signature']
            
     def before_insert(self) :
         
