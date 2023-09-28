@@ -75,7 +75,7 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
    "link_count": 0,
    "link_to": "LicenseStatusReport",
@@ -84,7 +84,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-09-25 20:48:39.307087",
+ "modified": "2023-09-28 19:49:51.491410",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e40\u0e1c\u0e22\u0e41\u0e1e\u0e23\u0e48",

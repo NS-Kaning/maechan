@@ -5,8 +5,11 @@ module.exports = {
     "./maechan/templates/**/*.{html,js}",
     "./**/print_format/**/*.{html,js}",
     "./maechan/public/**/*.{html,js,vue}",
-
   ],
+  presets: [
+    require('frappe-ui/src/utils/tailwind.config')
+  ],
+
   theme: {
     extend: {},
   },
