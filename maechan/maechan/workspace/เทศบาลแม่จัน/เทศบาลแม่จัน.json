@@ -16,8 +16,9 @@
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
- "icon": "",
+ "icon": "organization",
  "idx": 0,
+ "indicator_color": "green",
  "is_hidden": 0,
  "label": "\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19",
  "links": [
@@ -196,13 +197,13 @@
    "is_query_report": 0,
    "label": "\u0e25\u0e32\u0e22\u0e40\u0e0b\u0e47\u0e19\u0e15\u0e4c",
    "link_count": 0,
-   "link_to": "UserSignature",
+   "link_to": "MaechanUserProfile",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2023-09-24 15:41:23.950142",
+ "modified": "2023-09-25 20:50:43.690071",
  "modified_by": "Administrator",
  "module": "Maechan",
  "name": "\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19",

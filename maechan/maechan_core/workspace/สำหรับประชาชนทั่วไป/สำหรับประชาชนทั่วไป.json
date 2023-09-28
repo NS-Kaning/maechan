@@ -9,6 +9,7 @@
  "hide_custom": 0,
  "icon": "table_2",
  "idx": 0,
+ "indicator_color": "purple",
  "is_hidden": 0,
  "label": "\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19\u0e17\u0e31\u0e48\u0e27\u0e44\u0e1b",
  "links": [
@@ -35,13 +36,13 @@
    "is_query_report": 0,
    "label": "\u0e25\u0e32\u0e22\u0e40\u0e0b\u0e47\u0e19\u0e15\u0e4c",
    "link_count": 0,
-   "link_to": "UserSignature",
+   "link_to": "MaechanUserProfile",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2023-09-24 16:07:40.700630",
+ "modified": "2023-09-25 13:26:31.637419",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19\u0e17\u0e31\u0e48\u0e27\u0e44\u0e1b",
@@ -58,7 +59,7 @@
    "role": "Thedsaban Manager"
   }
  ],
- "sequence_id": 23.0,
+ "sequence_id": 3.0,
  "shortcuts": [],
  "title": "\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19\u0e17\u0e31\u0e48\u0e27\u0e44\u0e1b"
 }

@@ -56,9 +56,57 @@ frappe.ui.form.on('License', {
     async before_workflow_action(frm) {
         console.log(frm)
         frappe.dom.unfreeze();
-        let isCreatedState = frm.doc.workflow_state == "Created"
-        console.log(frm.doc.workflow_state)
-        if (isCreatedState) {
+
+        let add_comment_states = ["Reject", "Review"]
+
+        let select_action = frm.selected_workflow_action
+
+        if (add_comment_states.includes(select_action)) {
+
+            let wait = true;
+
+            const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+            let d = new frappe.ui.Dialog({
+                title: __('Enter Comment'),
+                fields: [
+                    {
+                        label: __('Comment'),
+                        fieldname: 'comment',
+                        fieldtype: 'Text'
+                    }
+                ],
+                size: 'small', // small, large, extra-large 
+                primary_action_label: __('Submit'),
+                primary_action: async (values) => {
+                    let today = new Date()
+                    let row = frm.add_child('approve_histories', {
+                        workflow_action: frm.selected_workflow_action,
+                        workflow_user: frappe.session.user,
+                        datetime: formatDate(today),
+                        comment: values.comment,
+
+                    });
+                    frm.refresh_field('approve_histories');
+                    await frm.save()
+                    frappe.dom.freeze();
+                    wait = false
+                    d.hide();
+                }
+            });
+
+            d.show();
+
+
+
+            while (wait) {
+                await sleep(1000)
+            }
+
+
+
+        } else {
+
             let today = new Date()
             let row = frm.add_child('approve_histories', {
                 workflow_action: frm.selected_workflow_action,
@@ -69,37 +117,8 @@ frappe.ui.form.on('License', {
             });
             frappe.dom.freeze();
             frm.refresh_field('approve_histories');
-            await  frm.save()
-        } else {
-            let wait = true;
-
-            const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-
-            frappe.prompt({
-                label: 'Comment',
-                fieldname: 'comment',
-                fieldtype: 'Text'
-            }, async (values) => {
-                let today = new Date()
-                let row = frm.add_child('approve_histories', {
-                    workflow_action: frm.selected_workflow_action,
-                    workflow_user: frappe.session.user,
-                    datetime: formatDate(today),
-                    comment: values.comment,
-
-                });
-                frm.refresh_field('approve_histories');
-                await frm.save()
-                frappe.dom.freeze();
-                wait = false
-            })
-
-            while(wait) {
-                await sleep(1000)
-            }
-            
+            await frm.save()
         }
-
     },
     after_workflow_action(frm) {
 
