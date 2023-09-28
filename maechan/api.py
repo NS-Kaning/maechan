@@ -1,9 +1,13 @@
 import json
+import base64
+from io import BytesIO
 
 import frappe
 import frappe.utils
 import frappe.utils.logger
 from frappe.utils.oauth import login_oauth_user, login_via_oauth2_id_token, get_info_via_oauth
+
+from maechan.maechan_core.doctype.license.license import License
 
 
 frappe.utils.logger.set_log_level("DEBUG")
@@ -53,7 +57,18 @@ def license_preivew() :
         
         if 'name' in request :
             doc_name = request['name']
-            doc = frappe.get_doc("License", doc_name)
+            doc : License = frappe.get_doc("License", doc_name) # type: ignore
+            
+            from frappe.core.doctype.file.utils import get_local_image
+            
+            if doc.license_signature_img :
+                localImg = get_local_image(doc.license_signature_img)
+                buffered = BytesIO()
+                localImg[0].save(buffered, format="JPEG")
+                img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+                
+                doc.license_signature_img = 'data: image/png;base64, ' +  img_str # type: ignore
+            
             
             content = frappe.render_template('templates/license/licensedefault.html', {'doc':doc})
             content = f"<html>{content}</html>"
