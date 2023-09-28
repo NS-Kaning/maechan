@@ -72,3 +72,50 @@ def district_list():
     district = frappe.db.get_list("District", fields="*")
     frappe.response['message'] = "District List"
     frappe.response['data'] = district
+
+@frappe.whitelist()
+def load_signature() :
+    sig = frappe.db.get_all(
+        "MaechanUserProfile", filters={"signature_owner": frappe.session.user}, fields='*')
+    count = len(sig)
+    if count >= 1 :
+        frappe.response['message'] = sig
+        frappe.response['count'] = len(sig)
+    else :
+        frappe.response['message'] = None
+        frappe.response['count'] = 0 
+    pass
+
+@frappe.whitelist()
+def update_signature() :
+    from typing import List
+    from maechan.maechan_core.doctype.maechanuserprofile.maechanuserprofile import MaechanUserProfile
+    
+    signatures : List[MaechanUserProfile] = frappe.db.get_all(
+        "MaechanUserProfile", filters={"signature_owner": frappe.session.user}, fields='*') # type: ignore
+    count = len(signatures) # type: ignore
+    
+    request = frappe.form_dict
+    
+    if 'signature' in request : 
+    
+        if count >= 1 :
+            #update signature
+            sig : MaechanUserProfile  = signatures[0] # type: ignore
+            sig  = frappe.get_doc('MaechanUserProfile',sig.name) # type: ignore
+            sig.signature = request['signature']
+            sig.save()
+            pass
+        else :
+            #create signature
+            sig : MaechanUserProfile = frappe.new_doc('MaechanUserProfile') # type: ignore
+            sig.signature_owner = frappe.session.user
+            sig.signature = request['signature']
+            
+            sig.insert()
+            pass 
+        
+        
+        frappe.response['message'] = sig
+    
+        

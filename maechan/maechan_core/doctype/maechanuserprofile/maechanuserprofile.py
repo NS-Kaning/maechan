@@ -14,7 +14,6 @@ class MaechanUserProfile(Document):
     if TYPE_CHECKING:
         from frappe.types import DF
 
-        name: DF.Int | None
         signature: DF.AttachImage | None
         signature_owner: DF.Link | None
     # end: auto-generated types
