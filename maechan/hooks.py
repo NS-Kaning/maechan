@@ -58,8 +58,12 @@ export_python_type_annotations = True
 
 # add methods and filters to jinja environment
 jinja = {
-	"methods": "maechan.maechan.utils.jinja_methods",
-	 "filters": "maechan.maechan.utils.jinja_filters"
+	"methods": [
+    # "maechan.maechan.utils.jinja_methods"
+     ],
+	 "filters": [
+	 #   "maechan.maechan.utils.jinja_filters",
+      ]
 }
 
 # Installation
