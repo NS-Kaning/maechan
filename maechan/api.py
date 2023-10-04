@@ -64,7 +64,7 @@ def license_preivew() :
             if doc.license_signature_img :
                 localImg = get_local_image(doc.license_signature_img)
                 buffered = BytesIO()
-                localImg[0].save(buffered, format="JPEG")
+                localImg[0].save(buffered, format="png")
                 img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
                 
                 doc.license_signature_img = 'data: image/png;base64, ' +  img_str # type: ignore
