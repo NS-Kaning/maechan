@@ -30,7 +30,7 @@ frappe.ui.form.on('House', {
 	    // validte json
 	    try {
 	        console.log('json',frm.doc.house_json)
-			if(frm.doc.house_json){
+			if(frm.doc.house_json && frm.doc.house_json != ""){
 				let house_json =  frm.doc.house_json
 				let json = JSON.parse(house_json)
 				if (json.properties.Name) {

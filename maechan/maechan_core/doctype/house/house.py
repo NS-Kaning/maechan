@@ -27,4 +27,6 @@ class House(Document):
             doc.province_th = district.province_th
             
             doc.text_display = f"{doc.house_no} หมู่ {doc.house_moo} {doc.tambon_th} {doc.amphure_th} {doc.province_th}"
+        if doc.house_json == "" :
+            doc.house_json = None
     pass

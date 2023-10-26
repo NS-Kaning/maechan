@@ -54,7 +54,14 @@ class License(Document):
 
         amended_from: DF.Link | None
         approve_histories: DF.Table[LicenseApproveHistory]
+        house_amphur: DF.Data | None
         house_id: DF.Link | None
+        house_moo: DF.Data | None
+        house_no: DF.Data | None
+        house_province: DF.Data | None
+        house_road: DF.Data | None
+        house_soi: DF.Data | None
+        house_tambon: DF.Data | None
         issue_position: DF.Data | None
         issuer_name: DF.Data | None
         license_applicant: DF.Data | None
