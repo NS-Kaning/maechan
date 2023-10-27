@@ -26,8 +26,11 @@
   "section_break_kncp",
   "populate_json",
   "house_json",
+  "section_break_anwi",
   "house_lat",
+  "column_break_sfnk",
   "house_lng",
+  "section_break_vbjt",
   "text_display"
  ],
  "fields": [
@@ -54,13 +57,13 @@
   {
    "fieldname": "house_lat",
    "fieldtype": "Float",
-   "label": "lat",
+   "label": "lat (\u0e1b\u0e23\u0e30\u0e21\u0e32\u0e13 5~22 )",
    "precision": "6"
   },
   {
    "fieldname": "house_lng",
    "fieldtype": "Float",
-   "label": "lng",
+   "label": "lng (\u0e1b\u0e23\u0e30\u0e21\u0e32\u0e13 99~105 )",
    "precision": "6"
   },
   {
@@ -145,11 +148,23 @@
    "fieldname": "house_road",
    "fieldtype": "Data",
    "label": "\u0e16\u0e19\u0e19"
+  },
+  {
+   "fieldname": "section_break_anwi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_sfnk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_vbjt",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-14 18:01:09.535255",
+ "modified": "2023-10-27 12:40:14.773472",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "House",

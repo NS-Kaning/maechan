@@ -136,6 +136,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "RCPT-",
    "fieldname": "license_receipt_number",
    "fieldtype": "Data",
    "label": "\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e23\u0e31\u0e1a\u0e40\u0e07\u0e34\u0e19\u0e40\u0e25\u0e48\u0e21\u0e17\u0e35\u0e48"
@@ -578,7 +579,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-10 20:49:54.257650",
+ "modified": "2023-10-27 12:20:24.532844",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",

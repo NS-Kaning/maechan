@@ -6,6 +6,28 @@ from frappe.model.document import Document
 from maechan.maechan_core.doctype.district.district import District
 
 class House(Document):
+    # begin: auto-generated types
+    # This code is auto-generated. Do not modify anything in this block.
+
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        from frappe.types import DF
+
+        amphure_th: DF.Data | None
+        district_id: DF.Link
+        house_json: DF.JSON | None
+        house_lat: DF.Float
+        house_lng: DF.Float
+        house_moo: DF.Data | None
+        house_no: DF.Data
+        house_road: DF.Data | None
+        house_soi: DF.Data | None
+        name: DF.Int | None
+        province_th: DF.Data | None
+        tambon_th: DF.Data | None
+        text_display: DF.Data | None
+    # end: auto-generated types
     
     district_id : str
     house_moo : str

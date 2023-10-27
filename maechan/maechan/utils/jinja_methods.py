@@ -51,3 +51,10 @@ def getThaiFullYear(dateObj : datetime.date):
 def handleNone(s:str) :
     return s if s != None else "-"
 
+def showLicenseFee(x) :
+    try :
+        if int(x) == x :
+            return f"{x:,.0f}"
+        return f"{x:,}"
+    except :
+        return "INVALID"
