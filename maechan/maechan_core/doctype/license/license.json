@@ -94,6 +94,7 @@
   "column_break_rbqi",
   "html_base64",
   "column_break_cpag",
+  "uuid",
   "qr_code_base64"
  ],
  "fields": [
@@ -574,12 +575,21 @@
   {
    "fieldname": "column_break_alxe",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "uuid",
+   "fieldtype": "Data",
+   "label": "uuid",
+   "no_copy": 1,
+   "read_only": 1,
+   "set_only_once": 1,
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-27 12:20:24.532844",
+ "modified": "2023-10-31 23:24:15.127022",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",

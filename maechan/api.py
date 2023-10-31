@@ -73,6 +73,39 @@ def license_preivew() :
             content = frappe.render_template('templates/license/licensedefault.html', {'doc':doc})
             content = f"<html>{content}</html>"
             return content
+        elif 'uuid' in request : 
+            from frappe.query_builder import DocType
+            LicenseDocType = frappe.qb.DocType('License')
+
+            q =(frappe.qb.from_(LicenseDocType)
+                .limit(1)
+                .select("*")
+                .where(LicenseDocType.uuid == request['uuid']))
+            
+            result = q.run(as_dict=True)
+            if(len(result) == 1) : 
+                
+                doc : License = frappe.get_doc("License", result[0]['name']) # type: ignore
+
+                from frappe.core.doctype.file.utils import get_local_image
+                
+                if doc.license_signature_img :
+                    localImg = get_local_image(doc.license_signature_img)
+                    buffered = BytesIO()
+                    localImg[0].save(buffered, format="png")
+                    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+                    
+                    doc.license_signature_img = 'data: image/png;base64, ' +  img_str # type: ignore
+                
+                
+                content = frappe.render_template('templates/license/licensedefault.html', {'doc':doc})
+                content = f"<html>{content}</html>"
+                return content
+                
+            return "Not found"
+
+            
+
         
     frappe.throw("Request is invalid")
     

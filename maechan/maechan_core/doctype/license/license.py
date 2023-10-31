@@ -4,6 +4,7 @@ import qrcode
 import json
 import base64
 import datetime
+import uuid
 
 from io import BytesIO
 
@@ -36,6 +37,31 @@ def getQrCodeBase64(type,name) :
     img.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
     return img_str 
+
+
+def getQrCodeBase64WithUUID(type,uuid) :
+    qrdict = {
+        "type" : type,
+        "uuid" : uuid
+    }
+    
+    qrdict = json.dumps(qrdict)
+    
+    qr = QRCode(
+        version=10, 
+        error_correction=qrcode.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(qrdict)
+    qr.make(fit=True)
+    img = qr.make_image()
+    
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    return img_str 
+
 
 
     
@@ -95,6 +121,7 @@ class License(Document):
         qr_code_base64: DF.LongText | None
         receipt_date: DF.Date | None
         telephone: DF.Data | None
+        uuid: DF.Data | None
         workflow_state: DF.Link | None
     # end: auto-generated types
         
@@ -104,7 +131,6 @@ class License(Document):
             return
         
         if self.license_signature_img == None or self.license_signature_img == "" :
-            
             signatures = frappe.db.get_list('MaechanUserProfile',fields = "*",filters={
                 "signature_owner" : frappe.session.user
             })
@@ -147,13 +173,27 @@ class License(Document):
         
         
     def _update_qr_code(self) :
-        qrcode_base64 = 'data: image/png;base64, '+getQrCodeBase64("License",self.name)
-        self.db_set('qr_code_base64',qrcode_base64)
-        frappe.db.commit()
+        '''
+        ปรับปรุงการทำงาน ตรวจสอบว่า qrcode มีอยู่หรือไม่ ถ้ามีอยู่แล้วไม่ต้องสร้างใหม่ แต่ถ้าไม่มี
+        ให้สร้างใหม่ โดยการใช้ โครงกสร้างใหม่
+        '''
+        if(self.qr_code_base64 is None or self.qr_code_base64 == "") :
+            
+            if(self.uuid is None or self.uuid == "") :
+                self.uuid = uuid.uuid4().__str__()
+                self.db_set('uuid',self.uuid)
+                frappe.db.commit()
+            
+            qrcode_base64 = 'data: image/png;base64, '+getQrCodeBase64WithUUID("License",self.uuid)
+            self.db_set('qr_code_base64',qrcode_base64)
+            frappe.db.commit()
         
         
     def on_update(self) :
         self._update_qr_code()
 
     def after_rename(self, old, new, merge=False):
+        self.db_set('qr_code_base64',None)
+        self.qr_code_base64 = None
+        frappe.db.commit()
         self._update_qr_code()
