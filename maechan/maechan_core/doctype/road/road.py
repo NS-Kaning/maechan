@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class LicenseTypeDetail(Document):
+class Road(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,11 +14,7 @@ class LicenseTypeDetail(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		datatype: DF.Literal['Data', 'Float', 'Date', 'Check', 'Select', 'Link']
-		key: DF.Data
-		options: DF.Text | None
-		parent: DF.Data
-		parentfield: DF.Data
-		parenttype: DF.Data
+		road_name: DF.Data | None
+		roade_name_en: DF.Data | None
 	# end: auto-generated types
 	pass
