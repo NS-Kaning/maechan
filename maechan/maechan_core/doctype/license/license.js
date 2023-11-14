@@ -139,7 +139,7 @@ frappe.ui.form.on('License', {
                         fieldtype: x.datatype,
                         options: x.options,
                         default: defaultValue
-                    }
+                    }                    
                     fields.push(f)
 
                 })

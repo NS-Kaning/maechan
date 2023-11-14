@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class LicenseType(Document):
+class WaterGate(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -13,12 +13,14 @@ class LicenseType(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from maechan.maechan_core.doctype.licensetypedetail.licensetypedetail import LicenseTypeDetail
 
-		details: DF.Table[LicenseTypeDetail]
-		group: DF.Link
-		license_type: DF.Literal['ใบอนุญาต', 'หนังสือรับรองการแจ้ง']
-		rule_year: DF.Data | None
-		title: DF.Text
+		fid: DF.Data | None
+		geojson: DF.JSON | None
+		id: DF.Data | None
+		image: DF.AttachImage | None
+		lat: DF.Float
+		lng: DF.Float
+		status: DF.Literal['เปิด', 'ปิด']
+		title: DF.Data | None
 	# end: auto-generated types
 	pass

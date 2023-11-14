@@ -1,2 +1,3 @@
 Maechan
 maechan_core
+maechan_water
