@@ -71,9 +71,10 @@ class ImportHouse(Document):
                     	})
 
                     house.house_json = json.dumps(i)
-                    house.house_lat = i['geometry']['coordinates'][1]
-                    house.house_lng =  i['geometry']['coordinates'][0]
-                    house.save()
+                    if i['geometry'] is not None :
+                        house.house_lat = i['geometry']['coordinates'][1]
+                        house.house_lng =  i['geometry']['coordinates'][0]
+                        house.save()
                     success.append(i)
                 else:
                     failed.append(i)

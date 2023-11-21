@@ -53,7 +53,7 @@ frappe.ui.form.on('ImportHouse', {
                         let datatabel = new DataTable(element, {
                             columns: ['Name', 'Moo', 'Lat', 'Lng'],
                             layout: 'fluid',
-                            data: json.features.map(i => {
+                            data: json.features.filter(i => i.geometry != null).map(i => {
                                 return [
                                     i.properties.Name,
                                     i.properties.Moo,

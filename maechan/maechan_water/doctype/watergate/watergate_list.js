@@ -1,6 +1,6 @@
 
 frappe.listview_settings['WaterGate'] = {
-    add_fields: ['title', 'status'],
+    //add_fields: ['title', 'status'],
 
     has_indicator_for_draft: false,
     get_indicator(doc) {

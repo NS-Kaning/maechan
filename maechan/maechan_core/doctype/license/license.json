@@ -102,6 +102,7 @@
   {
    "fieldname": "license_type",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
    "options": "LicenseType"
   },
@@ -221,6 +222,7 @@
    "fetch_from": "license_type.group",
    "fieldname": "license_main_type",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "\u0e0a\u0e19\u0e34\u0e14\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
   },
   {
@@ -375,6 +377,8 @@
   {
    "fieldname": "license_applicant_title",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e2a\u0e16\u0e32\u0e19\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e32\u0e23"
   },
   {
@@ -457,6 +461,8 @@
    "allow_on_submit": 1,
    "fieldname": "workflow_state",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
    "no_copy": 1,
    "options": "Workflow State"
@@ -595,7 +601,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-11-12 14:48:00.511209",
+ "modified": "2023-11-20 12:23:27.248883",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "License",
