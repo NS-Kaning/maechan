@@ -10,6 +10,7 @@ export default {
       houses: [],
       districts: [],
       center: { lat: 20.138951, lng: 99.854991 },
+      apiKey : null,
 
       zoom: 15,
 
@@ -23,7 +24,7 @@ export default {
     this.apiKey = await frappe.db.get_single_value('MaechanConfig', 'google_api_key')
 
     let houses = await this.getHouses();
-    let districts = await frappe.db.get_list('District', { fields: ["*"] })
+    let districts = await frappe.db.get_list('District', { fields: ["*"], order_by:"moo asc" })
 
     this.houses = houses
     this.districts = districts
@@ -80,7 +81,7 @@ export default {
 
   <div class="row mt-3">
     <div class="col" v-if="apiKey">
-      <GoogleMap :api-key="apiKey" style="width: 100%; height: 600px" :center="center"
+      <GoogleMap :api-key="apiKey" style="width: 100%; height: 80vh" :center="center"
         :zoom="zoom">
         <Marker v-for="d in houses" :options="{ position: { lat: d.house_lat, lng: d.house_lng } }">
           <InfoWindow>
