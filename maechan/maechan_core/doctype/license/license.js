@@ -152,6 +152,7 @@ frappe.ui.form.on('License', {
                     primary_action(values) {
                         console.log(values);
                         frm.doc.license_extra.forEach(x => {
+                            console.log(values,x)
                             x.value = values[x.key]
                         })
                         d.hide();
