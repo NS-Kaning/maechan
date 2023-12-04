@@ -36,14 +36,22 @@ def getCenterLatLng(coordinates):
 
     return (lat, lng)
 
-
+from frappe.core.doctype.file.file import File
+from maechan.maechan_core.doctype.land.land import Land
 class ImportLand(Document):
+
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        from frappe.types import DF
+
+        geojson_file: DF.Attach | None
 
     @frappe.whitelist()
     def preview(self):
         file = self.geojson_file
         if file:
-            _file = frappe.get_doc("File", {"file_url": file})
+            _file : File = frappe.get_doc("File", {"file_url": file}) # type: ignore
             return readJson(_file.get_full_path())
 
     @frappe.whitelist()
@@ -52,7 +60,7 @@ class ImportLand(Document):
         self.status = "In Progress"
         self.save()
         if file:
-            _file = frappe.get_doc("File", {"file_url": file})
+            _file : File = frappe.get_doc("File", {"file_url": file}) # type: ignore
             geojsonDict = jsonToDict(_file.get_full_path())
             if geojsonDict == None or 'features' not in geojsonDict :
                 frappe.throw("Import file is not valid.")
@@ -76,26 +84,26 @@ class ImportLand(Document):
                         pass
                     else:
 
-                        land = frappe.db.get_list('Land', filters={
+                        lands : list[Land] = frappe.db.get_list('Land', filters={
                             "PARCEL_COD": i['properties']['PARCEL_COD'],
                             "district_id": moo[0].name
-                        }, fields=['*'],)
+                        }, fields=['*'],) # type: ignore
 
-                        if len(land) == 1:
-                            land = frappe.get_doc(
-                                "Land", i['properties']['PARCEL_COD'])
+                        if len(lands) == 1:
+                            land : Land = frappe.get_doc(
+                                "Land", i['properties']['PARCEL_COD']) # type: ignore
                         else:
-                            land = frappe.get_doc({
+                            land : Land = frappe.get_doc({
                                 'doctype': 'Land',
                                 "parcel_cod": i['properties']['PARCEL_COD'],
                                 "district_id": moo[0].name
-                            })
+                            }) # type: ignore
 
                         try:
 
                             land.geojson = json.dumps(i)
-                            land.lat, land.lng = getCenterLatLng(
-                                i['geometry']['coordinates'][0][0])
+                            land.lat, land.lng = getCenterLatLng( # type: ignore
+                                i['geometry']['coordinates'][0][0]) 
                             land.lot = i['properties']['LOT']
                             land.parcel_no = i['properties']['PARCEL_NO']
                             land.zone_id = i['properties']['ZONE_ID']
