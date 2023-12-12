@@ -23,10 +23,11 @@
 </div>
 
 {% set license = frappe.get_doc("LicenseType",doc.license_type) %}
+{% set license_main = frappe.get_doc("LicenseGroup",doc.license_main_type)%}
 <div class="tw-flex tw-justify-center">
     <div class="license-header tw-mx-auto tw-text-center">{{license.license_type}}
         <br />
-        {{doc.license_main_type}}
+        {{license_main.title}}
     </div>
 </div>
 
