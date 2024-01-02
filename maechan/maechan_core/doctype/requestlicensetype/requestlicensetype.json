@@ -54,7 +54,7 @@
  "modified": "2023-12-11 14:05:09.328867",
  "modified_by": "Administrator",
  "module": "maechan_core",
- "name": "RequestType",
+ "name": "RequestLicenseType",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [

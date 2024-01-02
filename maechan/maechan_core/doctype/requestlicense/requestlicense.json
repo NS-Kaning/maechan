@@ -1,11 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:{YYYY}-{MM}-{#####}",
  "creation": "2023-12-09 12:39:33.871560",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "request_information_tab",
+  "column_break_gzha",
   "date",
   "column_break_szso",
   "section_break_ouuy",
@@ -24,10 +26,13 @@
   "applicant_soi",
   "section_break_kqru",
   "applicant_distict",
+  "applicant_distict_th",
   "column_break_alvl",
   "applicant_amphur",
+  "applicant_amphur_th",
   "column_break_dulk",
   "applicant_province",
+  "applicant_province_th",
   "house",
   "house_no",
   "column_break_ykko",
@@ -44,17 +49,13 @@
   "section_break_mhbj",
   "checklist_extra",
   "checklist_list",
-  "section_break_xcts",
-  "signature_entrepreneur",
-  "column_break_zswf",
-  "signature_officer",
   "request_state_tab",
   "approve_section",
   "workflow_state",
   "column_break_ajiu",
-  "approve_state",
   "section_break_bgqy",
-  "approve_history"
+  "approve_history",
+  "amended_from"
  ],
  "fields": [
   {
@@ -124,22 +125,28 @@
    "options": "Tambon"
   },
   {
+   "fetch_from": "applicant_distict.amphure_id",
    "fieldname": "applicant_amphur",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d",
-   "options": "Amphure"
+   "options": "Amphure",
+   "read_only": 1
   },
   {
+   "fetch_from": "applicant_distict.province_id",
    "fieldname": "applicant_province",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14",
-   "options": "Province"
+   "options": "Province",
+   "read_only": 1
   },
   {
    "fieldname": "request_type",
    "fieldtype": "Link",
    "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
-   "options": "RequestType"
+   "options": "RequestLicenseType"
   },
   {
    "fieldname": "section_break_qnoj",
@@ -216,7 +223,7 @@
   },
   {
    "fieldname": "checklist_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e40\u0e02\u0e49\u0e32\u0e15\u0e23\u0e27\u0e08"
   },
   {
@@ -225,26 +232,8 @@
    "label": "\u0e02\u0e49\u0e2d\u0e40\u0e2a\u0e19\u0e2d\u0e41\u0e19\u0e30"
   },
   {
-   "fieldname": "signature_entrepreneur",
-   "fieldtype": "Attach Image",
-   "label": "\u0e25\u0e07\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e08\u0e49\u0e32\u0e02\u0e2d\u0e07\u0e2a\u0e16\u0e32\u0e19\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e32\u0e23"
-  },
-  {
-   "fieldname": "signature_officer",
-   "fieldtype": "Attach Image",
-   "label": "\u0e25\u0e07\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e08\u0e49\u0e32\u0e1e\u0e19\u0e31\u0e01\u0e07\u0e32\u0e19\u0e2a\u0e32\u0e18\u0e32\u0e23\u0e13\u0e30\u0e2a\u0e38\u0e02"
-  },
-  {
    "fieldname": "section_break_mhbj",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "section_break_xcts",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_zswf",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "checklist_list",
@@ -283,12 +272,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "approve_state",
-   "fieldtype": "Select",
-   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34",
-   "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32\n\u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34\n\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01\n\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"
-  },
-  {
    "fieldname": "section_break_bgqy",
    "fieldtype": "Section Break"
   },
@@ -303,14 +286,53 @@
    "fieldtype": "Table",
    "label": "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14\u0e41\u0e1a\u0e1a\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a",
    "options": "CheckListDetail"
+  },
+  {
+   "fetch_from": "applicant_distict.name_th",
+   "fieldname": "applicant_distict_th",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "\u0e15\u0e33\u0e1a\u0e25(\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01)",
+   "options": "Tambon"
+  },
+  {
+   "fetch_from": "applicant_distict.amphure_th",
+   "fieldname": "applicant_amphur_th",
+   "fieldtype": "Data",
+   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d",
+   "options": "Amphure"
+  },
+  {
+   "fetch_from": "applicant_distict.province_th",
+   "fieldname": "applicant_province_th",
+   "fieldtype": "Data",
+   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14",
+   "options": "Province"
+  },
+  {
+   "fieldname": "column_break_gzha",
+   "fieldtype": "Column Break",
+   "hidden": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "RequestLicense",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2023-12-11 14:06:13.002349",
+ "modified": "2023-12-18 20:39:14.702060",
  "modified_by": "Administrator",
  "module": "maechan_core",
- "name": "Request",
+ "name": "RequestLicense",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -324,9 +346,35 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Thedsaban Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

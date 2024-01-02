@@ -21,17 +21,17 @@ function findValue(key, list_extra) {
 
 }
 
-frappe.ui.form.on("Request", {
+frappe.ui.form.on("RequestLicense", {
 	refresh(frm) {
 
 	},
     btn_request_type(frm) {
         console.log(frm.doc.request_type)
         if (frm.doc.request_type) {
-            frappe.db.get_doc("RequestType", frm.doc.request_type).then(r => {
-                let RequestType = r;
+            frappe.db.get_doc("RequestLicenseType", frm.doc.request_type).then(r => {
+                let RequestLicenseType = r;
                 fields = []
-                RequestType.details.forEach(x => {
+                RequestLicenseType.details.forEach(x => {
                     let defaultValue = findValue(x.key, frm.doc.request_extra);
                     console.log("DEFAULT", defaultValue)
                     let f = {
@@ -74,7 +74,7 @@ frappe.ui.form.on("Request", {
         frm.clear_table("checklist_extra")
         frm.clear_table("checklist_list")
 
-        frappe.db.get_doc("RequestType", frm.doc.request_type)
+        frappe.db.get_doc("RequestLicenseType", frm.doc.request_type)
             .then(r => {
 
                 r.details.forEach(x => {
