@@ -10,10 +10,10 @@ def update_expired_license():
         }
     
     expired_license = frappe.db.get_list('License',fields=['name'],filters=filters)
-    try :
-        for i in expired_license :
-            frappe.db.set_value('License',i.name,'workflow_state','Expired')
-    except :
-        frappe.db.rollback(save_point='before_update_expired')
+    print(len(expired_license))
+    
+    for i in expired_license :
+        frappe.db.set_value('License',i.name,'workflow_state','Expired')
+    frappe.db.commit()
         
     pass
