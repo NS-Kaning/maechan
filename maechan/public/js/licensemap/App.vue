@@ -25,6 +25,7 @@ export default {
         fillColor: "#FF0000",
         fillOpacity: 0.35,
       },
+      top : 0,
 
       zoom: 15,
 
@@ -45,8 +46,22 @@ export default {
 
     this.licenses = licenses;
     this.districts = districts
+
+    this.myEventHandler()
   },
+  created() {
+    window.addEventListener("resize", this.myEventHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
+  },
+
   methods: {
+    myEventHandler(e) {
+      // your code for handling resize...
+      console.log(this.$refs.map.getBoundingClientRect().top)
+      this.top = this.$refs.map.getBoundingClientRect().top
+    },
     getDurationDays: function (day) {
       let end_date = dayjs(day)
       let today = dayjs()
@@ -122,9 +137,9 @@ export default {
     </div>
   </div>
 
-  <div class="row mt-3">
+  <div class="row mt-3" ref="map">
     <div class="col" v-if="apiKey">
-      <GoogleMap :api-key="apiKey" style="width: 100%; height: 600px" :center="center" :zoom="zoom">
+      <GoogleMap  :api-key="apiKey"  :style="{'min-height' : '50vh',height : `calc(100vh - ${top}px - 30px)` }" style="width: 100%;" :center="center" :zoom="zoom">
 
         <Marker v-for="license in licenses"
           :options="{ position: { lat: license.licenses[0].house_lat, lng: license.licenses[0].house_lng } }">
@@ -139,7 +154,7 @@ export default {
                   อำเภอ {{ license.licenses[0].amphure_th }} จังหวัด {{ license.licenses[0].province_th }}
                 </div>
 
-                
+
 
                 <div style="display: flex;">
                   <a :href="`https://www.google.com/maps/dir/?api=1&destination=${license.licenses[0].house_lat},${license.licenses[0].house_lng}`"
@@ -147,9 +162,9 @@ export default {
                     style="text-decoration: none;border-radius: 16px;margin-top: 1rem; padding : 0.5rem 1rem; background-color: black; color:white">นำทาง</a>
                 </div>
                 <div style="display: block;">
-                  <hr/>
+                  <hr />
                 </div>
-                
+
 
                 <div v-for="d in license.licenses" style="display: block;">
                   <span class="font-bold">ใบอนุญาต</span> {{ d.license_main_type }} <br />
@@ -158,7 +173,7 @@ export default {
                     getDurationDays(d.license_end_date) }} วัน)<br />
                   <hr />
                 </div>
-               
+
               </div>
             </div>
           </InfoWindow>

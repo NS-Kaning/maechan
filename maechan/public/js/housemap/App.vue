@@ -12,7 +12,7 @@ export default {
       center: { lat: 20.138951, lng: 99.854991 },
       apiKey : null,
       currentMarker : null,
-
+      top : 0,
       zoom: 15,
 
       form: {
@@ -29,8 +29,21 @@ export default {
 
     this.houses = houses
     this.districts = districts
+    this.myEventHandler()
+
+  },
+  created() {
+    window.addEventListener("resize", this.myEventHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
   },
   methods: {
+    myEventHandler(e) {
+      // your code for handling resize...
+      console.log(this.$refs.map.getBoundingClientRect().top)
+      this.top = this.$refs.map.getBoundingClientRect().top
+    },
     getHouses: async function (district_id) {
       if (district_id) {
         let response = await frappe.call({
@@ -94,10 +107,10 @@ export default {
     </div>
   </div>
 
-  <div class="row mt-3">
+  <div class="row mt-3" ref="map">
     <div class="col" v-if="apiKey">
-      <GoogleMap :api-key="apiKey" style="width: 100%; height: 80vh" :center="center"
-        :zoom="zoom">
+      
+      <GoogleMap  :api-key="apiKey"  :style="{'min-height' : '50vh',height : `calc(100vh - ${top}px - 30px)` }" style="width: 100%;" :center="center" :zoom="zoom">
         <Marker @click="openclose(d)" v-for="d in houses" :options="{ position: { lat: d.house_lat, lng: d.house_lng } }">
           <InfoWindow v-model="d.showInfoWindow">
             <div class="infowindow_content" style="padding-right: 1rem;">

@@ -7,12 +7,12 @@ export default {
   components: { GoogleMap, Polygon, Marker, InfoWindow, Multiselect },
   data() {
     return {
-      colors : [
-      "#000000","#FF0000","#EE005F","#B62A8F","#6D4B9A","#325082","#0082FF","#009700"
+      colors: [
+        "#000000", "#FF0000", "#EE005F", "#B62A8F", "#6D4B9A", "#325082", "#0082FF", "#009700"
       ],
-      apiKey : null,
+      apiKey: null,
       lands: [],
-      infos:[],
+      infos: [],
       districts: [],
       center: { lat: 20.138951, lng: 99.854991 },
       options: {
@@ -22,7 +22,7 @@ export default {
         fillColor: "#FF0000",
         fillOpacity: 0.35,
       },
-
+      top : 0,
       zoom: 15,
 
       form: {
@@ -36,14 +36,27 @@ export default {
     let lands = await this.getLands()
     let districts = await frappe.db.get_list('District', { fields: ["*"] })
 
-    for(let i=0;i<lands.length;i++){
+    for (let i = 0; i < lands.length; i++) {
       lands[i].showInfo = false;
     }
-    
+
     this.lands = lands;
     this.districts = districts
+    this.myEventHandler()
+
+  },
+  created() {
+    window.addEventListener("resize", this.myEventHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.myEventHandler);
   },
   methods: {
+    myEventHandler(e) {
+      // your code for handling resize...
+      console.log(this.$refs.map.getBoundingClientRect().top)
+      this.top = this.$refs.map.getBoundingClientRect().top
+    },
     getLands: async function (district_id) {
       if (district_id) {
         let response = await frappe.call({
@@ -54,7 +67,7 @@ export default {
         })
         let lands = response.message
         return lands;
-      }else {
+      } else {
         let response = await frappe.call({
           method: "maechan.maechan_core.api.land_chart",
           args: {
@@ -73,13 +86,13 @@ export default {
       let coordinates_utm = json.geometry.coordinates[0][0]
       let coordinates_latlng = coordinates_utm.map(x => {
         return {
-          lat : x[1],
-          lng : x[0]
+          lat: x[1],
+          lng: x[0]
         }
       })
 
       // console.log(coordinates_latlng)
-      options =  { ...this.options, paths: coordinates_latlng }
+      options = { ...this.options, paths: coordinates_latlng }
       options.strokeColor = this.colors[parseInt(land.district_id)]
       options.fillColor = this.colors[parseInt(land.district_id)]
       return options
@@ -98,12 +111,12 @@ export default {
       }
 
     },
-    showInfo: function(land){
-     this.infos.push(land)
+    showInfo: function (land) {
+      this.infos.push(land)
     },
-    closeInfo: function(land){
+    closeInfo: function (land) {
       let index = this.infos.indexOf(land)
-      this.infos.splice(index,1)
+      this.infos.splice(index, 1)
       // console.log(this.infos);
     }
   }
@@ -122,16 +135,16 @@ export default {
     </div>
   </div>
 
-  <div class="row mt-3">
+  <div class="row mt-3" ref="map">
     <div class="col" v-if="apiKey">
-      <GoogleMap :api-key="apiKey" style="width: 100%; height: 600px" :center="center"
-        :zoom="zoom">
 
+      <GoogleMap :api-key="apiKey" :style="{ 'min-height': '50vh', height: `calc(100vh - ${top}px - 30px)` }"
+        style="width: 100%;" :center="center" :zoom="zoom">
         <Polygon :options="getPathOfLand(d)" v-for="d in lands" @click="showInfo(d)">
         </Polygon>
 
-        <InfoWindow @closeclick="closeInfo(d)" v-for="d in infos" :options="{ position: { lat: d.lat, lng: d.lng} }"> 
-          Name : {{d.land_owner}} <br/>
+        <InfoWindow @closeclick="closeInfo(d)" v-for="d in infos" :options="{ position: { lat: d.lat, lng: d.lng } }">
+          Name : {{ d.land_owner }} <br />
           PARCEL COD : {{ d.parcel_cod }}
         </InfoWindow>
       </GoogleMap>
