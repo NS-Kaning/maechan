@@ -47,12 +47,12 @@ export default {
     this.districts = districts
   },
   methods: {
-    getDurationDays : function(day){
+    getDurationDays: function (day) {
       let end_date = dayjs(day)
       let today = dayjs()
 
       let duration = dayjs.duration(today.diff(end_date))
-      let days =  duration.asDays()
+      let days = duration.asDays()
 
       return parseInt(Math.abs(days))
     },
@@ -75,13 +75,12 @@ export default {
         licenses = response.message
       }
 
-      licenses = _.sortBy(licenses,(l)=>l.license_end_date).reverse()
+      licenses = _.sortBy(licenses, (l) => l.license_end_date).reverse()
       let test = _.groupBy(licenses, (l) => l.house_id)
-      console.log(test);
-      _.each(test, (v) => console.log(v));
+      console.log(_.chain(test).map((value, key) => ({ showInfo: false, licesnes: value })).value());
 
 
-      return test;
+      return _.chain(test).map((value, key) => ({ showInfo: false, licenses: value })).value()
 
     },
     filterLicense: async function (option, id) {
@@ -89,11 +88,13 @@ export default {
       if (district) {
         let district_name = district.name
         let licenses = await this.getLicenses(district_name);
-        this.licenses = licenses;
+
+
+        this.licenses = licenses
       } else {
 
         let licenses = await this.getLicenses();
-        this.licenses = licenses;
+        this.licenses = licenses
       }
 
     },
@@ -126,25 +127,38 @@ export default {
       <GoogleMap :api-key="apiKey" style="width: 100%; height: 600px" :center="center" :zoom="zoom">
 
         <Marker v-for="license in licenses"
-          :options="{ position: { lat: license[0].house_lat, lng: license[0].house_lng } }">
+          :options="{ position: { lat: license.licenses[0].house_lat, lng: license.licenses[0].house_lng } }">
           <InfoWindow>
-            <div id="contet">
-              <div id="siteNotice"></div>
-              <div id="bodyContent">
-                <span class="font-bold">เลขที่</span> {{ license[0].house_no }} หมู่ที่ {{ license[0].house_moo }} ตำบล{{
-                  license[0].tambon_th }}
-                อำเภอ {{ license[0].amphure_th }} จังหวัด {{ license[0].province_th }}
+            <div class="info_window_content">
+              <div class="info_window_site_notice"></div>
+              <div class="info_window_window_content" style="display: flex;flex-direction: column;">
+                <div style="display: flex;">
+                  <span class="font-bold">เลขที่</span> {{ license.licenses[0].house_no }} หมู่ที่ {{
+                    license.licenses[0].house_moo }} ตำบล{{
+    license.licenses[0].tambon_th }}
+                  อำเภอ {{ license.licenses[0].amphure_th }} จังหวัด {{ license.licenses[0].province_th }}
+                </div>
 
-                <hr />
-                <template v-for="d in license">
+                
 
+                <div style="display: flex;">
+                  <a :href="`https://www.google.com/maps/dir/?api=1&destination=${license.licenses[0].house_lat},${license.licenses[0].house_lng}`"
+                    target="_blank"
+                    style="text-decoration: none;border-radius: 16px;margin-top: 1rem; padding : 0.5rem 1rem; background-color: black; color:white">นำทาง</a>
+                </div>
+                <div style="display: block;">
+                  <hr/>
+                </div>
+                
+
+                <div v-for="d in license.licenses" style="display: block;">
                   <span class="font-bold">ใบอนุญาต</span> {{ d.license_main_type }} <br />
                   <span class="font-bold">ผู้ได้รับใบอนุญาต</span> {{ d.license_applicant_title }} <br />
-                  <span class="font-bold">วันหมดอายุ</span> {{ d.license_end_date }}  ({{ getDurationDays(d.license_end_date) }} วัน)<br />
+                  <span class="font-bold">วันหมดอายุ</span> {{ d.license_end_date }} ({{
+                    getDurationDays(d.license_end_date) }} วัน)<br />
                   <hr />
-                </template>
-
-
+                </div>
+               
               </div>
             </div>
           </InfoWindow>

@@ -11,6 +11,7 @@ export default {
       districts: [],
       center: { lat: 20.138951, lng: 99.854991 },
       apiKey : null,
+      currentMarker : null,
 
       zoom: 15,
 
@@ -39,6 +40,9 @@ export default {
           },
         })
         let houses = response.message
+        houses.forEach(element => {
+          element.showInfoWindow = false
+        });
         return houses;
       }else {
         let response = await frappe.call({
@@ -47,6 +51,10 @@ export default {
           },
         })
         let houses = response.message
+
+        houses.forEach(element => {
+          element.showInfoWindow = false
+        });
         return houses;
 
       }
@@ -62,6 +70,13 @@ export default {
         this.houses = houses;
       }
 
+    },
+    openclose : function(marker){
+      if(this.currentMarker != null){
+        this.currentMarker.showInfoWindow = false;
+      }
+      marker.showInfoWindow = true
+      this.currentMarker = marker
     }
   }
 }
@@ -83,13 +98,20 @@ export default {
     <div class="col" v-if="apiKey">
       <GoogleMap :api-key="apiKey" style="width: 100%; height: 80vh" :center="center"
         :zoom="zoom">
-        <Marker v-for="d in houses" :options="{ position: { lat: d.house_lat, lng: d.house_lng } }">
-          <InfoWindow>
-            <div id="contet">
-              <div id="siteNotice"></div>
-              <div id="bodyContent">
-                เลขที่ {{ d.house_no }} หมู่ที่ {{ d.house_moo }} ตำบล{{ d.tambon_th }}
-                อำเภอ {{ d.amphure_th }} จังหวัด {{ d.province_th }}
+        <Marker @click="openclose(d)" v-for="d in houses" :options="{ position: { lat: d.house_lat, lng: d.house_lng } }">
+          <InfoWindow v-model="d.showInfoWindow">
+            <div class="infowindow_content" style="padding-right: 1rem;">
+              <div class="infowindow_siteNotice"></div>
+              <div style="display:flex; flex-direction: column;" class="infowindow_bodyContent">
+                <div style="display: flex;">
+                  เลขที่ {{ d.house_no }} หมู่ที่ {{ d.house_moo }} ตำบล{{ d.tambon_th }}
+                  อำเภอ {{ d.amphure_th }} จังหวัด {{ d.province_th }}
+                </div>
+
+                <div style="display: flex;">
+                  <a :href="`https://www.google.com/maps/dir/?api=1&destination=${d.house_lat},${d.house_lng}`" target="_blank" style="text-decoration: none;border-radius: 16px;margin-top: 1rem; padding : 0.5rem 1rem; background-color: black; color:white">นำทาง</a>
+                </div>
+                
               </div>
             </div>
           </InfoWindow>
