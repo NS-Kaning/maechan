@@ -115,23 +115,23 @@ jinja = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-#	"all": [
-#		"maechan.tasks.all"
-#	],
-#	"daily": [
-#		"maechan.tasks.daily"
-#	],
-#	"hourly": [
-#		"maechan.tasks.hourly"
-#	],
-#	"weekly": [
-#		"maechan.tasks.weekly"
-#	],
-#	"monthly": [
-#		"maechan.tasks.monthly"
-#	],
-# }
+scheduler_events = {
+	"all": [
+		# "maechan.tasks.all"
+	],
+	"daily": [
+		"maechan.maechan_core.tasks.update_expired_license"
+	],
+	"hourly": [
+		# "maechan.tasks.hourly"
+	],
+	"weekly": [
+		# "maechan.tasks.weekly"
+	],
+	"monthly": [
+		# "maechan.tasks.monthly"
+	],
+}
 
 # Testing
 # -------
