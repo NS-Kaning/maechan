@@ -177,6 +177,80 @@ def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
         else:
             return 2, _("Please ask your administrator to verify your sign-up")
         
+    
+@frappe.whitelist(allow_guest=True)
+def register() :
+    request = frappe.form_dict
+    
+    profileUser = frappe.db.get("UserProfile", {"email": request.email})
+    if profileUser:
+        return 0
+    else :
+        profileUser = frappe.get_doc(
+        {
+            "doctype": "UserProfile",
+            "fullname": request.fullname,
+            "nationality": request.nationality,
+            "birthdate": request.birthdate,
+            "tel": request.tel,
+            "email": request.email,
+            "address_no": request.address_no,
+            "address_moo": request.address_moo,
+            "address_soi": request.address_soi,
+            "address_road": request.address_road,
+            "address_district": request.address_district,
+            "address_amphur": request.address_amphur,
+            "address_province": request.address_province,
+            }
+        )
+        
+        profileUser.flags.ignore_permissions = True
+        profileUser.flags.ignore_password_policy = True
+        profileUser.insert()
 
+        return 1
+
+@frappe.whitelist(allow_guest=True)
+def createUser() :
+    request = frappe.form_dict
     
-    
+    user = frappe.db.get("User", {"email": request.email})
+    if user:
+        if user.enabled:
+            return "Already Registered"
+        else:
+            return "Registered but disabled"
+    else :
+        from frappe.utils import random_string    
+        user = frappe.get_doc(
+                {
+                    "doctype": "User",
+                    "email": request.email,
+                    "first_name": request.fullname,
+                    "enabled": 1,
+                    "new_password": random_string(10),
+                    "user_type": "Website User",
+                }
+            )
+            
+        user.flags.ignore_permissions = True
+        user.flags.ignore_password_policy = True
+        user.insert()
+        
+        default_role = frappe.db.get_single_value("Portal Settings", "default_role")
+        if default_role:
+            user.add_roles(default_role)
+        return "Please check your email for verification"
+
+@frappe.whitelist(allow_guest=True)
+def checkEmail() :
+    request = frappe.form_dict    
+    user = frappe.db.get("User", {"email": request.email})
+    return  user
+
+@frappe.whitelist(allow_guest=True)
+def addUserPermission():
+    request = frappe.form_dict
+    sql_query = "UPDATE `tabUserProfile`SET owner='"+request.email+"' WHERE name='"+request.email+"'"
+    frappe.db.sql(sql_query)
+    frappe.db.commit()

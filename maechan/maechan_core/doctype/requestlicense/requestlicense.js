@@ -24,7 +24,29 @@ function findValue(key, list_extra) {
 frappe.ui.form.on("RequestLicense", {
 	refresh(frm) {
 
-	},
+	},setup(frm){
+        console.log("tset");
+        const emailUser = frappe.session.user_email
+        console.log(emailUser);
+        frappe.db.get_doc("UserProfile",frappe.session.user_email).then( r => {
+
+            console.log(r);
+            frm.set_value({
+                "applicant_name" : r.fullname,
+                "applicant_nationality" : r.nationality,
+                "applicant_tel" : r.tel,
+                "applicant_no" : r.address_no,
+                "applicant_moo" : r.address_moo,
+                "applicant_soi" : r.address_soi,
+                "applicant_road" : r.address_road,
+                "applicant_distict" : r.address_district,
+                // "applicant_distict_th" : r.address_district,
+                // "applicant_amphur_th" : r.address_amphur,
+                // "applicant_province_th" : r.address_province
+            });
+            console.log(frm.doc);
+        })
+    },
     btn_request_type(frm) {
         console.log(frm.doc.request_type)
         if (frm.doc.request_type) {
