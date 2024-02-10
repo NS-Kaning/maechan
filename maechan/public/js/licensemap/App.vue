@@ -38,7 +38,7 @@ export default {
     this.apiKey = await frappe.db.get_single_value('MaechanConfig', 'google_api_key')
 
     let licenses = await this.getLicenses()
-    let districts = await frappe.db.get_list('District', { fields: ["*"] })
+    let districts = await frappe.db.get_list('District', { fields: ["*"],order_by : "moo asc, tambon_id asc" })
 
     for (let i = 0; i < licenses.length; i++) {
       licenses[i].showInfo = false;
@@ -95,7 +95,7 @@ export default {
       console.log(_.chain(test).map((value, key) => ({ showInfo: false, licesnes: value })).value());
 
 
-      return _.chain(test).map((value, key) => ({ showInfo: false, licenses: value })).value()
+      return _.chain(test).map((value, key) => ({ showInfoWindow: false, licenses: value })).value()
 
     },
     filterLicense: async function (option, id) {
@@ -116,10 +116,12 @@ export default {
     showInfo: function (license) {
       this.infos.push(license)
     },
-    closeInfo: function (license) {
-      let index = this.infos.indexOf(license)
-      this.infos.splice(index, 1)
-      // console.log(this.infos);
+    openclose : function(marker){
+      if(this.currentMarker != null){
+        this.currentMarker.showInfoWindow = false;
+      }
+      marker.showInfoWindow = true
+      this.currentMarker = marker
     }
   }
 }
@@ -141,9 +143,9 @@ export default {
     <div class="col" v-if="apiKey">
       <GoogleMap  :api-key="apiKey"  :style="{'min-height' : '50vh',height : `calc(100vh - ${top}px - 30px)` }" style="width: 100%;" :center="center" :zoom="zoom">
 
-        <Marker v-for="license in licenses"
+        <Marker @click="openclose(license)" v-for="license in licenses"
           :options="{ position: { lat: license.licenses[0].house_lat, lng: license.licenses[0].house_lng } }">
-          <InfoWindow>
+          <InfoWindow v-model="license.showInfoWindow">
             <div class="info_window_content">
               <div class="info_window_site_notice"></div>
               <div class="info_window_window_content" style="display: flex;flex-direction: column;">

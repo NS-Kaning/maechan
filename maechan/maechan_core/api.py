@@ -69,7 +69,9 @@ def license_chart():
 
 def district_list():
     request = frappe.form_dict
-    district = frappe.db.get_list("District", fields="*")
+    # district = frappe.db.get_list("District", fields="*",order_by=['moo asc','tambon_id asc'])
+    district = frappe.qb.from_("District").select("*").orderby('moo',order=frappe.qb.asc).orderby('tambon_id',order=frappe.qb.asc).run(as_dict=True)
+
     frappe.response['message'] = "District List"
     frappe.response['data'] = district
 
