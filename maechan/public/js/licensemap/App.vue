@@ -25,6 +25,14 @@ export default {
         fillColor: "#FF0000",
         fillOpacity: 0.35,
       },
+      markers : {
+        icon : "M8.075 23.52C1.264 13.642 0 12.629 0 9c0-4.971 4.029-9 9-9s9 4.029 9 9c0 3.629-1.264 4.64-8.075 14.516a1.126 1.126 0 0 1-1.847.004l-.002-.004z",
+        normal : "green",
+        last90 : "yellow",
+        last60 : "orange",
+        last30 : "red",
+        expired : "grey"
+      },
       top : 0,
 
       zoom: 15,
@@ -91,8 +99,16 @@ export default {
       }
 
       licenses = _.sortBy(licenses, (l) => l.license_end_date).reverse()
-      let test = _.groupBy(licenses, (l) => l.house_id)
-      console.log(_.chain(test).map((value, key) => ({ showInfo: false, licesnes: value })).value());
+      
+      licenses.forEach((value,key) => {
+        licenses[key].house_lat = licenses[key].house_lat + (Math.random() / 10000  - 0.00005)
+        licenses[key].house_lng = licenses[key].house_lng + (Math.random() / 10000  - 0.00005)
+      });
+
+
+      let test = _.groupBy(licenses, (l) => l.license_name)
+  
+      console.log(_.chain(test).map((value, key) => ({ showInfoWindow: false, licenses: value })).value());
 
 
       return _.chain(test).map((value, key) => ({ showInfoWindow: false, licenses: value })).value()
@@ -122,7 +138,32 @@ export default {
       }
       marker.showInfoWindow = true
       this.currentMarker = marker
+    },
+
+    getColor(license_wrapper) {
+
+      let license = license_wrapper.licenses[0]
+      
+      if(license.workflow_state == "Approved"){
+        let duration = this.getDurationDays(license.license_end_date)
+        if(duration > 90){
+          return this.markers.normal
+        }else if (duration >60) {
+          return this.markers.last90
+        }else if (duration >30) {
+          return this.markers.last60
+        }else if (duration >0) {
+          return this.markers.last30
+        }else {
+          return this.markers.expired
+        }
+
+       }else {
+        return this.markers.expired
+      }
+      
     }
+
   }
 }
 </script>
@@ -141,10 +182,17 @@ export default {
 
   <div class="row mt-3" ref="map">
     <div class="col" v-if="apiKey">
-      <GoogleMap  :api-key="apiKey"  :style="{'min-height' : '50vh',height : `calc(100vh - ${top}px - 30px)` }" style="width: 100%;" :center="center" :zoom="zoom">
-
+      <GoogleMap :styles='[
+    {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [
+              { visibility: "off" }
+        ]
+    }
+]'  :api-key="apiKey"  :style="{'min-height' : '50vh',height : `calc(100vh - ${top}px - 30px)` }" style="width: 100%;" :center="center" :zoom="zoom" >
         <Marker @click="openclose(license)" v-for="license in licenses"
-          :options="{ position: { lat: license.licenses[0].house_lat, lng: license.licenses[0].house_lng } }">
+          :options="{icon: { path: markers.icon,fillColor:getColor(license),fillOpacity:1,strokeWeight:0, scaledSize: { width: 40, height: 40 } },  position: { lat: license.licenses[0].house_lat, lng: license.licenses[0].house_lng } }">
           <InfoWindow v-model="license.showInfoWindow">
             <div class="info_window_content">
               <div class="info_window_site_notice"></div>
@@ -171,6 +219,7 @@ export default {
                 <div v-for="d in license.licenses" style="display: block;">
                   <span class="font-bold">ใบอนุญาต</span> {{ d.license_main_type }} <br />
                   <span class="font-bold">ผู้ได้รับใบอนุญาต</span> {{ d.license_applicant_title }} <br />
+                  <span class="font-bold">สถานะ</span> {{ d.workflow_state == "Approved" ? "อนุมัติ" : "หมดอายุ" }} <br />
                   <span class="font-bold">วันหมดอายุ</span> {{ d.license_end_date }} ({{
                     getDurationDays(d.license_end_date) }} วัน)<br />
                   <hr />
