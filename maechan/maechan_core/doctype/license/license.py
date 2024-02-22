@@ -107,8 +107,8 @@ class License(Document):
         license_applicant_nationality: DF.Data | None
         license_applicant_telephone: DF.Data | None
         license_applicant_title: DF.Data | None
-        license_applicant_type: DF.Literal['บุคคลธรรมดา', 'นิติบุคคล']
-        license_approve_status: DF.Literal['สร้าง', 'ระหว่างการพิจารณา', 'รออนุมัติ', 'อนุมัติ', 'ยกเลิก', 'หมดอายุ']
+        license_applicant_type: DF.Literal["\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32", "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"]
+        license_approve_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32", "\u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34", "\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01", "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"]
         license_end_date: DF.Date | None
         license_extra: DF.Table[LicenseDetail]
         license_fee: DF.Currency
@@ -124,6 +124,7 @@ class License(Document):
         uuid: DF.Data | None
         workflow_state: DF.Link | None
     # end: auto-generated types
+
         
     
     def before_submit(self) :
