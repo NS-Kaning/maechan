@@ -14,6 +14,8 @@ def update_expired_license():
     
     for i in expired_license :
         frappe.db.set_value('License',i.name,'workflow_state','Expired')
+        frappe.db.set_value('License',i.name,'license_approve_status','หมดอายุ')
+
     frappe.db.commit()
         
     pass

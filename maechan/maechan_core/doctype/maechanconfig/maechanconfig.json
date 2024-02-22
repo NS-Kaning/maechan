@@ -30,7 +30,7 @@
   {
    "fieldname": "seal",
    "fieldtype": "Attach Image",
-   "label": "\u0e15\u0e23\u0e32\u0e1b\u0e31\u0e49\u0e21"
+   "label": "\u0e15\u0e23\u0e32\u0e1b\u0e31\u0e49\u0e21 (\u0e02\u0e19\u0e32\u0e14 200x200)"
   },
   {
    "fieldname": "mayor_name",
@@ -87,7 +87,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-22 23:07:57.246222",
+ "modified": "2024-01-09 19:00:39.874212",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "MaechanConfig",

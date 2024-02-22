@@ -125,6 +125,7 @@ class License(Document):
         uuid: DF.Data | None
         workflow_state: DF.Link | None
     # end: auto-generated types
+
         
     
     def before_submit(self) :
