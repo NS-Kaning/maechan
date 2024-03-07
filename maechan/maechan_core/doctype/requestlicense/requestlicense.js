@@ -21,48 +21,73 @@ function findValue(key, list_extra) {
 
 }
 
+function calAge(a, b) {
+    const ms = 1000 * 60 * 60 * 24 * 365;
+    const bDay = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const tDay = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((tDay - bDay) / ms);
+}
+
 frappe.ui.form.on("RequestLicense", {
-	refresh(frm) {
+    refresh(frm) {
+        frappe.breadcrumbs.clear();
 
-	},setup(frm){
-        console.log("tset");
+    },after_workflow_action(frm){
+        // console.log(frm.doc.request_status);
+        if (frm.doc.request_status == 'รอออกใบอนุญาต'){
+            // console.log("test");
+            // console.log(frm.doc.request_status);
+            frm.call('newLicense')
+        }
+    }, before_load(frm) {
         const emailUser = frappe.session.user_email
-        console.log(emailUser);
-        frappe.db.get_doc("UserProfile",frappe.session.user_email).then( r => {
-
-            console.log(r);
-            frm.set_value({
-                "applicant_name" : r.fullname,
-                "applicant_nationality" : r.nationality,
-                "applicant_tel" : r.tel,
-                "applicant_no" : r.address_no,
-                "applicant_moo" : r.address_moo,
-                "applicant_soi" : r.address_soi,
-                "applicant_road" : r.address_road,
-                "applicant_distict" : r.address_district,
-                // "applicant_distict_th" : r.address_district,
-                // "applicant_amphur_th" : r.address_amphur,
-                // "applicant_province_th" : r.address_province
-            });
-            console.log(frm.doc);
-        })
+        if (frm.doc.applicant_name == null) {
+            frappe.db.get_doc("UserProfile", emailUser).then(r => {
+                frappe.db.get_value("Tambon",
+                    filters = {
+                        name_th: r.address_district,
+                        amphure_th: r.address_amphur,
+                        province_th: r.address_province
+                    },
+                    'id').then(re => {
+                        frm.set_value({
+                            "applicant_distict": re.message.id
+                        })
+                    })
+                const birthday = new Date(r.birthdate)
+                const today = new Date()
+                const age = calAge(birthday, today);
+                frm.set_value({
+                    "date" : r.creation ,
+                    "applicant_name": r.fullname,
+                    "applicant_nationality": r.nationality,
+                    "applicant_ethnicity": r.race,
+                    "applicant_tel": r.tel,
+                    "applicant_no": r.address_no,
+                    "applicant_moo": r.address_moo,
+                    "applicant_soi": r.address_soi,
+                    "applicant_road": r.address_road,
+                    "applicant_age": age
+                });
+    
+            })
+        }
     },
     btn_request_type(frm) {
-        console.log(frm.doc.request_type)
         if (frm.doc.request_type) {
             frappe.db.get_doc("RequestLicenseType", frm.doc.request_type).then(r => {
                 let RequestLicenseType = r;
                 fields = []
                 RequestLicenseType.details.forEach(x => {
                     let defaultValue = findValue(x.key, frm.doc.request_extra);
-                    console.log("DEFAULT", defaultValue)
                     let f = {
                         label: x.key,
                         fieldname: x.key,
                         fieldtype: x.datatype,
                         options: x.options,
                         default: defaultValue
-                    }                    
+                    }
                     fields.push(f)
 
                 })
@@ -73,9 +98,7 @@ frappe.ui.form.on("RequestLicense", {
                     size: 'small', // small, large, extra-large 
                     primary_action_label: 'Submit',
                     primary_action(values) {
-                        console.log(values);
                         frm.doc.request_extra.forEach(x => {
-                            console.log(values,x)
                             x.value = values[x.key]
                         })
                         d.hide();
@@ -100,7 +123,6 @@ frappe.ui.form.on("RequestLicense", {
             .then(r => {
 
                 r.details.forEach(x => {
-                    console.log(x)
 
                     extraDetails = frm.add_child("request_extra");
                     extraDetails.key = x.key
@@ -110,7 +132,6 @@ frappe.ui.form.on("RequestLicense", {
                 frm.refresh_fields("request_extra");
 
                 r.attachment.forEach(y => {
-                    console.log(y)
 
                     extraDetails = frm.add_child("attachment_extra");
                     extraDetails.key = y.key
@@ -120,7 +141,6 @@ frappe.ui.form.on("RequestLicense", {
                 frm.refresh_fields("attachment_extra");
 
                 r.checklist_details.forEach(z => {
-                    console.log(z)
 
                     extraDetails = frm.add_child("checklist_extra");
                     extraDetails.key = z.key
@@ -130,7 +150,6 @@ frappe.ui.form.on("RequestLicense", {
                 frm.refresh_fields("checklist_extra");
 
                 r.checklist.forEach(j => {
-                    console.log(j)
 
                     extraDetails = frm.add_child("checklist_list");
                     extraDetails.key = j.key
@@ -140,7 +159,7 @@ frappe.ui.form.on("RequestLicense", {
                 frm.refresh_fields("checklist_list");
             })
     }
-    
+
 });
 
 
