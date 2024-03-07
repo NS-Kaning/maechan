@@ -14,9 +14,11 @@
   "applicant_name",
   "applicant_tel",
   "column_break_vyrl",
-  "applicant_nationality",
-  "column_break_qpwa",
   "applicant_age",
+  "applicant_fax",
+  "column_break_qpwa",
+  "applicant_nationality",
+  "applicant_ethnicity",
   "applicant_address",
   "applicant_no",
   "applicant_road",
@@ -49,6 +51,9 @@
   "section_break_mhbj",
   "checklist_extra",
   "checklist_list",
+  "license_tab",
+  "applicant_title",
+  "license_type",
   "request_state_tab",
   "approve_section",
   "workflow_state",
@@ -62,8 +67,8 @@
   {
    "fieldname": "date",
    "fieldtype": "Date",
-   "hidden": 1,
-   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48"
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_szso",
@@ -77,7 +82,9 @@
   {
    "fieldname": "applicant_name",
    "fieldtype": "Data",
-   "label": "\u0e0a\u0e37\u0e48\u0e2d-\u0e2a\u0e01\u0e38\u0e25"
+   "in_preview": 1,
+   "label": "\u0e0a\u0e37\u0e48\u0e2d-\u0e2a\u0e01\u0e38\u0e25",
+   "read_only": 1
   },
   {
    "fieldname": "applicant_nationality",
@@ -87,12 +94,16 @@
   {
    "fieldname": "applicant_age",
    "fieldtype": "Data",
-   "label": "\u0e2d\u0e32\u0e22\u0e38"
+   "in_preview": 1,
+   "label": "\u0e2d\u0e32\u0e22\u0e38",
+   "read_only": 1
   },
   {
    "fieldname": "applicant_tel",
    "fieldtype": "Data",
-   "label": "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c"
+   "in_preview": 1,
+   "label": "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c",
+   "read_only": 1
   },
   {
    "fieldname": "applicant_address",
@@ -332,14 +343,40 @@
    "fieldname": "request_status",
    "fieldtype": "Select",
    "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
-   "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\n\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\n\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19\n\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01",
+   "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\n\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a\n\u0e41\u0e01\u0e49\u0e44\u0e02\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\n\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19\n\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01",
    "read_only": 1
+  },
+  {
+   "fieldname": "applicant_fax",
+   "fieldtype": "Data",
+   "label": "\u0e41\u0e1f\u0e01\u0e0b\u0e4c"
+  },
+  {
+   "fieldname": "applicant_title",
+   "fieldtype": "Data",
+   "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e2a\u0e16\u0e32\u0e19\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a\u0e01\u0e32\u0e23"
+  },
+  {
+   "fieldname": "license_type",
+   "fieldtype": "Link",
+   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15",
+   "options": "LicenseType"
+  },
+  {
+   "fieldname": "applicant_ethnicity",
+   "fieldtype": "Data",
+   "label": "\u0e40\u0e0a\u0e37\u0e49\u0e2d\u0e0a\u0e32\u0e15\u0e34"
+  },
+  {
+   "fieldname": "license_tab",
+   "fieldtype": "Tab Break",
+   "label": "\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-01-28 20:48:30.786045",
+ "modified": "2024-02-26 17:56:57.751346",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "RequestLicense",
@@ -387,6 +424,7 @@
    "create": 1,
    "email": 1,
    "export": 1,
+   "if_owner": 1,
    "print": 1,
    "read": 1,
    "report": 1,

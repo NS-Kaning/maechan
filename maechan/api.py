@@ -5,6 +5,7 @@ from io import BytesIO
 import frappe
 import frappe.utils
 import frappe.utils.logger
+from frappe.utils.password import update_password as _update_password
 from frappe.utils.oauth import login_oauth_user, login_via_oauth2_id_token, get_info_via_oauth
 
 from maechan.maechan_core.doctype.license.license import License
@@ -182,7 +183,7 @@ def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
 def register() :
     request = frappe.form_dict
     
-    profileUser = frappe.db.get("UserProfile", {"email": request.email})
+    profileUser = frappe.db.get("User", {"email": request.email})
     if profileUser:
         return 0
     else :
@@ -191,6 +192,7 @@ def register() :
             "doctype": "UserProfile",
             "fullname": request.fullname,
             "nationality": request.nationality,
+            "race": request.race,
             "birthdate": request.birthdate,
             "tel": request.tel,
             "email": request.email,
@@ -228,7 +230,7 @@ def createUser() :
                     "email": request.email,
                     "first_name": request.fullname,
                     "enabled": 1,
-                    "new_password": random_string(10),
+                    "new_password": request.pwd,
                     "user_type": "Website User",
                 }
             )
@@ -245,12 +247,18 @@ def createUser() :
 @frappe.whitelist(allow_guest=True)
 def checkEmail() :
     request = frappe.form_dict    
-    user = frappe.db.get("User", {"email": request.email})
-    return  user
+    email = frappe.db.get("User", {"email": request.email})
+    return  email
 
 @frappe.whitelist(allow_guest=True)
-def addUserPermission():
+def setOwner():
     request = frappe.form_dict
     sql_query = "UPDATE `tabUserProfile`SET owner='"+request.email+"' WHERE name='"+request.email+"'"
     frappe.db.sql(sql_query)
     frappe.db.commit()
+
+@frappe.whitelist(allow_guest=True)
+def checkTel() :
+    request = frappe.form_dict    
+    tel = frappe.db.get("UserProfile", {"tel": request.tel})
+    return  tel

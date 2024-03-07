@@ -21,11 +21,11 @@ class UserProfile(Document):
 		address_province: DF.Data | None
 		address_road: DF.Data | None
 		address_soi: DF.Data | None
-		birthdate: DF.Data | None
+		birthdate: DF.Date | None
 		email: DF.Data | None
 		fullname: DF.Data | None
 		nationality: DF.Data | None
+		race: DF.Data | None
 		tel: DF.Data | None
-  
 	# end: auto-generated types
 	pass
