@@ -42,14 +42,57 @@ function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
 }
 
+async function update_province_amphure_district(frm) {
+
+    let province_id = frm.doc.license_applicant_address_province
+    let amphure_id = frm.doc.license_applicant_address_amphur
+    let tambon_id = frm.doc.license_applicant_address_district
+
+    console.log(province_id, amphure_id, tambon_id)
+
+    if (province_id) {
+        frm.set_query('license_applicant_address_amphur', () => {
+            return {
+                filters: {
+                    province_id: province_id
+                }
+            }
+        })
+
+        if (amphure_id) {
+            frm.set_query('license_applicant_address_district', () => {
+                return {
+                    filters: {
+                        amphure_id: amphure_id
+                    }
+                }
+            })
+        } else {
+            frm.set_query('license_applicant_address_district', () => {
+            })
+        }
+    } else {
+        frm.set_query('license_applicant_address_amphur', () => {
+            return {}
+        })
+
+    }
+
+}
+
+let do_clear = [true, true]
+
 frappe.ui.form.on('License', {
+    setup(frm) {
+        console.log("setup")
+    },
     refresh(frm) {
         console.log(frm)
         // your code here
         // frm.set_df_property("license_type", "read_only", frm.is_new() ? 0 : 1);
-
-
         frm.refresh_field('approve_histories');
+        update_province_amphure_district(frm)
+
     },
 
     async before_workflow_action(frm) {
@@ -97,11 +140,9 @@ frappe.ui.form.on('License', {
             d.show();
 
 
-
             while (wait) {
                 await sleep(1000)
             }
-
 
 
         } else {
@@ -161,13 +202,7 @@ frappe.ui.form.on('License', {
 
                 d.show();
             })
-
         }
-
-
-
-
-
     },
     license_type(frm) {
 
@@ -186,5 +221,33 @@ frappe.ui.form.on('License', {
 
                 frm.refresh_fields("license_extra");
             })
+    },
+
+    license_applicant_address_province(frm) {
+        update_province_amphure_district(frm)
+
+        frm.doc.license_applicant_address_amphur = null
+        frm.doc.license_applicant_address_district = null
+        frm.refresh_fields()
+    },
+    license_applicant_address_amphur(frm) {
+        update_province_amphure_district(frm)
+        frm.doc.license_applicant_address_district = null
+        frm.refresh_fields()
+
+    },
+    async license_applicant_address_district(frm, update = true) {
+        console.log(frm)
+        await frappe.model.get_value('Tambon', frm.doc.license_applicant_address_district, 'amphure_id', (r) => {
+            frm.doc.license_applicant_address_amphur = r.amphure_id
+            frm.refresh_field('license_applicant_address_amphur')
+        }) // 1st way
+
+        await frappe.model.get_value('Tambon', frm.doc.license_applicant_address_district, 'province_id', (r) => {
+            frm.doc.license_applicant_address_province = r.province_id
+            frm.refresh_field('license_applicant_address_province')
+        }) // 1st way
+
+
     }
 })

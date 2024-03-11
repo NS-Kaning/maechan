@@ -28,21 +28,22 @@
   "license_applicant_address_moo",
   "column_break_ulax",
   "license_applicant_address_soi",
-  "section_break_mzwi",
+  "column_break_llsw",
   "license_applicant_address_road",
-  "column_break_cuxq",
-  "license_applicant_address_district",
-  "license_applicant_address_district_th",
-  "column_break_hroo",
-  "license_applicant_address_amphur",
-  "license_applicant_address_amphur_th",
-  "section_break_dyrn",
+  "section_break_bpyj",
   "license_applicant_address_province",
   "license_applicant_address_province_th",
-  "column_break_hqpz",
+  "column_break_skmj",
+  "license_applicant_address_amphur",
+  "license_applicant_address_amphur_th",
+  "column_break_gosx",
+  "license_applicant_address_district",
+  "license_applicant_address_district_th",
+  "section_break_dyrn",
   "license_applicant_telephone",
-  "column_break_yhft",
+  "column_break_hqpz",
   "license_applicant_fax",
+  "column_break_yhft",
   "section_break_yxqd",
   "house_id",
   "column_break_pvpo",
@@ -289,8 +290,10 @@
   {
    "fieldname": "license_applicant_address_district",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "\u0e15\u0e33\u0e1a\u0e25",
-   "options": "Tambon"
+   "options": "Tambon",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_hqpz",
@@ -302,12 +305,12 @@
    "label": "\u0e16\u0e19\u0e19"
   },
   {
-   "fetch_from": "license_applicant_address_district.amphure_id",
    "fieldname": "license_applicant_address_amphur",
    "fieldtype": "Link",
-   "hidden": 1,
-   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d (\u0e0b\u0e48\u0e2d\u0e19)",
-   "options": "Amphure"
+   "in_list_view": 1,
+   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d",
+   "options": "Amphure",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_yhft",
@@ -319,12 +322,12 @@
    "label": "\u0e2b\u0e21\u0e39\u0e48"
   },
   {
-   "fetch_from": "license_applicant_address_district.province_id",
    "fieldname": "license_applicant_address_province",
    "fieldtype": "Link",
-   "hidden": 1,
-   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14 (\u0e0b\u0e48\u0e2d\u0e19)",
-   "options": "Province"
+   "in_list_view": 1,
+   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14",
+   "options": "Province",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_rgjj",
@@ -345,28 +348,18 @@
    "label": "\u0e15\u0e23\u0e2d\u0e01/\u0e0b\u0e2d\u0e22"
   },
   {
-   "fieldname": "section_break_mzwi",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_cuxq",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_hroo",
-   "fieldtype": "Column Break"
-  },
-  {
    "fetch_from": "license_applicant_address_district.amphure_th",
    "fieldname": "license_applicant_address_amphur_th",
    "fieldtype": "Data",
-   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d"
+   "hidden": 1,
+   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d (\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01)"
   },
   {
    "fetch_from": "license_applicant_address_district.province_th",
    "fieldname": "license_applicant_address_province_th",
    "fieldtype": "Data",
-   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14"
+   "hidden": 1,
+   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14 (\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01)"
   },
   {
    "fetch_from": "license_applicant_address_district.name_th",
@@ -609,14 +602,30 @@
    "fieldtype": "Select",
    "label": "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38\u0e20\u0e32\u0e22\u0e43\u0e19",
    "options": "-\n60\u0e27\u0e31\u0e19\n60\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27\n30\u0e27\u0e31\u0e19\n30\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27\n15\u0e27\u0e31\u0e19\n15\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27\n\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"
+  },
+  {
+   "fieldname": "column_break_llsw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_bpyj",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_skmj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gosx",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-04 10:35:31.392062",
+ "modified": "2024-03-11 14:14:45.088889",
  "modified_by": "Administrator",
- "module": "maechan_core",
+ "module": "maechan_license",
  "name": "License",
  "naming_rule": "Expression",
  "owner": "Administrator",

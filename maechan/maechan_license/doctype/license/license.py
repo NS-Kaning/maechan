@@ -91,13 +91,13 @@ class License(Document):
         issue_position: DF.Data | None
         issuer_name: DF.Data | None
         license_applicant: DF.Data | None
-        license_applicant_address_amphur: DF.Link | None
+        license_applicant_address_amphur: DF.Link
         license_applicant_address_amphur_th: DF.Data | None
-        license_applicant_address_district: DF.Link | None
+        license_applicant_address_district: DF.Link
         license_applicant_address_district_th: DF.Data | None
         license_applicant_address_moo: DF.Data | None
         license_applicant_address_no: DF.Data | None
-        license_applicant_address_province: DF.Link | None
+        license_applicant_address_province: DF.Link
         license_applicant_address_province_th: DF.Data | None
         license_applicant_address_road: DF.Data | None
         license_applicant_address_soi: DF.Data | None
