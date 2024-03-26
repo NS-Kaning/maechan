@@ -201,3 +201,5 @@ scheduler_events = {
 # auth_hooks = [
 #	"maechan.auth.validate"
 # ]
+
+website_route_rules = [{'from_route': '/service/<path:app_path>', 'to_route': 'service'},]
