@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Input, Spinner } from "@nextui-org/react"
+import { Button, Card, CardBody, Divider, Input, Spinner } from "@nextui-org/react"
 import { AuthCredentials, FrappeError, UserPassCredentials, useFrappeAuth } from "frappe-react-sdk"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -69,7 +69,7 @@ const LoginForm = (): JSX.Element => {
             <Card className="min-w-[300px] max-w-[350px]">
                 <CardBody className="flex flex-col gap-3 justify-center items-center">
                     <div>สวัสดี {currentUser}</div>
-                    <Button className="w-full" onClick={() => navigate("/license")} color="primary">ระบบใบอนุญาต</Button>
+                    <Button className="w-full" onClick={() => navigate("/")} color="primary">ระบบใบอนุญาต</Button>
                     <Button onClick={doLogout} className="w-full" color="danger" isLoading={isLogin} >ออกจากระบบ</Button>
                 </CardBody>
             </Card>
@@ -94,6 +94,14 @@ const LoginForm = (): JSX.Element => {
                     <Button className="w-full" color="primary" isLoading={isLogin} onClick={doLogin}>
                         เข้าสู่ระบบ
                     </Button>
+
+                    <Divider></Divider>
+
+                    <Button className="w-full" color="default" isLoading={isLogin} onClick={()=>{navigate("/register")}}>
+                        สมัครสมาชิก
+                    </Button>
+                    
+
                 </CardBody>
             </Card>
         )
