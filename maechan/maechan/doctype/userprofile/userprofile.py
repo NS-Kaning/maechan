@@ -28,4 +28,5 @@ class UserProfile(Document):
 		race: DF.Data | None
 		tel: DF.Data | None
 	# end: auto-generated types
+
 	pass

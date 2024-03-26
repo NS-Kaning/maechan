@@ -83,7 +83,7 @@ export default {
       let licenses = []
       if (district_id) {
         let response = await frappe.call({
-          method: "maechan.maechan_core.api.license_chart",
+          method: "maechan.maechan_license.api.license_chart",
           args: {
             district_id: district_id
           },
@@ -91,7 +91,7 @@ export default {
         licenses = response.message
       } else {
         let response = await frappe.call({
-          method: "maechan.maechan_core.api.license_chart",
+          method: "maechan.maechan_license.api.license_chart",
           args: {
           },
         })
