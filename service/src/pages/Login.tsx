@@ -1,6 +1,6 @@
-import { Button, Card, CardBody, Divider, Input, Spinner } from "@nextui-org/react"
+import { Button, Card, CardBody, Divider, Input, Skeleton, Spinner } from "@nextui-org/react"
 import { AuthCredentials, FrappeError, UserPassCredentials, useFrappeAuth } from "frappe-react-sdk"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 
@@ -20,7 +20,7 @@ const LoginForm = (): JSX.Element => {
 
     } = useFrappeAuth()
 
-    const [isLogin,setIsLogin] = useState(false)
+    const [isLogin, setIsLogin] = useState(false)
 
     const [credential, setCredential] = useState({
         username: '',
@@ -33,7 +33,7 @@ const LoginForm = (): JSX.Element => {
 
     const doLogin = async () => {
 
-        await isLoginWrapper(async()=>{
+        await isLoginWrapper(async () => {
             try {
                 setLoginError({ message: '' } as FrappeError)
                 let result = await login(credential)
@@ -51,7 +51,7 @@ const LoginForm = (): JSX.Element => {
     }
 
     const doLogout = async () => {
-        await isLoginWrapper(async()=>{
+        await isLoginWrapper(async () => {
             let result = await logout()
             console.log(result)
         })
@@ -63,60 +63,79 @@ const LoginForm = (): JSX.Element => {
         })
     }
     const navigate = useNavigate()
+    console.log('isloading', isLoading)
 
-    if (currentUser) {
+    useEffect(()=>{
+        if (currentUser){
+            updateCurrentUser().then(r=>{
+                console.log("useeffect updatecurrentuser", r)
+                setTimeout(()=>{
+                    navigate("/")
+                },3000)
+            })
+        }
+    },
+    [currentUser])
+
+    if (isLoading) {
         return (
             <Card className="min-w-[300px] max-w-[350px]">
                 <CardBody className="flex flex-col gap-3 justify-center items-center">
-                    <div>สวัสดี {currentUser}</div>
-                    <Button className="w-full" onClick={() => navigate("/")} color="primary">ระบบใบอนุญาต</Button>
-                    <Button onClick={doLogout} className="w-full" color="danger" isLoading={isLogin} >ออกจากระบบ</Button>
+                    <Spinner size="lg" />
                 </CardBody>
             </Card>
-
         )
+
     } else {
-        return (
-            <Card className="min-w-[300px] max-w-[350px]">
-                <CardBody className="flex flex-col gap-3 justify-center items-center">
-                    <div>สวัสดี กรุณาเข้าสู่ระบบ</div>
-                    <Input
-                        isInvalid={loginError?.message != ''}
-                        color={loginError?.message != '' ? "danger" : "default"}
-                        errorMessage={loginError?.message}
-                        type="email" label="ชื่อผู้ใช้/อีเมล์/เบอร์โทรฯ" value={credential.username} placeholder="กรุณากรอกข้อมูล" name="username" onValueChange={(value) => handleCredential('username', value)} />
-                    <Input
-                        isInvalid={loginError?.message != ''}
-                        color={loginError?.message != '' ? "danger" : "default"}
-                        errorMessage={loginError?.message}
+        if (currentUser) {
+            return (
+                <Card className="min-w-[300px] max-w-[350px]">
+                    <CardBody className="flex flex-col gap-3 justify-center items-center">
+                        <div>สวัสดี {currentUser}</div>
+                        <Spinner size="lg"></Spinner>
+                        <div>กำลังเข้าสู่ระบบ</div>
+                    </CardBody>
+                </Card>
 
-                        type="password" label="รหัสผ่าน" defaultValue={credential.password} placeholder="กรุณากรอกรหัสผ่าน" name="password" onValueChange={(value) => handleCredential('password', value)} />
-                    <Button className="w-full" color="primary" isLoading={isLogin} onClick={doLogin}>
-                        เข้าสู่ระบบ
-                    </Button>
+            )
+        } else {
+            return (
+                <Card className="min-w-[300px] max-w-[350px]">
+                    <CardBody className="flex flex-col gap-3 justify-center items-center">
+                        <div>สวัสดี กรุณาเข้าสู่ระบบ</div>
+                        <Input
+                            isInvalid={loginError?.message != ''}
+                            color={loginError?.message != '' ? "danger" : "default"}
+                            errorMessage={loginError?.message}
+                            type="email" label="ชื่อผู้ใช้/อีเมล์/เบอร์โทรฯ" value={credential.username} placeholder="กรุณากรอกข้อมูล" name="username" onValueChange={(value) => handleCredential('username', value)} />
+                        <Input
+                            isInvalid={loginError?.message != ''}
+                            color={loginError?.message != '' ? "danger" : "default"}
+                            errorMessage={loginError?.message}
 
-                    <Divider></Divider>
+                            type="password" label="รหัสผ่าน" defaultValue={credential.password} placeholder="กรุณากรอกรหัสผ่าน" name="password" onValueChange={(value) => handleCredential('password', value)} />
+                        <Button className="w-full" color="primary" isLoading={isLogin} onClick={doLogin}>
+                            เข้าสู่ระบบ
+                        </Button>
 
-                    <Button className="w-full" color="default" isLoading={isLogin} onClick={()=>{navigate("/register")}}>
-                        สมัครสมาชิก
-                    </Button>
-                    
+                        <Divider></Divider>
 
-                </CardBody>
-            </Card>
-        )
+                        <Button className="w-full" color="default" isLoading={isLogin} onClick={() => { navigate("/register") }}>
+                            สมัครสมาชิก
+                        </Button>
+
+
+                    </CardBody>
+                </Card>
+            )
+        }
     }
+
+
+
+
 }
 function Login() {
-
-
-
-
-
-
-
-
-
 
     return (
         <div className="min-h-svh min-w-full flex items-center justify-center">

@@ -87,3 +87,24 @@ def update_signature() :
         frappe.response['message'] = sig
     
         
+
+@frappe.whitelist()
+def house_filter():
+    req = frappe.form_dict
+
+    assert 'keyword' in req
+
+    keyword = req['keyword']
+
+    housedoc = frappe.qb.DocType('House')
+    query = (
+        frappe.qb.from_(housedoc)
+        .select(housedoc.name,housedoc.text_display)
+        .where(
+            housedoc.text_display.like(f"%{keyword}%") 
+        ).limit(30)
+        
+    )
+
+    result = query.run(as_dict=True)
+    return result

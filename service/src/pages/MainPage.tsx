@@ -1,8 +1,49 @@
-import { Avatar, Button, Dropdown, DropdownTrigger, DropdownItem, DropdownMenu, Image, Navbar, NavbarBrand, NavbarContent, NavbarItem, Skeleton, Link } from "@nextui-org/react"
+import { Avatar, Button, Dropdown, DropdownTrigger, DropdownItem, DropdownMenu, Image, Navbar, NavbarBrand, NavbarContent, NavbarItem, Skeleton, Link, ButtonProps } from "@nextui-org/react"
 import { FrappeContext, useFrappeAuth, useFrappeGetCall } from "frappe-react-sdk";
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { PropsWithChildren, useEffect } from "react";
+import { Outlet, useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { FaBuilding, FaHome } from "react-icons/fa";
+import { FaFileLines } from "react-icons/fa6";
 
+function AppSidebarButton(props: PropsWithChildren<ButtonProps>) {
+
+    const { size, className, children } = props
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    let _className = "mb-1 justify-start w-full leading-3" + className
+    let _size = size ?? 'md'
+    let _startContent = props.startContent ?? null
+    let _href = props.href ?? null
+
+    let isActive = _href == location.pathname
+
+    // console.log('isactive',isActive)
+    let _variant = isActive ? "solid" : props.variant ?? 'light'
+    let _color = isActive ? "primary" : "default"
+
+    let _onClick = props.onClick ?? (() => {
+        if (_href) {
+            navigate(_href)
+        }
+
+    })
+
+
+    return (
+        <Button
+            color={_color}
+            variant={_variant}
+            size={_size}
+            className={_className}
+            onClick={_onClick}
+            startContent={_startContent}
+
+        >
+            {children}
+        </Button>
+    )
+}
 
 function AppNavbarBrand() {
 
@@ -44,7 +85,7 @@ function AppNavbar() {
     }
 
     return (
-        <Navbar isBordered maxWidth="xl">
+        <Navbar isBordered maxWidth="xl" classNames={{ wrapper: "p-1 md:p-6" }}>
             <AppNavbarBrand />
             <Skeleton isLoaded={!auth.isLoading} className="rounded-full">
                 {auth.currentUser ? (
@@ -83,57 +124,36 @@ function MainPage() {
     return (
         <div>
             <AppNavbar />
-            <div className="flex  flex-row items-center justify-center">
-                <div className="px-6 py-3 max-w-[1280px] lg:w-[1280px] self-center grid lg:grid-cols-12 grid-cols-1 gap-4">
-                    <div className="lg:col-span-2 ">
-                        <ul className="cursor-default">
-                            <li className="mb-3">
-                                <h5 className="mb-8 lg:mb-3 font-semibold text-slate-900 dark:text-slate-200">
-                                    <Link color="foreground" onClick={() => navigate("/")}>หน้าหลัก</Link>
-                                </h5>
-                            </li>
-                            <li className="mb-3">
-                                <h5 className="mb-8 lg:mb-3 font-semibold text-slate-900 dark:text-slate-200">กิจการ</h5>
-                                <ul className="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
-                                    <li>
-                                        <Link onClick={() => navigate("/business")}
-                                            className="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-                                            color="foreground">
-                                            กิจการของท่าน
-                                        </Link>
-                                    </li>
-                                </ul>
+            <div className="flex px-1 lg:px-0 lg:justify-center w-full">
+                <div className="flex flex-col w-full lg:flex-row lg:w-[1280px] lg:px-6 mt-3">
+                    <div className="mb-3 lg:mb-0 lg:w-[280px] w-full">
+                        <ul>
+                            <li>
+                                <AppSidebarButton href="/" startContent={<FaHome />}>หน้าหลัก</AppSidebarButton>
                             </li>
                             <li>
-                                <h5 className="mb-8 lg:mb-3 font-semibold text-slate-900 dark:text-slate-200">ใบอนุญาต</h5>
-                                <ul className="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
+                                <AppSidebarButton href="/business" startContent={<FaBuilding />}>กิจการของท่าน</AppSidebarButton>
+                                <ul className="ml-6">
                                     <li>
-                                        <Link onClick={() => navigate("/license/create")}
-                                            className="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-                                            color="foreground">
-                                            ยื่นคำร้องขอใบอนุญาตใหม่
-                                        </Link>
-
-                                        <Link onClick={() => navigate("/license/create")}
-                                            className="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-                                            color="foreground">
-                                            ตรวจสอบรายการยื่นคำร้อง
-                                        </Link>
-                                        <Link onClick={() => navigate("/license/create")}
-                                            className="block border-l pl-4 -ml-px border-transparent hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-                                            color="foreground">
-                                            รายการใบอนุญาต
-                                        </Link>
+                                        <AppSidebarButton href="/business/create">เพิ่มกิจการ</AppSidebarButton>
                                     </li>
                                 </ul>
+
                             </li>
+                            <li>
+                                <AppSidebarButton href="/license" startContent={<FaFileLines />}>ใบอนุญาต</AppSidebarButton>
+                            </li>
+
+
                         </ul>
                     </div>
-                    <div className="col-span-10">
+                    <div className="lg:pl-3 lg:ml-3 p-3 lg:w-full border-1 lg:min-h-[600px] rounded-md">
                         <Outlet />
                     </div>
                 </div>
             </div>
+
+
         </div>
     )
 }

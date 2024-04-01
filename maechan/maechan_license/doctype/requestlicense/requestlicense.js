@@ -159,7 +159,6 @@ frappe.ui.form.on("RequestLicense", {
                 frm.refresh_fields("checklist_list");
             })
     }
-
 });
 
 

@@ -1,7 +1,7 @@
 # Copyright (c) 2024, SE and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 
@@ -30,3 +30,9 @@ class UserProfile(Document):
 	# end: auto-generated types
 
 	pass
+
+	def autoname(self):
+		self.name = frappe.session.user
+
+	def before_insert(self):
+		self.email = frappe.session.user
