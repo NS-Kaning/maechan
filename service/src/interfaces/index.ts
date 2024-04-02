@@ -1,10 +1,14 @@
-export interface IBusiness {
+export type Doctype{
+    name : string;
+}
+
+export type IBusiness<T = unknown> = T & Doctype & {
     business_name: string;
     business_address: string;
     manager: string;
 }
 
-export interface IUserProfile {
+export type IUserProfile  =  Doctype & {
     fullname: string;
     birthdate: string;
     nationality: string;
@@ -20,17 +24,14 @@ export interface IUserProfile {
     address_district: string;
 }
 
-export interface IProvince {
-    name : string;
+export type IProvince = Doctype & {
     name_th : string;
 }
 
-export interface IAmphure {
-    name : string;
+export type IAmphure = Doctype &{
     name_th : string;
 }
 
-export interface ITambon {
-    name : string;
+export type ITambon = Doctype &{
     name_th : string;
 }

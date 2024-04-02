@@ -75,3 +75,27 @@ def get_businesses():
 	result = query.run(as_dict=True)
 
 	return result
+
+@frappe.whitelist()
+def get_business_by_name() :
+	
+	req = frappe.form_dict
+	assert 'name' in req
+
+	name = req['name']
+	return frappe.get_doc("Business",name)
+
+
+@frappe.whitelist()
+def update_business():
+	
+	req = frappe.form_dict
+	assert 'business' in req
+	business = req['business']
+	if 'doctype' not in business :
+		business['doctype'] = 'Business'
+
+	business = frappe.get_doc(business)
+	business.save()
+
+	return business

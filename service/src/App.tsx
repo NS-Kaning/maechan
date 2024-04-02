@@ -13,6 +13,7 @@ import AlertProvider from './providers/AlertProvider';
 import Dashboard from './pages/Dashboard';
 import RequestLicense from './pages/License/RequestLicense';
 import ProfilePage from './pages/Personal/ProfilePage';
+import BusinessEdit from './pages/Business/BusinessEdit';
 function App() {
 
 
@@ -68,6 +69,7 @@ function App() {
 										<Route path="business">
 											<Route index element={<BusinessIndex />} />
 											<Route path='create' element={<BusinessCreate />} />
+											<Route path=':id/edit' element={<BusinessEdit />} />
 										</Route>
 
 									</Route>

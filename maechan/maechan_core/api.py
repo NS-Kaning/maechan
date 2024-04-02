@@ -101,7 +101,7 @@ def house_filter():
         frappe.qb.from_(housedoc)
         .select(housedoc.name,housedoc.text_display)
         .where(
-            housedoc.text_display.like(f"%{keyword}%") 
+            housedoc.text_display.like(f"%{keyword}%")  | housedoc.name == f"{keyword}" 
         ).limit(30)
         
     )

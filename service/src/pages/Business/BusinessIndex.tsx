@@ -1,8 +1,10 @@
-import { BreadcrumbItem, Breadcrumbs, Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
+import { BreadcrumbItem, Breadcrumbs, Button, Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useContext, useEffect, useState } from "react"
 import { useAlertContext } from "../../providers/AlertProvider"
-import { FaHome } from "react-icons/fa"
+import { FaEdit, FaHome } from "react-icons/fa"
+import { IBusiness } from "../../interfaces"
+import { Navigate, useNavigate } from "react-router-dom"
 
 function BusinessIndex() {
 
@@ -29,6 +31,12 @@ function BusinessIndex() {
         loadBusiness()
     }, [])
 
+    const navigate = useNavigate()
+
+    const editBusiness = (business_name : string) => {
+        navigate(`/business/${business_name}/edit`)
+    }
+
     return (
         <div className="flex flex-col">
             <Breadcrumbs className="mb-3">
@@ -47,15 +55,18 @@ function BusinessIndex() {
                     <TableHeader>
                         <TableColumn>ชื่อกิจการ</TableColumn>
                         <TableColumn>ที่อยู่</TableColumn>
-
+                        <TableColumn>การกระทำ</TableColumn>
                     </TableHeader>
 
                     <TableBody emptyContent={"No rows to display."}>
                         {
-                            businesses.map(b => (
+                            businesses.map((b : IBusiness) => (
                                 <TableRow key={b.name}>
                                     <TableCell>{b.business_name}</TableCell>
                                     <TableCell>{b.business_address_text_display}</TableCell>
+                                    <TableCell>
+                                        <Button isIconOnly color="primary" onClick={()=>{editBusiness(b.name)}} className="text-white"><FaEdit/></Button>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         }
