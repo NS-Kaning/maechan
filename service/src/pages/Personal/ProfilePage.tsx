@@ -1,18 +1,20 @@
 import { Autocomplete, AutocompleteItem, BreadcrumbItem, Breadcrumbs, Button, Input, Select, SelectItem, Skeleton } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";
-import { FrappeContext } from "frappe-react-sdk";
+import { FrappeConfig, FrappeContext } from "frappe-react-sdk";
 import { useContext, useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { useAlertContext } from "../../providers/AlertProvider";
 import { Key } from "@react-types/shared";
+import { IAmphure, IProvince, ITambon, IUserProfile } from "../../interfaces";
 
 export default function ProfilePage() {
 
-    let { call } = useContext(FrappeContext)
-    let [createForm, setCreateForm] = useState({})
-    let [provinces, setProvinces] = useState([])
-    let [amphures, setAmphures] = useState([])
-    let [districts, setDistricts] = useState([])
+    let {call} = useContext(FrappeContext) as FrappeConfig
+    
+    let [createForm, setCreateForm] = useState({} as IUserProfile)
+    let [provinces, setProvinces] = useState([] as IProvince[])
+    let [amphures, setAmphures] = useState([] as IAmphure[])
+    let [districts, setDistricts] = useState([] as ITambon[])
 
     let alert = useAlertContext()
 
@@ -37,7 +39,7 @@ export default function ProfilePage() {
     const [districtLoad, setDistrictLoad] = useState(false)
 
 
-    const reloadProvinceAmphurDistrict = async (user_profile: { address_province?: any; address_amphur?: any; }, key = null) => {
+    const reloadProvinceAmphurDistrict = async (user_profile: { address_province?: any; address_amphur?: any; }, key = '') => {
 
 
         if (user_profile.address_province && key == "address_province") {
