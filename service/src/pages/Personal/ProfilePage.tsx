@@ -1,9 +1,10 @@
-import { Autocomplete, AutocompleteItem, BreadcrumbItem, Breadcrumbs, Input, Select, SelectItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, BreadcrumbItem, Breadcrumbs, Button, Input, Select, SelectItem, Skeleton } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";
 import { FrappeContext } from "frappe-react-sdk";
 import { useContext, useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { useAlertContext } from "../../providers/AlertProvider";
+import { Key } from "@react-types/shared";
 
 export default function ProfilePage() {
 
@@ -15,7 +16,7 @@ export default function ProfilePage() {
 
     let alert = useAlertContext()
 
-    const updateForm = async (key, value) => {
+    const updateForm = async (key: string, value: Key) => {
         let createFormValue = {
             ...createForm,
             [key]: value
@@ -28,80 +29,98 @@ export default function ProfilePage() {
         else if (key == "address_amphur") {
             createFormValue.address_district = ""
         }
-        reloadProvinceAmphurDistrict(createFormValue)
+        reloadProvinceAmphurDistrict(createFormValue, key)
         setCreateForm(createFormValue)
     }
 
-    const reloadProvinceAmphurDistrict = async (user_profile) => {
-        await call.post("maechan.maechan_core.doctype.province.province.get_all_province").then(r => {
-            let provincesResult = r.message
-            setProvinces(provincesResult)
-        })
+    const [amphureLoad, setAmphureLoad] = useState(false)
+    const [districtLoad, setDistrictLoad] = useState(false)
 
-        if (user_profile.address_province) {
-            await call.post("maechan.maechan_core.doctype.province.province.get_all_amphure", {
+
+    const reloadProvinceAmphurDistrict = async (user_profile: { address_province?: any; address_amphur?: any; }, key = null) => {
+
+
+        if (user_profile.address_province && key == "address_province") {
+            setAmphureLoad(true)
+            call.post("maechan.maechan_core.doctype.province.province.get_all_amphure", {
                 filters: {
                     province_id: user_profile.address_province
                 }
-            }).then(r => {
+            }).then((r: { message: any; }) => {
                 let result = r.message
                 setAmphures(result)
+            }).finally(() => {
+                setAmphureLoad(false)
             })
+
         }
 
-        if (user_profile.address_amphur) {
-            await call.post("maechan.maechan_core.doctype.province.province.get_all_tambon", {
+        if (user_profile.address_amphur && key == "address_amphur") {
+            setDistrictLoad(true)
+            call.post("maechan.maechan_core.doctype.province.province.get_all_tambon", {
                 filters: {
                     province_id: user_profile.address_province,
                     amphure_id: user_profile.address_amphur
                 }
-            }).then(r => {
+            }).then((r: any) => {
                 let result = r.message
                 setDistricts(result)
+            }).finally(() => {
+                setDistrictLoad(false)
             })
         }
     }
+    const [isLoading, setIsLoading] = useState(true)
 
     const loadUserProfile = async () => {
+        setIsLoading(true)
+
         try {
+
             let res = await call.post("maechan.maechan.doctype.userprofile.userprofile.get_current_userprofile")
             console.log(res)
 
             let user_profile = res.message
 
-            await call.post("maechan.maechan_core.doctype.province.province.get_all_province").then(r => {
+            let pcall = call.post("maechan.maechan_core.doctype.province.province.get_all_province").then((r: { message: any; }) => {
                 let provincesResult = r.message
                 setProvinces(provincesResult)
             })
+            let acall = null;
+            let tcall = null;
 
             if (user_profile.address_province) {
-                await call.post("maechan.maechan_core.doctype.province.province.get_all_amphure", {
+                acall = call.post("maechan.maechan_core.doctype.province.province.get_all_amphure", {
                     filters: {
                         province_id: user_profile.address_province
                     }
-                }).then(r => {
+                }).then((r: any) => {
                     let result = r.message
                     setAmphures(result)
                 })
             }
 
             if (user_profile.address_amphur) {
-                await call.post("maechan.maechan_core.doctype.province.province.get_all_tambon", {
+                tcall = call.post("maechan.maechan_core.doctype.province.province.get_all_tambon", {
                     filters: {
                         province_id: user_profile.address_province,
                         amphure_id: user_profile.address_amphur
                     }
-                }).then(r => {
+                }).then((r: any) => {
                     let result = r.message
                     setDistricts(result)
                 })
             }
+
+            await Promise.all([pcall, acall, tcall])
 
             setCreateForm(res.message)
 
         } catch (error) {
             alert.showError(JSON.stringify(error))
         }
+        setIsLoading(false)
+
 
     }
 
@@ -110,7 +129,20 @@ export default function ProfilePage() {
             loadUserProfile()
         }, []
     )
-    console.log(createForm)
+
+    const save = async (e: { preventDefault: () => void; }) => {
+        setIsLoading(true)
+        e.preventDefault()
+        console.log(createForm)
+        let result = await call.post("maechan.maechan.doctype.userprofile.userprofile.update_or_create_userprofile", {
+            profile: createForm
+        })
+
+        setCreateForm(result.message)
+        console.log(result.message)
+        setIsLoading(false)
+
+    }
 
     return (
         <div>
@@ -123,68 +155,120 @@ export default function ProfilePage() {
                 ข้อมูลส่วนตัว
             </div>
 
-            <div className="flex flex-col">
+            <form className="flex flex-col" onSubmit={save}>
 
                 <div className="text-medium font-bold mb-3">
                     ข้อมูลพื้นฐาน
                 </div>
 
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
-                    <Input type="text" value={createForm.fullname} label="ชื่อ-สกุล" placeholder="ชื่อ-สกุล" />
-                    <Input type="date" value={createForm.birthdate} label="วันเดือนปีเกิด (คศ.)" placeholder="วันเดือนปีเกิด (คศ.)" />
-                    <Input type="text" value={createForm.tel} label="เบอร์โทรศัพท์" placeholder="เบอร์โทรศัพท์" />
-                    <Input type="text" value={createForm.nationality} label="สัญชาติ" placeholder="สัญชาติ" />
-                    <Input type="text" value={createForm.race} label="เชื้อชาติ" placeholder="เชื้อชาติ" />
-                    <Input type="e-mail" value={createForm.email} label="อีเมล์" placeholder="อีเมล์" />
-                </div>
+                <Skeleton isLoaded={!isLoading} className="mb-3 rounded-lg">
+                    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
 
+                        <Input type="text" name="fullname" value={createForm.fullname} label="ชื่อ-สกุล" placeholder="ชื่อ-สกุล"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="date" name="birthdate" value={createForm.birthdate} label="วันเดือนปีเกิด (คศ.)" placeholder="วันเดือนปีเกิด (คศ.)"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="text" name="tel" value={createForm.tel} label="เบอร์โทรศัพท์" placeholder="เบอร์โทรศัพท์"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="text" name="nationality" value={createForm.nationality} label="สัญชาติ" placeholder="สัญชาติ"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="text" name="race" value={createForm.race} label="เชื้อชาติ" placeholder="เชื้อชาติ"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="e-mail" name="email" value={createForm.email} label="อีเมล์" placeholder="อีเมล์"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                    </div>
+
+                </Skeleton>
                 <div className="text-medium font-bold mb-3">
                     ที่อยู่
                 </div>
+                <Skeleton isLoaded={!isLoading} className="mb-3 rounded-lg">
 
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
-                    <Input type="text" value={createForm.address_no} label="เลขที่" placeholder="เลขที่" />
-                    <Input type="text" value={createForm.address_moo} label="หมู่" placeholder="หมู่" />
-                    <Input type="text" value={createForm.address_soi} label="ตรอก/ซอย" placeholder="ตรอก/ซอย" />
-                    <Input type="text" value={createForm.address_road} label="ถนน" placeholder="ถนน" />
+                    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
+                        <Input type="text" name="address_no" value={createForm.address_no} label="เลขที่" placeholder="เลขที่"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="text" name="address_moo" value={createForm.address_moo} label="หมู่" placeholder="หมู่"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="text" name="address_soi" value={createForm.address_soi} label="ตรอก/ซอย" placeholder="ตรอก/ซอย"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                        <Input type="text" name="address_road" value={createForm.address_road} label="ถนน" placeholder="ถนน"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
+                    </div>
+                    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
+
+                        <Select
+                            items={provinces}
+                            label="จังหวัด"
+                            selectedKeys={[createForm.address_province]}
+                            onSelectionChange={(key) => {
+                                updateForm('address_province', Array.from(key)[0])
+                            }}
+                        >
+                            {(province) => <SelectItem key={province.name}>{province.name_th}</SelectItem>}
+                        </Select>
+
+                        <Select
+                            isLoading={amphureLoad}
+                            isDisabled={amphureLoad}
+                            items={amphures}
+                            label="อำเภอ"
+                            selectedKeys={[createForm.address_amphur]}
+                            onSelectionChange={(key) => updateForm('address_amphur', Array.from(key)[0])}
+
+                        >
+                            {(amphure) => <SelectItem key={amphure.name}>{amphure.name_th}</SelectItem>}
+                        </Select>
+                        <Select
+                            isLoading={districtLoad}
+                            isDisabled={districtLoad}
+                            items={districts}
+                            label="ตำบล"
+                            selectedKeys={[createForm.address_district]}
+                            onSelectionChange={(key) => updateForm('address_district', Array.from(key)[0])}
+
+                        >
+                            {(district) => <SelectItem key={district.name}>{district.name_th}</SelectItem>}
+                        </Select>
+                    </div>
+                </Skeleton>
+
+
+
+                <div className="mt-3 flex flex-row">
+                    <Skeleton isLoaded={!isLoading} className="mb-3 rounded-lg mr-3">
+                        <Button type="submit" color="primary" onClick={save}>บันทึก</Button>
+                    </Skeleton>
+
+                    <Skeleton isLoaded={!isLoading} className="mb-3 rounded-lg">
+
+                        <Button type="button" color="default" onClick={loadUserProfile}>ยกเลิก</Button>
+                    </Skeleton>
+
                 </div>
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
-
-                    <Select
-                        items={provinces}
-                        label="จังหวัด"
-                        selectedKeys={[createForm.address_province]}
-                        onSelectionChange={(key) => {
-                            updateForm('address_province', Array.from(key)[0])
-                        }}
-                    >
-                        {(province) => <SelectItem key={province.name}>{province.name_th}</SelectItem>}
-                    </Select>
 
 
-                    <Select
-                        items={amphures}
-                        label="อำเภอ"
-                        selectedKeys={[createForm.address_amphur]}
-                        onSelectionChange={(key) => updateForm('address_amphur', Array.from(key)[0])}
 
-                    >
-                        {(amphure) => <SelectItem key={amphure.name}>{amphure.name_th}</SelectItem>}
-                    </Select>
-
-                    <Select
-                        items={districts}
-                        label="ตำบล"
-                        selectedKeys={[createForm.address_district]}
-                        onSelectionChange={(key) => updateForm('address_district', Array.from(key)[0])}
-
-                    >
-                        {(district) => <SelectItem key={district.name}>{district.name_th}</SelectItem>}
-                    </Select>
-                </div>
-
-
-            </div>
+            </form>
         </div>
     )
 }

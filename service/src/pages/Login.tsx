@@ -63,19 +63,18 @@ const LoginForm = (): JSX.Element => {
         })
     }
     const navigate = useNavigate()
-    console.log('isloading', isLoading)
 
-    useEffect(()=>{
-        if (currentUser){
-            updateCurrentUser().then(r=>{
+    useEffect(() => {
+        if (currentUser) {
+            updateCurrentUser().then(r => {
                 console.log("useeffect updatecurrentuser", r)
-                setTimeout(()=>{
+                setTimeout(() => {
                     navigate("/")
-                },3000)
+                }, 3000)
             })
         }
     },
-    [currentUser])
+        [currentUser])
 
     if (isLoading) {
         return (
@@ -100,33 +99,36 @@ const LoginForm = (): JSX.Element => {
             )
         } else {
             return (
-                <Card className="min-w-[300px] max-w-[350px]">
-                    <CardBody className="flex flex-col gap-3 justify-center items-center">
-                        <div>สวัสดี กรุณาเข้าสู่ระบบ</div>
-                        <Input
-                            isInvalid={loginError?.message != ''}
-                            color={loginError?.message != '' ? "danger" : "default"}
-                            errorMessage={loginError?.message}
-                            type="email" label="ชื่อผู้ใช้/อีเมล์/เบอร์โทรฯ" value={credential.username} placeholder="กรุณากรอกข้อมูล" name="username" onValueChange={(value) => handleCredential('username', value)} />
-                        <Input
-                            isInvalid={loginError?.message != ''}
-                            color={loginError?.message != '' ? "danger" : "default"}
-                            errorMessage={loginError?.message}
+                <form onSubmit={doLogin}>
+                    <Card className="min-w-[300px] max-w-[350px]">
+                        <CardBody className="flex flex-col gap-3 justify-center items-center">
+                            <div>สวัสดี กรุณาเข้าสู่ระบบ</div>
+                            <Input
+                                isInvalid={loginError?.message != ''}
+                                color={loginError?.message != '' ? "danger" : "default"}
+                                errorMessage={loginError?.message}
+                                type="email" label="ชื่อผู้ใช้/อีเมล์/เบอร์โทรฯ" value={credential.username} placeholder="กรุณากรอกข้อมูล" name="username" onValueChange={(value) => handleCredential('username', value)} />
+                            <Input
+                                onSubmit={doLogin}
+                                isInvalid={loginError?.message != ''}
+                                color={loginError?.message != '' ? "danger" : "default"}
+                                errorMessage={loginError?.message}
 
-                            type="password" label="รหัสผ่าน" defaultValue={credential.password} placeholder="กรุณากรอกรหัสผ่าน" name="password" onValueChange={(value) => handleCredential('password', value)} />
-                        <Button className="w-full" color="primary" isLoading={isLogin} onClick={doLogin}>
-                            เข้าสู่ระบบ
-                        </Button>
+                                type="password" label="รหัสผ่าน" defaultValue={credential.password} placeholder="กรุณากรอกรหัสผ่าน" name="password" onValueChange={(value) => handleCredential('password', value)} />
+                            <Button type="submit" className="w-full" color="primary" isLoading={isLogin} onClick={doLogin}>
+                                เข้าสู่ระบบ
+                            </Button>
 
-                        <Divider></Divider>
+                            <Divider></Divider>
 
-                        <Button className="w-full" color="default" isLoading={isLogin} onClick={() => { navigate("/register") }}>
-                            สมัครสมาชิก
-                        </Button>
+                            <Button type="button" className="w-full" color="default" isLoading={isLogin} onClick={() => { navigate("/register") }}>
+                                สมัครสมาชิก
+                            </Button>
 
+                        </CardBody>
+                    </Card>
+                </form>
 
-                    </CardBody>
-                </Card>
             )
         }
     }

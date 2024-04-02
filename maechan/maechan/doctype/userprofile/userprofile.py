@@ -44,8 +44,22 @@ def get_current_userprofile():
 		"name" : frappe.session.user
 	})
 
-	return profile
 	if profile :
 		return profile
 	else : 
 		return frappe.new_doc("UserProfile",as_dict=True)
+	
+
+@frappe.whitelist()
+def update_or_create_userprofile():
+	
+	req = frappe.form_dict
+	assert 'profile' in req
+	profilereq = req['profile']
+	if 'doctype' not in profilereq :
+		profilereq['doctype'] = 'UserProfile'
+
+	profile = frappe.get_doc(req['profile'])
+	profile.save()
+
+	return profile

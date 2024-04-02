@@ -76,12 +76,11 @@ function AppNavbar() {
     const doLogout = async () => {
         try {
             await auth.logout()
-            navigate("/")
         } catch (error) {
             console.log("doLogout error", error)
         }
 
-        navigate("/")
+        navigate("/login")
 
     }
 
@@ -93,6 +92,7 @@ function AppNavbar() {
                     <Dropdown placement="bottom-end">
 
                         <DropdownTrigger>
+
                             <Avatar
                                 as="button"
                                 name={auth.currentUser} classNames={{
@@ -151,8 +151,8 @@ function MainPage() {
                             </li>
 
                             <li>
-                                <AppSidebarButton href="/profile" startContent={<FaUserPen  />}>ข้อมูลส่วนตัว</AppSidebarButton>
-                               
+                                <AppSidebarButton href="/profile" startContent={<FaUserPen />}>ข้อมูลส่วนตัว</AppSidebarButton>
+
                             </li>
                         </ul>
                     </div>

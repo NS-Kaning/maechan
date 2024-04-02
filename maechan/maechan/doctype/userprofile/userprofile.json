@@ -47,8 +47,7 @@
   {
    "fieldname": "tel",
    "fieldtype": "Data",
-   "label": "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c",
-   "unique": 1
+   "label": "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c"
   },
   {
    "fieldname": "email",
@@ -139,7 +138,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-02 11:18:56.594137",
+ "modified": "2024-04-02 22:34:02.422517",
  "modified_by": "Administrator",
  "module": "Maechan",
  "name": "UserProfile",
