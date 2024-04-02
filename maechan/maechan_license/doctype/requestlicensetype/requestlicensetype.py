@@ -13,10 +13,10 @@ class RequestLicenseType(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from maechan.maechan_core.doctype.attachment.attachment import Attachment
-		from maechan.maechan_core.doctype.checklist.checklist import CheckList
-		from maechan.maechan_core.doctype.checklisttypedetail.checklisttypedetail import CheckListTypeDetail
-		from maechan.maechan_core.doctype.requesttypedetail.requesttypedetail import RequestTypeDetail
+		from maechan.maechan_license.doctype.attachment.attachment import Attachment
+		from maechan.maechan_license.doctype.checklist.checklist import CheckList
+		from maechan.maechan_license.doctype.checklisttypedetail.checklisttypedetail import CheckListTypeDetail
+		from maechan.maechan_license.doctype.requesttypedetail.requesttypedetail import RequestTypeDetail
 
 		attachment: DF.Table[Attachment]
 		checklist: DF.Table[CheckList]

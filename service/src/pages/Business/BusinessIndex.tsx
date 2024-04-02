@@ -2,6 +2,7 @@ import { BreadcrumbItem, Breadcrumbs, Skeleton, Table, TableBody, TableCell, Tab
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useContext, useEffect, useState } from "react"
 import { useAlertContext } from "../../providers/AlertProvider"
+import { FaHome } from "react-icons/fa"
 
 function BusinessIndex() {
 
@@ -31,6 +32,8 @@ function BusinessIndex() {
     return (
         <div className="flex flex-col">
             <Breadcrumbs className="mb-3">
+                <BreadcrumbItem><FaHome /></BreadcrumbItem>
+
                 <BreadcrumbItem>กิจการของท่าน</BreadcrumbItem>
                 <BreadcrumbItem>รายการกิจการ</BreadcrumbItem>
             </Breadcrumbs>

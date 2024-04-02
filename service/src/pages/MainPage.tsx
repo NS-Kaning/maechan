@@ -3,7 +3,7 @@ import { FrappeContext, useFrappeAuth, useFrappeGetCall } from "frappe-react-sdk
 import { PropsWithChildren, useEffect } from "react";
 import { Outlet, useLocation, useNavigate, useRoutes } from "react-router-dom";
 import { FaBuilding, FaHome } from "react-icons/fa";
-import { FaFileLines } from "react-icons/fa6";
+import { FaFileLines, FaUserPen } from "react-icons/fa6";
 
 function AppSidebarButton(props: PropsWithChildren<ButtonProps>) {
 
@@ -76,6 +76,7 @@ function AppNavbar() {
     const doLogout = async () => {
         try {
             await auth.logout()
+            navigate("/")
         } catch (error) {
             console.log("doLogout error", error)
         }
@@ -138,13 +139,21 @@ function MainPage() {
                                         <AppSidebarButton href="/business/create">เพิ่มกิจการ</AppSidebarButton>
                                     </li>
                                 </ul>
-
                             </li>
                             <li>
                                 <AppSidebarButton href="/license" startContent={<FaFileLines />}>ใบอนุญาต</AppSidebarButton>
+                                <ul className="ml-6">
+                                    <li>
+                                        <AppSidebarButton href="/license/requestLicense">ขอใบอนุญาตใหม่</AppSidebarButton>
+                                        <AppSidebarButton href="/license/requestStatus">สถานะคำร้องขอใบอนุญาต</AppSidebarButton>
+                                    </li>
+                                </ul>
                             </li>
 
-
+                            <li>
+                                <AppSidebarButton href="/profile" startContent={<FaUserPen  />}>ข้อมูลส่วนตัว</AppSidebarButton>
+                               
+                            </li>
                         </ul>
                     </div>
                     <div className="lg:pl-3 lg:ml-3 p-3 lg:w-full border-1 lg:min-h-[600px] rounded-md">

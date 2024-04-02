@@ -14,11 +14,11 @@ class UserProfile(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		address_amphur: DF.Data | None
-		address_district: DF.Data | None
+		address_amphur: DF.Link | None
+		address_district: DF.Link | None
 		address_moo: DF.Data | None
 		address_no: DF.Data | None
-		address_province: DF.Data | None
+		address_province: DF.Link | None
 		address_road: DF.Data | None
 		address_soi: DF.Data | None
 		birthdate: DF.Date | None
@@ -36,3 +36,16 @@ class UserProfile(Document):
 
 	def before_insert(self):
 		self.email = frappe.session.user
+
+
+@frappe.whitelist()
+def get_current_userprofile():
+	profile =  frappe.db.get("UserProfile", {
+		"name" : frappe.session.user
+	})
+
+	return profile
+	if profile :
+		return profile
+	else : 
+		return frappe.new_doc("UserProfile",as_dict=True)

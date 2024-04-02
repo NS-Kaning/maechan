@@ -1,7 +1,8 @@
 import { Autocomplete, AutocompleteItem, BreadcrumbItem, Breadcrumbs, Button, Input } from "@nextui-org/react"
 import { useAsyncList } from "@react-stately/data";
 import { FrappeContext, FrappeProvider } from "frappe-react-sdk";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { FaHome } from "react-icons/fa";
 import { IoAccessibility } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
@@ -20,6 +21,8 @@ function BusinessCreate() {
         },
     });
 
+
+
     const [createForm, setCreateForm] = useState({
         business_name: "",
         business_address: "",
@@ -30,8 +33,6 @@ function BusinessCreate() {
             ...createForm,
             [target]: key
         })
-
-
 
     }
 
@@ -89,6 +90,7 @@ function BusinessCreate() {
     return (
         <div className="flex flex-col">
             <Breadcrumbs className="mb-3">
+                <BreadcrumbItem><FaHome /></BreadcrumbItem>
                 <BreadcrumbItem>กิจการของท่าน</BreadcrumbItem>
                 <BreadcrumbItem>เพิ่มกิจการ</BreadcrumbItem>
             </Breadcrumbs>

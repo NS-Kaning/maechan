@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "format:{request_type}",
  "creation": "2023-12-09 14:12:22.234192",
@@ -51,7 +52,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-19 14:31:16.017911",
+ "modified": "2024-04-02 08:28:35.642111",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicenseType",

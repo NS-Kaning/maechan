@@ -10,6 +10,9 @@ import MainPage from './pages/MainPage';
 import BusinessIndex from './pages/Business/BusinessIndex';
 import BusinessCreate from './pages/Business/BusinessCreate';
 import AlertProvider from './providers/AlertProvider';
+import Dashboard from './pages/Dashboard';
+import RequestLicense from './pages/License/RequestLicense';
+import ProfilePage from './pages/Personal/ProfilePage';
 function App() {
 
 
@@ -49,9 +52,17 @@ function App() {
 									<Route path='/login' element={<Login />} />
 									<Route path='/register' element={<Register />} />
 									<Route path="/" element={<LoginGuard><MainPage /></LoginGuard>} >
-										<Route index element={<LicenseDashboard />} />
+										<Route index element={<Dashboard />} />
+
+										<Route path="profile">
+											<Route index element={<ProfilePage />} />
+										</Route>
+
 										<Route path="license">
-											<Route path='create' element={<h1>สร้างคำร้องขอใบอนุญาต</h1>} />
+											<Route index element={<LicenseDashboard />} />
+											<Route path='requestLicense' element={<RequestLicense/>} />
+											<Route path='requestStatus' element={<h1>สร้างคำร้องขอใบอนุญาต</h1>} />
+
 										</Route>
 
 										<Route path="business">
