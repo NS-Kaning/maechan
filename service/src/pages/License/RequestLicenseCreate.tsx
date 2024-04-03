@@ -263,6 +263,7 @@ export default function RequestLicenseCreate() {
                     <Select
                         label="ประเภทการขออนุญาต"
                         className=""
+                        onSelectionChange={(k)=> updateForm('request_type',Array.from(k)[0])}
                     >
                         {requestTypes.map((b) => (
                             <SelectItem key={b.name} >
@@ -394,7 +395,8 @@ export default function RequestLicenseCreate() {
             </div>
 
             <div className="flex flex-row lg:w-[50%] text-xl mb-3">
-                เพิ่มคำร้องขอใบอนุญาต
+                <Button className="mr-3" color="primary">บันทึกและต่อไป</Button>
+                <Button className="mr-3" onClick={()=>{navigate("/licenseRequest")}} color="default">ยกเลิก</Button>
             </div>
         </div>
 

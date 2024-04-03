@@ -39,6 +39,7 @@ class RequestLicense(Document):
 		applicant_title: DF.Data | None
 		approve_history: DF.Table[LicenseApproveHistory]
 		attachment_extra: DF.Table[Attachment]
+		business: DF.Link | None
 		checklist_comment: DF.Data | None
 		checklist_date: DF.Date | None
 		checklist_extra: DF.Table[CheckListDetail]

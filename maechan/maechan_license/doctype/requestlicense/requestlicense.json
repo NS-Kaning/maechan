@@ -10,6 +10,7 @@
   "column_break_gzha",
   "date",
   "column_break_szso",
+  "business",
   "section_break_ouuy",
   "applicant_name",
   "applicant_tel",
@@ -371,12 +372,18 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "business",
+   "fieldtype": "Link",
+   "label": "\u0e01\u0e34\u0e08\u0e01\u0e32\u0e23",
+   "options": "Business"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-28 12:15:11.287482",
+ "modified": "2024-04-03 21:44:38.078936",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicense",
