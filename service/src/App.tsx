@@ -59,6 +59,12 @@ function App() {
 											<Route index element={<ProfilePage />} />
 										</Route>
 
+										<Route path="licenseRequest">
+											<Route index element={<RequestLicense/>} />
+											<Route path='create' element={<h1>สร้างคำร้องขอใบอนุญาต</h1>} />
+
+										</Route>
+
 										<Route path="license">
 											<Route index element={<LicenseDashboard />} />
 											<Route path='requestLicense' element={<RequestLicense/>} />

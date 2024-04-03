@@ -3,7 +3,7 @@ import { useAsyncList } from "@react-stately/data";
 import { FrappeContext, useFrappeGetDoc, } from "frappe-react-sdk";
 import { useContext, useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAlertContext } from "../../providers/AlertProvider";
 
 function BusinessEdit() {
@@ -122,8 +122,8 @@ function BusinessEdit() {
     return (
         <div className="flex flex-col">
             <Breadcrumbs className="mb-3">
-                <BreadcrumbItem><FaHome /></BreadcrumbItem>
-                <BreadcrumbItem>กิจการของท่าน</BreadcrumbItem>
+                <BreadcrumbItem><Link to={"/"}><FaHome /></Link></BreadcrumbItem>
+                <BreadcrumbItem><Link to={'/business'}>กิจการของท่าน</Link></BreadcrumbItem>
                 <BreadcrumbItem>แก้ไขกิจการ : {params.id}</BreadcrumbItem>
             </Breadcrumbs>
 
@@ -168,7 +168,7 @@ function BusinessEdit() {
             </div>
             <div className="flex flex-row lg:w-[50%]">
                 <Button isLoading={loading} color="primary" className="mr-3" onClick={submit}>บันทึก</Button>
-                <Button isLoading={loading} color="default" onClick={()=>navigate('/business')}>ยกเลิก</Button>
+                <Button isLoading={loading} color="default" onClick={() => navigate('/business')}>ยกเลิก</Button>
             </div>
 
 

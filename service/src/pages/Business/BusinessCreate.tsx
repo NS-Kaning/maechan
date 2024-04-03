@@ -4,7 +4,7 @@ import { FrappeContext, FrappeProvider } from "frappe-react-sdk";
 import { useContext, useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { IoAccessibility } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function BusinessCreate() {
 
@@ -91,7 +91,7 @@ function BusinessCreate() {
         <div className="flex flex-col">
             <Breadcrumbs className="mb-3">
                 <BreadcrumbItem><FaHome /></BreadcrumbItem>
-                <BreadcrumbItem>กิจการของท่าน</BreadcrumbItem>
+                <BreadcrumbItem><Link to={'/business'}>กิจการของท่าน</Link></BreadcrumbItem>
                 <BreadcrumbItem>เพิ่มกิจการ</BreadcrumbItem>
             </Breadcrumbs>
 
@@ -132,7 +132,9 @@ function BusinessCreate() {
                 </Autocomplete>
             </div>
             <div className="flex flex-row lg:w-[50%]">
-                <Button color="primary" onClick={submit}>บันทึก</Button>
+                <Button color="primary" className="mr-3" onClick={submit}>บันทึก</Button>
+                <Button color="default" onClick={() => navigate('/business')}>ยกเลิก</Button>
+
             </div>
 
 

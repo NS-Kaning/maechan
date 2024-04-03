@@ -4,46 +4,9 @@ import { PropsWithChildren, useEffect } from "react";
 import { Outlet, useLocation, useNavigate, useRoutes } from "react-router-dom";
 import { FaBuilding, FaHome } from "react-icons/fa";
 import { FaFileLines, FaUserPen } from "react-icons/fa6";
-
-function AppSidebarButton(props: PropsWithChildren<ButtonProps>) {
-
-    const { size, className, children } = props
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    let _className = "mb-1 justify-start w-full leading-3" + className
-    let _size = size ?? 'md'
-    let _startContent = props.startContent ?? null
-    let _href = props.href ?? null
-
-    let isActive = _href == location.pathname
-
-    // console.log('isactive',isActive)
-    let _variant = isActive ? "solid" : props.variant ?? 'light'
-    let _color = isActive ? "primary" : "default"
-
-    let _onClick = props.onClick ?? (() => {
-        if (_href) {
-            navigate(_href)
-        }
-
-    })
+import { SidebarMenu } from "../components/menu";
 
 
-    return (
-        <Button
-            color={_color}
-            variant={_variant}
-            size={_size}
-            className={_className}
-            onClick={_onClick}
-            startContent={_startContent}
-
-        >
-            {children}
-        </Button>
-    )
-}
 
 function AppNavbarBrand() {
 
@@ -128,33 +91,7 @@ function MainPage() {
             <div className="flex px-1 lg:px-0 lg:justify-center w-full">
                 <div className="flex flex-col w-full lg:flex-row lg:w-[1280px] lg:px-6 mt-3">
                     <div className="mb-3 lg:mb-0 lg:w-[280px] w-full">
-                        <ul>
-                            <li>
-                                <AppSidebarButton href="/" startContent={<FaHome />}>หน้าหลัก</AppSidebarButton>
-                            </li>
-                            <li>
-                                <AppSidebarButton href="/business" startContent={<FaBuilding />}>กิจการของท่าน</AppSidebarButton>
-                                <ul className="ml-6">
-                                    <li>
-                                        <AppSidebarButton href="/business/create">เพิ่มกิจการ</AppSidebarButton>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <AppSidebarButton href="/license" startContent={<FaFileLines />}>ใบอนุญาต</AppSidebarButton>
-                                <ul className="ml-6">
-                                    <li>
-                                        <AppSidebarButton href="/license/requestLicense">ขอใบอนุญาตใหม่</AppSidebarButton>
-                                        <AppSidebarButton href="/license/requestStatus">สถานะคำร้องขอใบอนุญาต</AppSidebarButton>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <AppSidebarButton href="/profile" startContent={<FaUserPen />}>ข้อมูลส่วนตัว</AppSidebarButton>
-
-                            </li>
-                        </ul>
+                        <SidebarMenu/>
                     </div>
                     <div className="lg:pl-3 lg:ml-3 p-3 lg:w-full border-1 lg:min-h-[600px] rounded-md">
                         <Outlet />
