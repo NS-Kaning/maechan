@@ -17,6 +17,7 @@ class Business(Document):
 		business_address: DF.Link | None
 		business_name: DF.Data | None
 		manager: DF.Link | None
+		tel: DF.Data | None
 	# end: auto-generated types
 
 	def validate(self) :
@@ -67,7 +68,7 @@ def get_businesses():
 		frappe.qb.from_(businessDoctype).where(businessDoctype.manager == frappe.session.user)
 		.join(houseDoctype).on(houseDoctype.name == businessDoctype.business_address)
 		.select(
-				businessDoctype.name,businessDoctype.manager,businessDoctype.business_name,businessDoctype.business_address,
+				businessDoctype.name,businessDoctype.manager,businessDoctype.business_name,businessDoctype.business_address,businessDoctype.tel,
 				houseDoctype.text_display.as_('business_address_text_display')
 			)
 	)

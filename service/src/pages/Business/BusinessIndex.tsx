@@ -62,7 +62,7 @@ function BusinessIndex() {
 
             <div className="flex flex-row w-full text-xl mb-3">
                 <Skeleton isLoaded={!isLoading} className="w-full rounded-lg">
-                <Table isStriped shadow="none" aria-label="Example static collection table"
+                <Table isStriped shadow="none"
                     topContent={topContent}
                     topContentPlacement="outside"
                     classNames={{
@@ -73,6 +73,7 @@ function BusinessIndex() {
                     <TableHeader>
                         <TableColumn>ชื่อกิจการ</TableColumn>
                         <TableColumn>ที่อยู่</TableColumn>
+                        <TableColumn>โทร</TableColumn>
                         <TableColumn>การกระทำ</TableColumn>
                     </TableHeader>
 
@@ -82,6 +83,8 @@ function BusinessIndex() {
                                 <TableRow key={b.name}>
                                     <TableCell>{b.business_name}</TableCell>
                                     <TableCell>{b.business_address_text_display}</TableCell>
+                                    <TableCell>{b.tel}</TableCell>
+
                                     <TableCell>
                                         <div className="flex flex-row w-fit gap-2">
                                             <Tooltip placement="top" content="แก้ไข" >

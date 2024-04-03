@@ -41,7 +41,7 @@ frappe.ui.form.on("RequestLicense", {
             frm.call('newLicense')
         }
     }, before_load(frm) {
-        const emailUser = frappe.session.user_email
+        const emailUser = frappe.session.user
         if (frm.doc.applicant_name == null) {
             frappe.db.get_doc("UserProfile", emailUser).then(r => {
                 frappe.db.get_value("Tambon",

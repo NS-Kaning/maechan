@@ -7,6 +7,7 @@
  "field_order": [
   "business_name",
   "business_address",
+  "tel",
   "manager"
  ],
  "fields": [
@@ -30,11 +31,16 @@
    "in_standard_filter": 1,
    "label": "\u0e1c\u0e39\u0e49\u0e14\u0e39\u0e41\u0e25\u0e01\u0e34\u0e08\u0e01\u0e32\u0e23",
    "options": "User"
+  },
+  {
+   "fieldname": "tel",
+   "fieldtype": "Data",
+   "label": "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-01 16:48:14.737258",
+ "modified": "2024-04-03 20:06:56.160878",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "Business",

@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { IoAccessibility } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
+import { IBusiness } from "../../interfaces";
 
 function BusinessCreate() {
 
@@ -26,7 +27,7 @@ function BusinessCreate() {
     const [createForm, setCreateForm] = useState({
         business_name: "",
         business_address: "",
-    })
+    } as IBusiness)
 
     const updateForm = (target, key) => {
         setCreateForm({
@@ -110,6 +111,12 @@ function BusinessCreate() {
                     isRequired label="ชื่อกิจการ" placeholder="กรุณาระบุชื่อกิจการ" name="business_name" value={createForm.business_name} onChange={(e) => { updateForm('business_name', e.target.value) }} />
 
             </div>
+
+            <div className="flex flex-row lg:w-[50%] mb-3">
+                <Input type="text"
+                    label="เบอร์โทรศัพท์" placeholder="เบอร์โทรศัพท์" name="tel" value={createForm.tel} onChange={(e) => { updateForm('tel', e.target.value) }} />
+            </div>
+
             <div className="flex flex-row lg:w-[50%] mb-3">
 
                 <Autocomplete

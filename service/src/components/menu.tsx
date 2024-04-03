@@ -54,7 +54,7 @@ export function SidebarMenu() {
                 <AppSidebarButton exact={false} href="/business" startContent={<FaBuilding />}>กิจการของท่าน</AppSidebarButton>
             </li>
             <li>
-                <AppSidebarButton href="/licenseRequest" startContent={<FaFileLines />}>คำร้องขอใบอนุญาต</AppSidebarButton>
+                <AppSidebarButton exact={false} href="/licenseRequest" startContent={<FaFileLines />}>คำร้องขอใบอนุญาต</AppSidebarButton>
             </li>
 
             <li>

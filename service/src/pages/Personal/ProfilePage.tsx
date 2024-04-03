@@ -6,6 +6,7 @@ import { FaHome } from "react-icons/fa";
 import { useAlertContext } from "../../providers/AlertProvider";
 import { Key } from "@react-types/shared";
 import { IAmphure, IProvince, ITambon, IUserProfile } from "../../interfaces";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
 
@@ -15,6 +16,8 @@ export default function ProfilePage() {
     let [provinces, setProvinces] = useState([] as IProvince[])
     let [amphures, setAmphures] = useState([] as IAmphure[])
     let [districts, setDistricts] = useState([] as ITambon[])
+    const [amphureLoad, setAmphureLoad] = useState(false)
+    const [districtLoad, setDistrictLoad] = useState(false)
 
     let alert = useAlertContext()
 
@@ -35,8 +38,6 @@ export default function ProfilePage() {
         setCreateForm(createFormValue)
     }
 
-    const [amphureLoad, setAmphureLoad] = useState(false)
-    const [districtLoad, setDistrictLoad] = useState(false)
 
 
     const reloadProvinceAmphurDistrict = async (user_profile: { address_province?: any; address_amphur?: any; }, key = '') => {
@@ -145,6 +146,8 @@ export default function ProfilePage() {
         setIsLoading(false)
 
     }
+
+    const navigate = useNavigate()
 
     return (
         <div>
@@ -263,7 +266,7 @@ export default function ProfilePage() {
 
                     <Skeleton isLoaded={!isLoading} className="mb-3 rounded-lg">
 
-                        <Button type="button" color="default" onClick={loadUserProfile}>ยกเลิก</Button>
+                        <Button type="button" color="default" onClick={()=>{navigate("/")}}>ยกเลิก</Button>
                     </Skeleton>
 
                 </div>

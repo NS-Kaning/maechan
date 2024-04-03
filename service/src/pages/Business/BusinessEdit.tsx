@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { FaHome } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAlertContext } from "../../providers/AlertProvider";
+import { IBusiness } from "../../interfaces";
 
 function BusinessEdit() {
 
@@ -27,7 +28,7 @@ function BusinessEdit() {
     const [createForm, setCreateForm] = useState({
         business_name: "",
         business_address: "",
-    })
+    } as IBusiness)
 
     useEffect(() => {
         setIsLoading(true)
@@ -143,6 +144,14 @@ function BusinessEdit() {
                         isRequired label="ชื่อกิจการ" placeholder="กรุณาระบุชื่อกิจการ" name="business_name" value={createForm.business_name} onChange={(e) => { updateForm('business_name', e.target.value) }} />
                 </Skeleton>
             </div>
+
+            <div className="flex flex-row lg:w-[50%] mb-3">
+                <Skeleton isLoaded={!loading} className="rounded-lg w-full">
+                    <Input type="text"
+                        label="เบอร์โทรศัพท์" placeholder="เบอร์โทรศัพท์" name="tel" value={createForm.tel} onChange={(e) => { updateForm('tel', e.target.value) }} />
+                </Skeleton>
+            </div>
+
             <div className="flex flex-row lg:w-[50%] mb-3">
                 <Skeleton isLoaded={!loading} className="rounded-lg w-full">
                     <Autocomplete

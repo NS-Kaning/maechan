@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard';
 import RequestLicense from './pages/License/RequestLicense';
 import ProfilePage from './pages/Personal/ProfilePage';
 import BusinessEdit from './pages/Business/BusinessEdit';
+import RequestLicenseCreate from './pages/License/RequestLicenseCreate';
 function App() {
 
 
@@ -61,7 +62,7 @@ function App() {
 
 										<Route path="licenseRequest">
 											<Route index element={<RequestLicense/>} />
-											<Route path='create' element={<h1>สร้างคำร้องขอใบอนุญาต</h1>} />
+											<Route path='create' element={<RequestLicenseCreate/>} />
 
 										</Route>
 
