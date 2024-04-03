@@ -1,7 +1,7 @@
 # Copyright (c) 2023, SE and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 
@@ -26,3 +26,8 @@ class RequestLicenseType(Document):
 	# end: auto-generated types
 
 	pass
+
+
+@frappe.whitelist()
+def get_request_license_type():
+	return frappe.get_all("RequestLicenseType",fields="*")

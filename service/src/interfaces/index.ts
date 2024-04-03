@@ -5,7 +5,7 @@ export type Doctype{
 export type IBusiness<T = unknown> = T & Doctype & {
     business_name: string;
     business_address: string;
-    tel : string;
+    tel: string;
     manager: string;
 }
 
@@ -83,6 +83,33 @@ export type IRequestDetail = Doctype & {
     parentfield: string;
     parenttype: string;
     value: string;
+}
+
+export type ICheckListTypeDetail = Doctype & {
+    comment: string;
+    key: string;
+    parent: string;
+    parentfield: string;
+    parenttype: string;
+    title_detail: string;
+    value: "-" | "\u0e1c\u0e48\u0e32\u0e19" | "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19"
+
+}
+export type IRequestTypeDetail = Doctype & {
+    datatype: "Data" | "Float" | "Date" | "Check" | "Select" | "Link";
+    key: string;
+    options: string;
+    parent: string;
+    parentfield: string;
+    parenttype: string;
+}
+export type IRequestLicenseType = Doctype & {
+    attachment: IAttachment[]
+    checklist: ICheckList[]
+    checklist_details: ICheckListTypeDetail[]
+    details: IRequestTypeDetail[]
+    request_type: string;
+
 }
 
 export type IRequestLicense = Doctype & {

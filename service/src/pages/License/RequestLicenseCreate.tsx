@@ -2,7 +2,7 @@ import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, 
 import { useContext, useEffect, useMemo, useState } from "react"
 import { FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import { IAmphure, IBusiness, IProvince, IRequestDetail, ITambon, IUserProfile } from "../../interfaces"
+import { IAmphure, IBusiness, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, ITambon, IUserProfile } from "../../interfaces"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useAsyncList } from "@react-stately/data"
 
@@ -22,13 +22,17 @@ export default function RequestLicenseCreate() {
     }, [])
 
     const [businesses, setBusinesses] = useState([] as IBusiness[])
+    const [requestTypes, setRequestTypes] = useState([] as IRequestLicenseType[])
 
     const loadBusiness = async () => {
         setIsLoading(true)
         try {
             let result = await call.post('maechan.maechan_license.doctype.business.business.get_businesses')
+            let resquestLicenseTypeResult = await call.post('maechan.maechan_license.doctype.requestlicensetype.requestlicensetype.get_request_license_type')
+
             console.log(result)
             setBusinesses(result.message)
+            setRequestTypes(resquestLicenseTypeResult.message)
         } catch (error) {
             console.log(error)
             alert.showError(JSON.stringify(error))
@@ -130,14 +134,14 @@ export default function RequestLicenseCreate() {
         setIsLoading(false)
     }
 
-    const reloadProvinceAmphurDistrict = async (user_profile: { address_province?: any; address_amphur?: any; }, key = '') => {
+    const reloadProvinceAmphurDistrict = async (user_profile: IRequestLicense, key = '') => {
 
 
-        if (user_profile.address_province && key == "address_province") {
+        if (user_profile.applicant_province && key == "applicant_province") {
             setAmphureLoad(true)
             call.post("maechan.maechan_core.doctype.province.province.get_all_amphure", {
                 filters: {
-                    province_id: user_profile.address_province
+                    province_id: user_profile.applicant_province
                 }
             }).then((r: { message: any; }) => {
                 let result = r.message
@@ -148,12 +152,12 @@ export default function RequestLicenseCreate() {
 
         }
 
-        if (user_profile.address_amphur && key == "address_amphur") {
+        if (user_profile.applicant_amphur && key == "applicant_amphur") {
             setDistrictLoad(true)
             call.post("maechan.maechan_core.doctype.province.province.get_all_tambon", {
                 filters: {
-                    province_id: user_profile.address_province,
-                    amphure_id: user_profile.address_amphur
+                    province_id: user_profile.applicant_province,
+                    amphure_id: user_profile.applicant_amphur
                 }
             }).then((r: any) => {
                 let result = r.message
@@ -169,14 +173,14 @@ export default function RequestLicenseCreate() {
         let createFormValue = {
             ...createForm,
             [key]: value
-        }
+        } as IRequestLicense
 
-        if (key == "address_province") {
-            createFormValue.address_amphur = ""
-            createFormValue.address_district = ""
+        if (key == "applicant_province") {
+            createFormValue.applicant_amphur = ""
+            createFormValue.applicant_distict = ""
         }
-        else if (key == "address_amphur") {
-            createFormValue.address_district = ""
+        else if (key == "applicant_amphur") {
+            createFormValue.applicant_distict = ""
         }
         else if (key == "business") {
             let business = businesses.find(x => x.name == value)
@@ -193,8 +197,13 @@ export default function RequestLicenseCreate() {
                     }
                 )
             }
-
-
+        }else if (key == "house_no"){
+            let house = list.items.find(x => x.name == value)
+            console.log(house,key,value)
+            list.setFilterText(house?.text_display ?? '')
+            if(!value){
+                createFormValue.house_no = ''
+            }
         }
         reloadProvinceAmphurDistrict(createFormValue, key)
         setCreateForm(createFormValue)
@@ -255,9 +264,9 @@ export default function RequestLicenseCreate() {
                         label="ประเภทการขออนุญาต"
                         className=""
                     >
-                        {businesses.map((b) => (
+                        {requestTypes.map((b) => (
                             <SelectItem key={b.name} >
-                                {b.business_name}
+                                {b.name}
                             </SelectItem>
                         ))}
                     </Select>
@@ -367,8 +376,8 @@ export default function RequestLicenseCreate() {
                     label="ที่อยู่กิจการ (บ้านเลขที่)"
                     placeholder="Type to search..."
                     onInputChange={list.setFilterText}
-                    onSelectionChange={(key) => updateForm('business_address', key)}
-                    isInvalid={!!error.business_address}
+                    onSelectionChange={(key) => updateForm('house_no', key)}
+                    selectedKey={createForm.house_no}
                 >
                     {(item) => (
                         <AutocompleteItem key={item.name} className="capitalize">

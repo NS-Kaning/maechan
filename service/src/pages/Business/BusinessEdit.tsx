@@ -46,13 +46,8 @@ function BusinessEdit() {
                     setIsLoading(false)
                 }
             )
-
-
-
             console.log(r.message)
         })
-
-
 
     }, [])
 
