@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:{YYYY}-{MM}-{#####}",
+ "autoname": "autoname",
  "creation": "2023-12-09 12:39:33.871560",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -383,11 +383,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-04-03 21:44:38.078936",
+ "modified": "2024-04-04 16:34:20.168932",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicense",
- "naming_rule": "Expression",
+ "naming_rule": "By script",
  "owner": "Administrator",
  "permissions": [
   {
@@ -456,6 +456,27 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
+ "states": [
+  {
+   "color": "Yellow",
+   "title": "Draft"
+  },
+  {
+   "color": "Blue",
+   "title": "Submitted"
+  },
+  {
+   "color": "Gray",
+   "title": "Reject"
+  },
+  {
+   "color": "Green",
+   "title": "Finished"
+  },
+  {
+   "color": "Purple",
+   "title": "Pending"
+  }
+ ],
  "track_changes": 1
 }

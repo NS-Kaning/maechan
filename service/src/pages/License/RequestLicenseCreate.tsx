@@ -2,13 +2,17 @@ import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, 
 import { useContext, useEffect, useMemo, useState } from "react"
 import { FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import { IAmphure, IBusiness, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, ITambon, IUserProfile } from "../../interfaces"
+import { IAmphure, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, ITambon, IUserProfile } from "../../interfaces"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useAsyncList } from "@react-stately/data"
+import { DateTime } from "luxon";
+import { useAlertContext } from "../../providers/AlertProvider"
 
 export default function RequestLicenseCreate() {
 
     const navigate = useNavigate()
+    const alert = useAlertContext()
+
 
     const topContent = useMemo(() => {
 
@@ -98,7 +102,7 @@ export default function RequestLicenseCreate() {
             await Promise.all([pcall, acall, tcall])
 
 
-            function calAge(a, b) {
+            function calAge(a: Date, b: Date) {
                 let ms = 1000 * 60 * 60 * 24 * 365;
                 let bDay = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
                 let tDay = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
@@ -110,10 +114,11 @@ export default function RequestLicenseCreate() {
             let birthday = new Date(user_profile.birthdate)
             let today = new Date()
             let age = calAge(birthday, today);
+            let dtToday = DateTime.now()
 
             setCreateForm({
                 ...createForm,
-                "date": new Date(),
+                "date": dtToday.toISODate(),
                 "applicant_name": user_profile.fullname,
                 "applicant_nationality": user_profile.nationality,
                 "applicant_ethnicity": user_profile.race,
@@ -168,7 +173,7 @@ export default function RequestLicenseCreate() {
         }
     }
 
-    const updateForm = async (key: string, value: string) => {
+    const updateForm = async (key: string, value: string|number) => {
 
         let createFormValue = {
             ...createForm,
@@ -191,7 +196,7 @@ export default function RequestLicenseCreate() {
                 call.post("maechan.maechan_core.api.house_filter", { keyword: business.business_address }).then(
                     houses => {
                         list.setFilterText(
-                            houses.message.find(x => x.name == business.business_address).text_display
+                            houses.message.find((x: { name: string }) => x.name == business?.business_address).text_display
                         )
                         setIsLoading(false)
                     }
@@ -215,7 +220,7 @@ export default function RequestLicenseCreate() {
         loadBusiness()
     }, [])
 
-    let list = useAsyncList({
+    let list = useAsyncList<IHouse>({
         async load({ signal, filterText }) {
             let res = await call.post("maechan.maechan_core.api.house_filter", { keyword: filterText })
             return {
@@ -230,6 +235,13 @@ export default function RequestLicenseCreate() {
         result: null,
     })
 
+    const save = async ()=>{
+        let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.first_step_requestlicense",{
+            request : createForm
+        })
+
+        console.log(response)
+    }
 
 
     return (
@@ -280,26 +292,32 @@ export default function RequestLicenseCreate() {
                 <Input
                     value={createForm.applicant_name}
                     name="applicant_name"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="ชื่อ-สกุล" />
                 <Input
-                    value={createForm.applicant_age}
+                    value={createForm.applicant_age as string}
                     name="applicant_age"
-                    type="text" label="อายุ" />
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    type="number" label="อายุ" />
                 <Input
                     value={createForm.applicant_nationality}
                     name="applicant_nationality"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="สัญชาติ" />
                 <Input
                     value={createForm.applicant_tel}
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     name="applicant_tel"
                     type="text" label="เบอร์โทรศัพท์" />
                 <Input
                     value={createForm.applicant_fax}
                     name="applicant_fax"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="แฟกซ์" />
                 <Input
                     value={createForm.applicant_ethnicity}
                     name="applicant_ethnicity"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="เชื้อชาติ" />
 
             </div>
@@ -311,14 +329,17 @@ export default function RequestLicenseCreate() {
                 <Input
                     value={createForm.applicant_no}
                     name="applicant_no"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="เลขที่" />
                 <Input
                     value={createForm.applicant_moo}
                     name="applicant_moo"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="หมู่" />
                 <Input
                     value={createForm.applicant_soi}
                     name="applicant_soi"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="ตรอก/ซอย" />
                 <Input
                     value={createForm.applicant_road}
@@ -390,12 +411,13 @@ export default function RequestLicenseCreate() {
                 <Input
                     value={createForm.house_tel}
                     name="house_tel"
+                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
                     type="text" label="เบอร์โทรศัพท์" />
 
             </div>
 
             <div className="flex flex-row lg:w-[50%] text-xl mb-3">
-                <Button className="mr-3" color="primary">บันทึกและต่อไป</Button>
+                <Button className="mr-3" color="primary" onClick={save}>บันทึกและต่อไป</Button>
                 <Button className="mr-3" onClick={()=>{navigate("/licenseRequest")}} color="default">ยกเลิก</Button>
             </div>
         </div>

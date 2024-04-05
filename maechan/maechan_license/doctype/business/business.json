@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:{owner}-{business_name}",
  "creation": "2024-04-01 16:13:30.417020",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -40,10 +41,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-03 20:06:56.160878",
+ "modified": "2024-04-04 14:07:11.819193",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "Business",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

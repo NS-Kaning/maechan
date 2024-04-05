@@ -29,13 +29,7 @@ class House(Document):
         text_display: DF.Data | None
     # end: auto-generated types
     
-    district_id : str
-    house_moo : str
-    tambon_th : str
-    amphure_th : str
-    province_th : str
-    text_display : str
-    house_no : str
+
     
     
     def before_save(self) :
