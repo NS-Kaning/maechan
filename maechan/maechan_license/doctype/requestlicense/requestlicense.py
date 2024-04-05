@@ -52,7 +52,8 @@ class RequestLicense(Document):
         house_tel: DF.Data | None
         license_type: DF.Link | None
         request_extra: DF.Table[RequestDetail]
-        request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48", "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
+        request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02",
+                                   "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48", "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
         request_type: DF.Link | None
         workflow_state: DF.Link | None
     # end: auto-generated types
@@ -63,14 +64,15 @@ class RequestLicense(Document):
         return self.name
     pass
 
+
 @frappe.whitelist()
-def load_request_license() :
+def load_request_license():
     request = frappe.form_dict
     assert 'name' in request
-    
+
     name = request['name']
-    return frappe.get_doc("RequestLicense",name)
-    
+    return frappe.get_doc("RequestLicense", name)
+
 
 @frappe.whitelist()
 def load_request_licenses():
@@ -107,25 +109,57 @@ def first_step_requestlicense():
             'RequestLicenseType', requestLicenseObj.request_type)  # type: ignore
 
         for x in reqtypeObj.details:
-            requestLicenseObj.append('request_extra', {
-                'key': x.key
-            })
+            found = False
+            for i in requestLicenseObj.request_extra:
+                if i.key == x.key:
+                    found = True
+                    break
+
+            if not found:
+                requestLicenseObj.append('request_extra', {
+                    'key': x.key
+                })
 
         for x in reqtypeObj.attachment:
-            requestLicenseObj.append('attachment_extra', {
-                'key': x.key
-            })
+
+            found = False
+            for i in requestLicenseObj.attachment_extra:
+                if i.key == x.key:
+                    found = True
+                    break
+
+            if not found:
+                requestLicenseObj.append('attachment_extra', {
+                    'key': x.key
+                })
 
         for x in reqtypeObj.checklist_details:
-            requestLicenseObj.append('checklist_extra', {
-                'key': x.key
-            })
+
+            found = False
+            for i in requestLicenseObj.checklist_extra:
+                if i.key == x.key:
+                    found = True
+                    break
+
+            if not found:
+                requestLicenseObj.append('checklist_extra', {
+                    'key': x.key
+                })
 
         for x in reqtypeObj.checklist:
-            requestLicenseObj.append('checklist_list', {
-                'key': x.key,
-                'title_detail': x.title_detail
-            })
+
+            found = False
+            for i in requestLicenseObj.checklist_list:
+                if i.key == x.key:
+                    found = True
+                    break
+
+            if not found:
+                requestLicenseObj.append('checklist_list', {
+                    'key': x.key,
+                    'title_detail': x.title_detail
+
+                })
 
         requestLicenseObj.save()
 

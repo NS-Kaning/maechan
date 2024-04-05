@@ -2,7 +2,7 @@ import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, 
 import { useContext, useEffect, useMemo, useState } from "react"
 import { FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { IAmphure, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, ITambon, IUserProfile } from "../../interfaces"
+import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon, IUserProfile } from "../../interfaces"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useAsyncList } from "@react-stately/data"
 import { DateTime } from "luxon";
@@ -150,7 +150,7 @@ export default function RequestLicenseEdit() {
                 setIsLoading(false)
             }
         } else if (key == "house_no") {
-            let house = list.items.find(x => x.name == value)
+            let house = list.items.find(x => x.name == value) as IHouse
             console.log(house, key, value)
             list.setFilterText(house?.text_display ?? '')
             if (!value) {
@@ -171,20 +171,41 @@ export default function RequestLicenseEdit() {
         await updateHouseAutocomplete(requestLicense.house_no)
         await loadProvinceAmphureDistrict(requestLicense)
 
+        return requestLicense
+
+    }
+
+    const [requestLicenseType, setRequestLicenseType] = useState({} as IRequestLicenseType)
+
+    const loadRequestLicenseType = async (requestLicense: IRequestLicense) => {
+        if (requestLicense.request_type) {
+            let requestTypeResponse = await call.post("maechan.maechan_license.doctype.requestlicensetype.requestlicensetype.findByName", {
+                name: requestLicense.request_type
+            })
+
+            setRequestLicenseType(requestTypeResponse.message)
+
+
+        }
+
     }
 
 
     useEffect(() => {
         setIsLoading(true)
         loadBusiness().then(() => {
-            loadRequestLicense().then(() => {
-                setIsLoading(false)
+            loadRequestLicense().then((requestLicense: IRequestLicense) => {
+                loadRequestLicenseType(requestLicense).then(() => {
+                    setIsLoading(false)
+                })
+
             })
+        }).finally(() => {
         })
 
     }, [])
 
-    let list = useAsyncList({
+    let list = useAsyncList<IHouse>({
         async load({ signal, filterText }) {
             let res = await call.post("maechan.maechan_core.api.house_filter", { keyword: filterText })
             return {
@@ -199,7 +220,7 @@ export default function RequestLicenseEdit() {
         result: null,
     })
 
-    const [isSaving ,  setIsSaving] = useState(false)
+    const [isSaving, setIsSaving] = useState(false)
 
     const save = async () => {
         setIsSaving(true)
@@ -210,6 +231,71 @@ export default function RequestLicenseEdit() {
         console.log(response)
         setCreateForm(response.message)
         setIsSaving(false)
+    }
+
+    const updateChild = (child: keyof IRequestLicense, key: string, value: string) => {
+        let requestExtras = createForm[child] as IRequestDetail[]
+        let childkey = requestExtras.find(x => x.key == key)
+        if (childkey) {
+            childkey.value = value
+        }
+
+        setCreateForm({
+            ...createForm
+        })
+    }
+
+    const renderForm = (x: IRequestTypeDetail, child: keyof IRequestLicense) => {
+        let requestExtras = createForm[child] as IRequestDetail[]
+        let childkey = requestExtras.find(e => e.key == x.key)
+        if (childkey) {
+            if (x.datatype == 'Data') {
+
+                if (x.key == "ชื่อสถานประกอบการ") {
+                    console.log(x.key, !childkey.value)
+                    let business = businesses.find(x => x.name = createForm.business)
+                    if (!childkey.value) {
+                        childkey.value = business?.business_name
+                        return (<div key={x.key} className="lg:w-[50%] mb-3">
+                            <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
+                        </div>)
+                    } else {
+                        return (<div key={x.key} className="lg:w-[50%] mb-3">
+                            <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
+                        </div>)
+                    }
+
+                } else {
+                    return (
+                        <div key={x.key} className="lg:w-[50%] mb-3">
+                            <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
+                        </div>
+                    )
+                }
+
+            } else if (x.datatype == 'Select') {
+                let options = x.options.split('\n')
+                return (
+                    <div key={x.key} className="lg:w-[50%] mb-3">
+                        <Select selectedKeys={[childkey.value]} label={x.key} onSelectionChange={(e) => { updateChild(child, x.key, Array.from(e)[0] as string) }}>
+                            {options.map(o => (
+                                <SelectItem key={o} value={o}>
+                                    {o}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                    </div>
+                )
+            } else {
+                return (
+                    null
+                )
+            }
+        } else {
+            return null
+        }
+
+
     }
 
 
@@ -230,7 +316,6 @@ export default function RequestLicenseEdit() {
             <Tabs aria-label="Tabs">
                 <Tab key="basic_information" title="ข้อมูลพื้นฐาน" className="flex flex-col">
                     <Skeleton isLoaded={!isLoading}>
-
                         <div className="flex flex-row mb-3 gap-3">
                             <div className="flex flex-row lg:w-[50%] ">
                                 <Select
@@ -273,7 +358,7 @@ export default function RequestLicenseEdit() {
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="ชื่อ-สกุล" />
                             <Input
-                                value={createForm.applicant_age}
+                                value={createForm.applicant_age as string}
                                 name="applicant_age"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="number" label="อายุ" />
@@ -379,7 +464,7 @@ export default function RequestLicenseEdit() {
                                 onSelectionChange={(key) => updateForm('house_no', key)}
                                 selectedKey={createForm.house_no}
                             >
-                                {(item : IHouse) => (
+                                {(item: IHouse) => (
                                     <AutocompleteItem key={item.name} className="capitalize">
                                         {item.text_display}
                                     </AutocompleteItem>
@@ -402,13 +487,39 @@ export default function RequestLicenseEdit() {
                 </Tab>
 
                 <Tab key="extra_information" title="ข้อมูลประกอบ" className="flex flex-col">
+                    {requestLicenseType?.details?.map((x: IRequestTypeDetail) => (
+                        renderForm(x, "request_extra")
+                    ))}
+
 
                 </Tab>
+
+                <Tab key="attachments" title="เอกสารแนบ" className="flex flex-col">
+                    <Table>
+                        <TableHeader>
+                            <TableColumn className="text-center">
+                                ลำดับ
+                            </TableColumn>
+                            <TableColumn className="lg:w-4/5">
+                                รายการ
+                            </TableColumn>
+                            <TableColumn className="text-center">
+                                ไฟล์
+                            </TableColumn>
+                        </TableHeader>
+                        <TableBody>
+                            {createForm?.attachment_extra?.map((a: IAttachment, index: number) => (
+                                <TableRow key={a.name}>
+                                    <TableCell className="text-center">{index + 1}</TableCell>
+                                    <TableCell>{a.key}</TableCell>
+                                    <TableCell className="text-center">{a.value}</TableCell>
+                                </TableRow>
+                            ))}
+
+                        </TableBody>
+                    </Table>
+                </Tab>
             </Tabs>
-
-
-
-
         </div >
 
     )
