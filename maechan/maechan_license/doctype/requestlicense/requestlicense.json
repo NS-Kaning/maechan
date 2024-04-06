@@ -346,14 +346,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_on_submit": 1,
-   "fieldname": "request_status",
-   "fieldtype": "Select",
-   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
-   "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\n\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a\n\u0e41\u0e01\u0e49\u0e44\u0e02\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\n\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19\n\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01",
-   "read_only": 1
-  },
-  {
    "fieldname": "section_break_bgqy",
    "fieldtype": "Section Break"
   },
@@ -378,13 +370,21 @@
    "fieldtype": "Link",
    "label": "\u0e01\u0e34\u0e08\u0e01\u0e32\u0e23",
    "options": "Business"
+  },
+  {
+   "fieldname": "request_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
+   "no_copy": 1,
+   "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\n\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a\n\u0e41\u0e01\u0e49\u0e44\u0e02\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\n\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19\n\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19\n\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2024-04-05 21:05:23.323329",
+ "modified": "2024-04-06 16:57:45.244782",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicense",
@@ -459,24 +459,40 @@
  "sort_order": "DESC",
  "states": [
   {
-   "color": "Yellow",
-   "title": "Draft"
+   "color": "Blue",
+   "title": "\u0e2a\u0e23\u0e49\u0e32\u0e07"
   },
   {
    "color": "Blue",
-   "title": "Submitted"
+   "title": "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23"
   },
   {
-   "color": "Gray",
-   "title": "Reject"
+   "color": "Yellow",
+   "title": "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a"
+  },
+  {
+   "color": "Blue",
+   "title": "\u0e41\u0e01\u0e49\u0e44\u0e02"
+  },
+  {
+   "color": "Orange",
+   "title": "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48"
+  },
+  {
+   "color": "Red",
+   "title": "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19"
+  },
+  {
+   "color": "Orange",
+   "title": "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
   },
   {
    "color": "Green",
-   "title": "Finished"
+   "title": "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08"
   },
   {
-   "color": "Purple",
-   "title": "Pending"
+   "color": "Red",
+   "title": "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"
   }
  ],
  "track_changes": 1

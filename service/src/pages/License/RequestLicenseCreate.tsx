@@ -239,8 +239,11 @@ export default function RequestLicenseCreate() {
         let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.first_step_requestlicense",{
             request : createForm
         })
-
         console.log(response)
+
+
+        navigate(`/licenseRequest/${response.message.name}/edit`)
+
     }
 
 
