@@ -350,37 +350,80 @@ export default function RequestLicenseEdit() {
     }
 
     const UploadAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
+
+        const { file } = useContext(FrappeContext) as FrappeConfig
+
         const inputFile = useRef(null)
 
-        const [isUploading,setIsUploading] = useState(false)
+        const [isUploading, setIsUploading] = useState(false)
         const openInputFile = () => {
             inputFile.current.click();
 
         }
 
-        const uploadFile = async (e : any) => {
+        const uploadFile = async (e: any) => {
             setIsUploading(true)
             console.log(e.target.files[0])
-            setTimeout(()=>{
-                setIsUploading(false)
-            },3000)
+            let myFile = e.target.files[0]
+            const fileArgs = {
+                /** If the file access is private then set to TRUE (optional) */
+                "isPrivate": false,
+                /** Folder the file exists in (optional) */
+                "folder": "home/RequestLicenseAttachment",
+                // /** File URL (optional) */
+                // /** Doctype associated with the file (optional) */
+                // "doctype": "Attachment",
+                // /** Docname associated with the file (mandatory if doctype is present) */
+                // "docname": attachment.name,
+                // /** Field to be linked in the Document **/
+                // "fieldname" : "value"
+            }
+
+            file.uploadFile(
+                myFile,
+                fileArgs,
+                /** Progress Indicator callback function **/
+                (completedBytes, totalBytes) => console.log(Math.round((c / t) * 100), " completed")
+            )
+                .then((response) => {
+                    console.log("File Upload complete")
+                    let fileResponse = response.data.message
+                    console.log(response)
+                    call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.update_attachment", {
+                        'fileresponse': fileResponse,
+                        'attachment': attachment
+                    }).then(() => {
+                        loadRequestLicense().then(() => setIsLoading(false))
+                    }).catch(e => alert.showError(JSON.stringify(e)))
+                })
+                .catch(e => console.error(e))
+
 
         }
 
         return (
             <div>
-            <Tooltip aria-label="Upload" showArrow={true} content="Upload">
-                <Button isLoading={isUploading} aria-label="Upload" onClick={openInputFile} isIconOnly color="primary">
-                    <FaUpload />
-                </Button>
-            </Tooltip>
-            <input type="file" id="file" onChange={uploadFile} ref={inputFile} style={{display: "none"}}/>
+                <Tooltip aria-label="Upload" showArrow={true} content="Upload">
+                    <Button isLoading={isUploading} aria-label="Upload" onClick={openInputFile} isIconOnly color="primary">
+                        <FaUpload />
+                    </Button>
+                </Tooltip>
+                <input type="file" id="file" onChange={uploadFile} ref={inputFile} style={{ display: "none" }} />
 
             </div>
         )
     }
 
 
+    const submitDoc = async () => {
+        call.post(`maechan.maechan_license.doctype.requestlicense.requestlicense.citizen_submit`, {
+            name: createForm.name
+        }).then(()=>{
+            navigate("/licenseRequest")
+        }).catch(err => {
+            alert.showError(JSON.stringify(err))
+        })
+    }
 
     return (
         <div className="flex flex-col">
@@ -392,8 +435,11 @@ export default function RequestLicenseEdit() {
             </Breadcrumbs>
 
 
-            <div className="flex flex-row lg:w-[50%] text-xl mb-3">
-                แก้ไขคำร้องขอใบอนุญาต : {params.id}
+            <div className="flex flex-row text-xl mb-3 justify-between">
+                <div>แก้ไขคำร้องขอใบอนุญาต : {params.id}</div>
+                <div>
+                    {createForm.request_status == "สร้าง" ? <Button onClick={submitDoc} type="button" color="secondary">ส่งเอกสาร</Button> : null}
+                </div>
             </div>
 
             <Tabs aria-label="Tabs" isDisabled={isLoading}>
@@ -574,11 +620,15 @@ export default function RequestLicenseEdit() {
                         renderForm(x, "request_extra")
                     ))}
 
+                    <div className="flex flex-row lg:w-[50%] text-xl mb-3">
+                        <Button isLoading={isSaving} className="mr-3" color="primary" onClick={save}>บันทึก</Button>
+                        <Button className="mr-3" onClick={() => { navigate("/licenseRequest") }} color="default">ยกเลิก</Button>
+                    </div>
 
                 </Tab>
 
                 <Tab key="attachments" title="เอกสารแนบ" aria-label="เอกสารแนบ" className="flex flex-col">
-                    <Table isStriped shadow="none">
+                    <Table isStriped shadow="none" aria-label="เอกสารแนบ">
                         <TableHeader>
                             <TableColumn className="text-center">
                                 ลำดับ

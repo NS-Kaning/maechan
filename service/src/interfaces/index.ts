@@ -1,4 +1,5 @@
 export type Doctype = {
+    docstatus : number;
     name: string;
 }
 

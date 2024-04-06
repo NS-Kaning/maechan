@@ -3,7 +3,7 @@ import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { FaEdit, FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import { IBusiness, IHouse, IRequestLicense } from "../../interfaces"
+import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
 
 function RequestLicense() {
 
@@ -36,6 +36,17 @@ function RequestLicense() {
         )
     }, [])
 
+    const getDocStatus = (doc: IRequestLicense) => {
+        if (doc.docstatus == 0) {
+            return doc.request_status
+        } else if (doc.docstatus == 1) {
+            return `${doc.request_status} (สำเร็จ)`
+        } else {
+            return `ยกเลิก`
+        }
+
+    }
+
     return (
         <div className="flex flex-col">
             <Breadcrumbs className="mb-3">
@@ -54,6 +65,7 @@ function RequestLicense() {
                     classNames={{
                         wrapper: 'p-0'
                     }}
+                    aria-label="รายการคำร้องใบอนุญาต"
                 >
                     <TableHeader>
                         <TableColumn>ประเภทคำร้อง</TableColumn>
@@ -70,17 +82,23 @@ function RequestLicense() {
                                     <TableCell>{x.request_type}</TableCell>
                                     <TableCell>{x.business.business_name}</TableCell>
                                     <TableCell>{x.house_no.text_display}</TableCell>
-                                    <TableCell>{x.request_status}</TableCell>
+                                    <TableCell>{getDocStatus(x)}</TableCell>
                                     <TableCell>
-                                        <div className="flex flex-row w-fit gap-2">
-                                            <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
-                                                <span
-                                                    onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
-                                                    className="text-lg cursor-pointer active:opacity-50">
-                                                    <FaEdit />
-                                                </span>
-                                            </Tooltip>
-                                        </div>
+                                        {
+                                            x.docstatus == 0 && x.request_status == "สร้าง" ?
+                                                (
+                                                    <div className="flex flex-row w-fit gap-2">
+                                                        <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
+                                                            <span
+                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
+                                                                className="text-lg cursor-pointer active:opacity-50">
+                                                                <FaEdit />
+                                                            </span>
+                                                        </Tooltip>
+                                                    </div>
+                                                ) : null
+                                        }
+
                                     </TableCell>
                                 </TableRow>
                             ))

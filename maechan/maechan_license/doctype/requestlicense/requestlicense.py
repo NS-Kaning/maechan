@@ -52,7 +52,8 @@ class RequestLicense(Document):
         house_tel: DF.Data | None
         license_type: DF.Link | None
         request_extra: DF.Table[RequestDetail]
-        request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48", "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
+        request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02",
+                                   "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48", "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
         request_type: DF.Link | None
         workflow_state: DF.Link | None
     # end: auto-generated types
@@ -164,14 +165,46 @@ def first_step_requestlicense():
 
     frappe.response['message'] = requestLicenseObj
 
+
 @frappe.whitelist()
-def deleteAttachment() :
-    from  maechan.maechan_license.doctype.attachment.attachment import Attachment
+def deleteAttachment():
+    from maechan.maechan_license.doctype.attachment.attachment import Attachment
     req = frappe.form_dict
     assert 'attachment' in req
     attchmentReq = req['attachment']
-    attachmentDoc : Attachment = frappe.get_doc(attchmentReq) # type: ignore
+    attachmentDoc: Attachment = frappe.get_doc(attchmentReq)  # type: ignore
     attachmentDoc.value = ''
     attachmentDoc.save()
-    
+
     return attachmentDoc
+
+
+@frappe.whitelist()
+def update_attachment():
+
+    from maechan.maechan_license.doctype.attachment.attachment import Attachment
+    req = frappe.form_dict
+    assert 'attachment' in req
+    assert 'fileresponse' in req
+    attchmentReq = req['attachment']
+    fileReq = req['fileresponse']
+    attachmentDoc: Attachment = frappe.get_doc(attchmentReq)  # type: ignore
+    attachmentDoc.value = fileReq['file_url']
+    attachmentDoc.save()
+
+    return attachmentDoc
+
+
+@frappe.whitelist()
+def citizen_submit():
+    req = frappe.form_dict
+    assert 'name' in req
+    name = req['name']
+    doc: RequestLicense = frappe.get_doc(
+        "RequestLicense", name
+    )   # type: ignore
+
+    doc.request_status = "รอตรวจสอบเอกสาร"
+    doc.save(0)
+
+    return doc
