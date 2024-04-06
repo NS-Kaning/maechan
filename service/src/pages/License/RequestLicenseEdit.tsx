@@ -1,5 +1,5 @@
-import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Autocomplete, AutocompleteItem, Skeleton } from "@nextui-org/react"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Autocomplete, AutocompleteItem, Skeleton, Tooltip } from "@nextui-org/react"
+import { PropsWithChildren, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon, IUserProfile } from "../../interfaces"
@@ -8,6 +8,7 @@ import { useAsyncList } from "@react-stately/data"
 import { DateTime } from "luxon";
 import { useAlertContext } from "../../providers/AlertProvider"
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { FaDownload, FaTrash, FaUpload } from "react-icons/fa6"
 
 export default function RequestLicenseEdit() {
 
@@ -253,9 +254,9 @@ export default function RequestLicenseEdit() {
 
                 if (x.key == "ชื่อสถานประกอบการ") {
                     console.log(x.key, !childkey.value)
-                    let business = businesses.find(x => x.name = createForm.business)
+                    let business = businesses.find(x => x.name == createForm.business)
                     if (!childkey.value) {
-                        childkey.value = business?.business_name
+                        childkey.value = business?.business_name ?? ''
                         return (<div key={x.key} className="lg:w-[50%] mb-3">
                             <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
                         </div>)
@@ -298,6 +299,88 @@ export default function RequestLicenseEdit() {
 
     }
 
+    const siteName = import.meta.env.VITE_FRAPPE_URL
+
+    const DeleteAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
+
+        const [isLoading, setIsLoading] = useState(false)
+        const deleteAttachment = async (a: IAttachment) => {
+            setIsLoading(true)
+            try {
+                let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.deleteAttachment", {
+                    attachment: a
+                })
+                if (success) {
+                    success(response)
+                }
+            } catch (err) {
+                if (error) {
+                    error(err)
+                }
+
+            } finally {
+                setIsLoading(false)
+            }
+
+        }
+
+        return (
+            <Tooltip showArrow={true} content="Delete">
+                <Button isLoading={isLoading} onClick={() => { deleteAttachment(attachment) }} isIconOnly color="danger">
+                    <FaTrash />
+                </Button>
+            </Tooltip>
+        )
+    }
+
+    const updateAttachment = (req: any) => {
+        console.log(req)
+        let attachment = req.message
+        if (attachment) {
+            let createFormValue = { ...createForm }
+            let attachmentUpdate = createFormValue.attachment_extra.find(a => a.name == attachment.name)
+            if (attachmentUpdate) {
+                let index = createFormValue.attachment_extra.indexOf(attachmentUpdate)
+                createFormValue.attachment_extra[index] = attachment
+                setCreateForm({
+                    ...createFormValue
+                })
+            }
+        }
+    }
+
+    const UploadAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
+        const inputFile = useRef(null)
+
+        const [isUploading,setIsUploading] = useState(false)
+        const openInputFile = () => {
+            inputFile.current.click();
+
+        }
+
+        const uploadFile = async (e : any) => {
+            setIsUploading(true)
+            console.log(e.target.files[0])
+            setTimeout(()=>{
+                setIsUploading(false)
+            },3000)
+
+        }
+
+        return (
+            <div>
+            <Tooltip aria-label="Upload" showArrow={true} content="Upload">
+                <Button isLoading={isUploading} aria-label="Upload" onClick={openInputFile} isIconOnly color="primary">
+                    <FaUpload />
+                </Button>
+            </Tooltip>
+            <input type="file" id="file" onChange={uploadFile} ref={inputFile} style={{display: "none"}}/>
+
+            </div>
+        )
+    }
+
+
 
     return (
         <div className="flex flex-col">
@@ -313,8 +396,8 @@ export default function RequestLicenseEdit() {
                 แก้ไขคำร้องขอใบอนุญาต : {params.id}
             </div>
 
-            <Tabs aria-label="Tabs">
-                <Tab key="basic_information" title="ข้อมูลพื้นฐาน" className="flex flex-col">
+            <Tabs aria-label="Tabs" isDisabled={isLoading}>
+                <Tab key="basic_information" aria-label="ข้อมูลพื้นฐาน" title="ข้อมูลพื้นฐาน" className="flex flex-col">
                     <Skeleton isLoaded={!isLoading}>
                         <div className="flex flex-row mb-3 gap-3">
                             <div className="flex flex-row lg:w-[50%] ">
@@ -486,7 +569,7 @@ export default function RequestLicenseEdit() {
                     </Skeleton>
                 </Tab>
 
-                <Tab key="extra_information" title="ข้อมูลประกอบ" className="flex flex-col">
+                <Tab key="extra_information" aria-label="ข้อมูลประกอบ" title="ข้อมูลประกอบ" className="flex flex-col">
                     {requestLicenseType?.details?.map((x: IRequestTypeDetail) => (
                         renderForm(x, "request_extra")
                     ))}
@@ -494,8 +577,8 @@ export default function RequestLicenseEdit() {
 
                 </Tab>
 
-                <Tab key="attachments" title="เอกสารแนบ" className="flex flex-col">
-                    <Table>
+                <Tab key="attachments" title="เอกสารแนบ" aria-label="เอกสารแนบ" className="flex flex-col">
+                    <Table isStriped shadow="none">
                         <TableHeader>
                             <TableColumn className="text-center">
                                 ลำดับ
@@ -512,7 +595,29 @@ export default function RequestLicenseEdit() {
                                 <TableRow key={a.name}>
                                     <TableCell className="text-center">{index + 1}</TableCell>
                                     <TableCell>{a.key}</TableCell>
-                                    <TableCell className="text-center">{a.value}</TableCell>
+                                    <TableCell className="text-center">
+                                        <div className="flex flex-row justify-center gap-1">
+                                            {a.value ? (
+                                                <Tooltip showArrow={true} content="Download">
+                                                    <Button onClick={() => { window.open(`${siteName}/${a.value}`) }} isIconOnly color="success">
+                                                        <FaDownload />
+                                                    </Button>
+
+                                                </Tooltip>
+                                            ) : null}
+
+                                            {a.value ? (
+                                                <DeleteAttachmentButton attachment={a} success={(req) => { updateAttachment(req) }} error={(err) => { }} />
+                                            ) : null}
+
+                                            {
+                                                !a.value ? (
+                                                    <UploadAttachmentButton attachment={a} success={(req) => { }} error={(err) => { }} />
+                                                ) : null
+
+                                            }
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ))}
 

@@ -8,7 +8,7 @@ import frappe.utils.logger
 from frappe.utils.password import update_password as _update_password
 from frappe.utils.oauth import login_oauth_user, login_via_oauth2_id_token, get_info_via_oauth
 
-from maechan.maechan_core.doctype.license.license import License
+from maechan.maechan_license.doctype.license.license import License
 
 
 frappe.utils.logger.set_log_level("DEBUG")

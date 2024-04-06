@@ -1,5 +1,5 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { FrappeConfig, FrappeContext, useFrappeGetCall } from "frappe-react-sdk"
+import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { FaEdit, FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"

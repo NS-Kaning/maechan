@@ -46,11 +46,13 @@ def add_business():
 
 	assert 'business_address' in req
 	assert 'business_name' in req
+	assert 'tel' in req
 
 
 	b : Business = frappe.new_doc('Business') # type: ignore
 	b.business_address = req['business_address'].strip()
 	b.business_name = req['business_name'].strip()
+	b.tel = req['tel'].strip()
 	b.manager = frappe.session.user
 
 	#validate
