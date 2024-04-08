@@ -162,13 +162,17 @@ export default function RequestLicenseEdit() {
         setCreateForm(createFormValue)
     }
 
+    const [workflowTransition, setWorkflowTransition] = useState([] as any[])
+
 
     const loadRequestLicense = async () => {
         let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_license", {
             name: params.id
         })
         let requestLicense: IRequestLicense = response.message
+
         setCreateForm(requestLicense)
+        setWorkflowTransition(response.transition)
         await updateHouseAutocomplete(requestLicense.house_no)
         await loadProvinceAmphureDistrict(requestLicense)
 
@@ -414,11 +418,26 @@ export default function RequestLicenseEdit() {
         )
     }
 
+    const workFlowActionButton = () => {
+        let currentState = workflowTransition.find(w => w.state == createForm.workflow_state)
+        console.log("XXX",createForm.workflow_state)
+        if (currentState) {
+            return (
+                <Button onClick={(e) => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
+            )
+        }
+        else {
+            return null
+        }
+    }
 
-    const submitDoc = async () => {
+
+    const submitDoc = async (action) => {
         call.post(`maechan.maechan_license.doctype.requestlicense.requestlicense.citizen_submit`, {
-            name: createForm.name
-        }).then(()=>{
+            name: createForm.name,
+            state : createForm.workflow_state,
+            action : action
+        }).then(() => {
             navigate("/licenseRequest")
         }).catch(err => {
             alert.showError(JSON.stringify(err))
@@ -438,7 +457,7 @@ export default function RequestLicenseEdit() {
             <div className="flex flex-row text-xl mb-3 justify-between">
                 <div>แก้ไขคำร้องขอใบอนุญาต : {params.id}</div>
                 <div>
-                    {createForm.request_status == "สร้าง" ? <Button onClick={submitDoc} type="button" color="secondary">ส่งเอกสาร</Button> : null}
+                    {workFlowActionButton()}
                 </div>
             </div>
 

@@ -47,11 +47,7 @@
   "section_break_qnoj",
   "attachment_extra",
   "request_checklist_tab",
-  "checklist_date",
-  "checklist_comment",
-  "section_break_mhbj",
-  "checklist_extra",
-  "checklist_list",
+  "check_datatable",
   "license_tab",
   "applicant_title",
   "license_type",
@@ -182,8 +178,7 @@
    "fieldname": "applicant_distict_th",
    "fieldtype": "Data",
    "hidden": 1,
-   "label": "\u0e15\u0e33\u0e1a\u0e25(\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01)",
-   "options": "Tambon"
+   "label": "\u0e15\u0e33\u0e1a\u0e25(\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01)"
   },
   {
    "fieldname": "column_break_alvl",
@@ -202,8 +197,7 @@
    "fetch_from": "applicant_distict.amphure_th",
    "fieldname": "applicant_amphur_th",
    "fieldtype": "Data",
-   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d",
-   "options": "Amphure"
+   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d"
   },
   {
    "fieldname": "column_break_dulk",
@@ -222,8 +216,7 @@
    "fetch_from": "applicant_distict.province_th",
    "fieldname": "applicant_province_th",
    "fieldtype": "Data",
-   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14",
-   "options": "Province"
+   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14"
   },
   {
    "fieldname": "house",
@@ -280,32 +273,6 @@
    "fieldname": "request_checklist_tab",
    "fieldtype": "Tab Break",
    "label": "\u0e41\u0e1a\u0e1a\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e1e\u0e37\u0e49\u0e19\u0e17\u0e35\u0e48(\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e40\u0e08\u0e49\u0e32\u0e2b\u0e19\u0e49\u0e32\u0e17\u0e35\u0e48)"
-  },
-  {
-   "fieldname": "checklist_date",
-   "fieldtype": "Date",
-   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e40\u0e02\u0e49\u0e32\u0e15\u0e23\u0e27\u0e08"
-  },
-  {
-   "fieldname": "checklist_comment",
-   "fieldtype": "Data",
-   "label": "\u0e02\u0e49\u0e2d\u0e40\u0e2a\u0e19\u0e2d\u0e41\u0e19\u0e30"
-  },
-  {
-   "fieldname": "section_break_mhbj",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "checklist_extra",
-   "fieldtype": "Table",
-   "label": "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14\u0e41\u0e1a\u0e1a\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a",
-   "options": "CheckListDetail"
-  },
-  {
-   "fieldname": "checklist_list",
-   "fieldtype": "Table",
-   "label": "\u0e40\u0e01\u0e13\u0e11\u0e4c\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32",
-   "options": "CheckList"
   },
   {
    "fieldname": "license_tab",
@@ -378,13 +345,18 @@
    "label": "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23",
    "no_copy": 1,
    "options": "\u0e2a\u0e23\u0e49\u0e32\u0e07\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\n\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a\n\u0e41\u0e01\u0e49\u0e44\u0e02\n\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48\n\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19\n\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\n\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19\n\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08\n\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"
+  },
+  {
+   "fieldname": "check_datatable",
+   "fieldtype": "HTML",
+   "label": "\u0e15\u0e32\u0e23\u0e32\u0e07\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2024-04-06 16:57:45.244782",
+ "modified": "2024-04-08 23:35:58.751136",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicense",

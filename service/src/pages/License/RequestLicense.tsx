@@ -38,6 +38,14 @@ function RequestLicense() {
 
     const getDocStatus = (doc: IRequestLicense) => {
         if (doc.docstatus == 0) {
+            if (doc.request_status == 'รอตรวจสถานที่') {
+                return (
+                    <div>
+                        {doc.request_status} <br/>
+                        วันที่เข้าตรวจ : {doc.checklist_date ?? '-'}
+                    </div>
+                )
+            }
             return doc.request_status
         } else if (doc.docstatus == 1) {
             return `${doc.request_status} (สำเร็จ)`
@@ -85,7 +93,7 @@ function RequestLicense() {
                                     <TableCell>{getDocStatus(x)}</TableCell>
                                     <TableCell>
                                         {
-                                            x.docstatus == 0 && x.request_status == "สร้าง" ?
+                                            x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง","ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
                                                 (
                                                     <div className="flex flex-row w-fit gap-2">
                                                         <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >

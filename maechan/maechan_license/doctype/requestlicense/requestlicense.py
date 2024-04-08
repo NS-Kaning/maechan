@@ -6,7 +6,7 @@ import frappe
 from frappe.model.naming import getseries
 from frappe.model.document import Document
 from maechan.maechan_license.doctype.requestlicensetype.requestlicensetype import RequestLicenseType
-
+from frappe.model.workflow import apply_workflow
 
 class RequestLicense(Document):
     # begin: auto-generated types
@@ -17,8 +17,6 @@ class RequestLicense(Document):
     if TYPE_CHECKING:
         from frappe.types import DF
         from maechan.maechan_license.doctype.attachment.attachment import Attachment
-        from maechan.maechan_license.doctype.checklist.checklist import CheckList
-        from maechan.maechan_license.doctype.checklistdetail.checklistdetail import CheckListDetail
         from maechan.maechan_license.doctype.licenseapprovehistory.licenseapprovehistory import LicenseApproveHistory
         from maechan.maechan_license.doctype.requestdetail.requestdetail import RequestDetail
 
@@ -43,10 +41,6 @@ class RequestLicense(Document):
         approve_history: DF.Table[LicenseApproveHistory]
         attachment_extra: DF.Table[Attachment]
         business: DF.Link | None
-        checklist_comment: DF.Data | None
-        checklist_date: DF.Date | None
-        checklist_extra: DF.Table[CheckListDetail]
-        checklist_list: DF.Table[CheckList]
         date: DF.Date | None
         house_no: DF.Link | None
         house_tel: DF.Data | None
@@ -64,13 +58,61 @@ class RequestLicense(Document):
     pass
 
 
+def get_active_workflow():
+
+    workflows = frappe.db.get_list("Workflow",
+                                   filters={
+                                       'document_type': "RequestLicense",
+                                       'is_active': True
+                                   },
+                                   fields='*'
+                                   )
+
+    workflow = workflows[0] if len(workflows) > 0 else None
+
+    return workflow
+
+
+def get_transitions(workflow, doc):
+
+    transition = frappe.db.get_all("Workflow Transition",
+                                   filters={
+                                       'parent': workflow['workflow_name'],
+                                       'allow_self_approval': True,
+                                       'state': doc.workflow_state
+                                   }, fields=['*'])
+
+    return transition
+
+
+def get_workflow_transision(doc):
+    workflow = get_active_workflow()
+    if (workflow):
+        transition = get_transitions(workflow, doc)
+    else:
+        transition = None
+
+    return transition
+
+
 @frappe.whitelist()
 def load_request_license():
     request = frappe.form_dict
     assert 'name' in request
 
     name = request['name']
-    return frappe.get_doc("RequestLicense", name)
+    requestLicenseDoc = frappe.get_doc("RequestLicense", name)
+
+    workflow = get_active_workflow()
+
+    if (workflow):
+        transition = get_transitions(workflow, requestLicenseDoc)
+    else:
+        transition = None
+
+    frappe.response['workflow'] = workflow
+    frappe.response['transition'] = transition
+    return requestLicenseDoc
 
 
 @frappe.whitelist()
@@ -132,34 +174,7 @@ def first_step_requestlicense():
                     'key': x.key
                 })
 
-        for x in reqtypeObj.checklist_details:
-
-            found = False
-            for i in requestLicenseObj.checklist_extra:
-                if i.key == x.key:
-                    found = True
-                    break
-
-            if not found:
-                requestLicenseObj.append('checklist_extra', {
-                    'key': x.key
-                })
-
-        for x in reqtypeObj.checklist:
-
-            found = False
-            for i in requestLicenseObj.checklist_list:
-                if i.key == x.key:
-                    found = True
-                    break
-
-            if not found:
-                requestLicenseObj.append('checklist_list', {
-                    'key': x.key,
-                    'title_detail': x.title_detail
-
-                })
-
+       
         requestLicenseObj.save()
 
     frappe.response['message'] = requestLicenseObj
@@ -198,15 +213,22 @@ def update_attachment():
 def citizen_submit():
     req = frappe.form_dict
     assert 'name' in req
+    assert 'action' in req
+    assert 'state' in req
     name = req['name']
     doc: RequestLicense = frappe.get_doc(
         "RequestLicense", name
     )   # type: ignore
 
-    doc.request_status = "รอตรวจสอบเอกสาร"
-    doc.workflow_state = "รอตรวจสอบเอกสาร"
-
-    doc.save(0)
-
+    transition = get_workflow_transision(doc=doc)
+    
+    if (transition):
+        if req['action'] == 'ปรับปรุงสถานที่แล้วเสร็จ' :
+            doc.save()
+        
+        apply_workflow(doc,req['action'])
+        
+            
+            
 
     return doc
