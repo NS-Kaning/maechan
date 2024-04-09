@@ -62,7 +62,7 @@ function BusinessIndex() {
 
             <div className="flex flex-row w-full text-xl mb-3">
                 <Skeleton isLoaded={!isLoading} className="w-full rounded-lg">
-                <Table isStriped shadow="none"
+                <Table isStriped shadow="none" aria-label="รายการกิจการ"
                     topContent={topContent}
                     topContentPlacement="outside"
                     classNames={{

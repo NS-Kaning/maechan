@@ -69,7 +69,7 @@ export function HouseSelectAutoComplete({ selectedKey, onSelectionChange }) {
             label="ที่อยู่กิจการ (บ้านเลขที่)"
             placeholder="Type to search..."
             onInputChange={setInputFilterText}
-            // selectedKey={_selectedKey}
+            selectedKey={selectedKey}
             onSelectionChange={(v) => {
                 onSelectionChange(v)
             }}
