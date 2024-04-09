@@ -259,9 +259,7 @@ frappe.ui.form.on("RequestLicense", {
             // console.log(frm.doc.request_status);
             frm.call('newLicense')
         }
-    }
-
-    , before_load(frm) {
+    }, before_load(frm) {
         const emailUser = frappe.session.user
         if (frm.doc.applicant_name == null) {
             frappe.db.get_doc("UserProfile", emailUser).then(r => {

@@ -12,11 +12,13 @@ function RequestLicense() {
 
     const [isLoading, setIsLoading] = useState(true)
     const [requestLicenses, setRequestLicenses] = useState([] as (IRequestLicense & { business: IBusiness, house_no: IHouse })[])
+    const [appointments, setAppointments] = useState({} as any)
 
     const loadRequestLicenses = async () => {
         setIsLoading(true)
         let response = await call.post('maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_licenses')
         setRequestLicenses(response.message)
+        setAppointments(response.appointment)
         setIsLoading(false)
     }
 
@@ -41,8 +43,7 @@ function RequestLicense() {
             if (doc.request_status == 'รอตรวจสถานที่') {
                 return (
                     <div>
-                        {doc.request_status} <br/>
-                        วันที่เข้าตรวจ : {doc.checklist_date ?? '-'}
+                        <div>{doc.request_status}</div>
                     </div>
                 )
             }
@@ -52,6 +53,32 @@ function RequestLicense() {
         } else {
             return `ยกเลิก`
         }
+
+    }
+
+    const getDocComment = (doc: IRequestLicense) => {
+        if (doc.docstatus == 0) {
+            if (doc.request_status == 'รอตรวจสถานที่') {
+                return (
+                    <div>
+                        <div>
+                            {appointments[doc.name].map((a, i) => (
+                                <ul key={a.name}>
+                                    <li>
+                                        <div>ครั้งที่ {i + 1} </div>
+                                        <div>วันที่ {a.checklist_date}</div>
+                                        <div>ผลการตรวจ : {a.checklist_result} </div>
+                                    </li>
+                                </ul>
+                            ))}
+                        </div>
+
+                    </div>
+                )
+            }
+            return null
+        }
+        return null;
 
     }
 
@@ -76,24 +103,30 @@ function RequestLicense() {
                     aria-label="รายการคำร้องใบอนุญาต"
                 >
                     <TableHeader>
-                        <TableColumn>ประเภทคำร้อง</TableColumn>
-                        <TableColumn>กิจการ</TableColumn>
+                        <TableColumn>คำร้อง</TableColumn>
                         <TableColumn>ที่อยู่</TableColumn>
                         <TableColumn>สถานะ</TableColumn>
+                        <TableColumn>หมายเหตุ</TableColumn>
                         <TableColumn>การกระทำ</TableColumn>
                     </TableHeader>
                     <TableBody>
 
                         {
                             requestLicenses.map(x => (
-                                <TableRow key="1">
-                                    <TableCell>{x.request_type}</TableCell>
-                                    <TableCell>{x.business.business_name}</TableCell>
+                                <TableRow key={x.name}>
+                                    <TableCell>
+                                        <div>
+                                            <div className="font-bold">{x.business.business_name}</div>
+                                            <div>{x.request_type}</div>
+                                        </div>
+                                    </TableCell>
+
                                     <TableCell>{x.house_no.text_display}</TableCell>
                                     <TableCell>{getDocStatus(x)}</TableCell>
+                                    <TableCell>{getDocComment(x)}</TableCell>
                                     <TableCell>
                                         {
-                                            x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง","ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
+                                            x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
                                                 (
                                                     <div className="flex flex-row w-fit gap-2">
                                                         <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >

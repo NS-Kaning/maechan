@@ -156,7 +156,7 @@ export type IRequestLicense = Doctype & {
     checklist_date: Date
     checklist_extra: ICheckListDetail[]
     checklist_list: ICheckList[]
-    date: Date
+    date: Date|string;
     house_no: string;
     house_tel: string;
     license_type: string;
@@ -165,4 +165,10 @@ export type IRequestLicense = Doctype & {
     request_type: string;
     workflow_state: string;
     business : string | IBusiness
+
+    license_applicant: string
+    license_applicant_type: "\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32" | "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"
+
+
+
 }

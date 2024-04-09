@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from maechan.maechan_license.doctype.requestlicensetype.requestlicensetype import RequestLicenseType
 from frappe.model.workflow import apply_workflow
 
+
 class RequestLicense(Document):
     # begin: auto-generated types
     # This code is auto-generated. Do not modify anything in this block.
@@ -44,6 +45,8 @@ class RequestLicense(Document):
         date: DF.Date | None
         house_no: DF.Link | None
         house_tel: DF.Data | None
+        license_applicant: DF.Data | None
+        license_applicant_type: DF.Literal["\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32", "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"]
         license_type: DF.Link | None
         request_extra: DF.Table[RequestDetail]
         request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48", "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
@@ -124,9 +127,16 @@ def load_request_licenses():
 
     docs: List[RequestLicense] = [frappe.get_doc(
         'RequestLicense', x.name) for x in result]  # type: ignore
-    for x in docs:
+    appointments = {}
+    for (i, x) in enumerate(docs):
         x.business = frappe.get_doc('Business', x.business)  # type: ignore
         x.house_no = frappe.get_doc('House', x.house_no)  # type: ignore
+
+        appointments[x.name] = (frappe.db.get_all("RequestLicenseInspect", fields="*", filters={  # type: ignore
+            'request_license': x.name
+        }))
+
+    frappe.response['appointment'] = appointments
 
     return docs
 
@@ -174,7 +184,6 @@ def first_step_requestlicense():
                     'key': x.key
                 })
 
-       
         requestLicenseObj.save()
 
     frappe.response['message'] = requestLicenseObj
@@ -221,14 +230,11 @@ def citizen_submit():
     )   # type: ignore
 
     transition = get_workflow_transision(doc=doc)
-    
+
     if (transition):
-        if req['action'] == 'ปรับปรุงสถานที่แล้วเสร็จ' :
+        if req['action'] == 'ปรับปรุงสถานที่แล้วเสร็จ':
             doc.save()
-        
-        apply_workflow(doc,req['action'])
-        
-            
-            
+
+        apply_workflow(doc, req['action'])
 
     return doc

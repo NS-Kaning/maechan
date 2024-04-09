@@ -420,7 +420,7 @@ export default function RequestLicenseEdit() {
 
     const workFlowActionButton = () => {
         let currentState = workflowTransition.find(w => w.state == createForm.workflow_state)
-        console.log("XXX",createForm.workflow_state)
+        console.log("XXX", createForm.workflow_state)
         if (currentState) {
             return (
                 <Button onClick={(e) => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
@@ -435,8 +435,8 @@ export default function RequestLicenseEdit() {
     const submitDoc = async (action) => {
         call.post(`maechan.maechan_license.doctype.requestlicense.requestlicense.citizen_submit`, {
             name: createForm.name,
-            state : createForm.workflow_state,
-            action : action
+            state: createForm.workflow_state,
+            action: action
         }).then(() => {
             navigate("/licenseRequest")
         }).catch(err => {
@@ -495,6 +495,29 @@ export default function RequestLicenseEdit() {
                                     ))}
                                 </Select>
                             </div>
+                        </div>
+                        <div className="flex flex-row lg:w-[50%] text-md mb-3">
+                            ลักษณะการดำเนินการ
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 mb-3">
+                            <Select
+                                label="ประเภทการขออนุญาต"
+                                className="" 
+                                selectedKeys={[createForm.license_applicant_type as string]}
+
+                                onSelectionChange={(k) => updateForm('license_applicant_type', Array.from(k)[0])}
+                            >
+                                <SelectItem key="บุคคลธรรมดา" >บุคคลธรรมดา</SelectItem>
+                                <SelectItem key="นิติบุคคล" >นิติบุคคล</SelectItem>
+                            </Select>
+
+                            {createForm.license_applicant_type == 'นิติบุคคล' ? (
+                                <Input
+                                    value={createForm.license_applicant}
+                                    name="license_applicant"
+                                    onChange={(e) => updateForm(e.target.name, e.target.value)}
+                                    type="text" label="ชื่อนิติบุคคลที่ขอใบอนุญาต" />
+                            ) : null}
                         </div>
                         <div className="flex flex-row lg:w-[50%] text-md mb-3">
                             ข้อมูลผู้ขอใบอนุญาต

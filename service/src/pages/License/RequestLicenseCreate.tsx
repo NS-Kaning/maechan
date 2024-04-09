@@ -131,6 +131,7 @@ export default function RequestLicenseCreate() {
                 applicant_distict: user_profile.address_district,
                 applicant_amphur: user_profile.address_amphur,
                 applicant_province: user_profile.address_province,
+                license_applicant_type: 'บุคคลธรรมดา'
             })
 
         } catch (error) {
@@ -173,7 +174,7 @@ export default function RequestLicenseCreate() {
         }
     }
 
-    const updateForm = async (key: string, value: string|number) => {
+    const updateForm = async (key: string, value: string | number) => {
 
         let createFormValue = {
             ...createForm,
@@ -202,11 +203,11 @@ export default function RequestLicenseCreate() {
                     }
                 )
             }
-        }else if (key == "house_no"){
+        } else if (key == "house_no") {
             let house = list.items.find(x => x.name == value)
-            console.log(house,key,value)
+            console.log(house, key, value)
             list.setFilterText(house?.text_display ?? '')
-            if(!value){
+            if (!value) {
                 createFormValue.house_no = ''
             }
         }
@@ -235,9 +236,9 @@ export default function RequestLicenseCreate() {
         result: null,
     })
 
-    const save = async ()=>{
-        let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.first_step_requestlicense",{
-            request : createForm
+    const save = async () => {
+        let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.first_step_requestlicense", {
+            request: createForm
         })
         console.log(response)
 
@@ -278,7 +279,7 @@ export default function RequestLicenseCreate() {
                     <Select
                         label="ประเภทการขออนุญาต"
                         className=""
-                        onSelectionChange={(k)=> updateForm('request_type',Array.from(k)[0])}
+                        onSelectionChange={(k) => updateForm('request_type', Array.from(k)[0])}
                     >
                         {requestTypes.map((b) => (
                             <SelectItem key={b.name} >
@@ -289,38 +290,59 @@ export default function RequestLicenseCreate() {
                 </div>
             </div>
             <div className="flex flex-row lg:w-[50%] text-md mb-3">
+                ลักษณะการดำเนินการ
+            </div>
+            <div className="grid grid-cols-3 gap-3 mb-3">
+                <Select
+                    label="ประเภทการขออนุญาต"
+                    className="" defaultSelectedKeys={["บุคคลธรรมดา"]}
+                    onSelectionChange={(k) => updateForm('license_applicant_type', Array.from(k)[0])}
+                >
+                    <SelectItem key="บุคคลธรรมดา" >บุคคลธรรมดา</SelectItem>
+                    <SelectItem key="นิติบุคคล" >นิติบุคคล</SelectItem>
+                </Select>
+
+                {createForm.license_applicant_type == 'นิติบุคคล' ? (
+                    <Input
+                        value={createForm.license_applicant}
+                        name="license_applicant"
+                        onChange={(e) => updateForm(e.target.name, e.target.value)}
+                        type="text" label="ชื่อนิติบุคคลที่ขอใบอนุญาต" />
+                ) : null}
+            </div>
+            <div className="flex flex-row lg:w-[50%] text-md mb-3">
                 ข้อมูลผู้ขอใบอนุญาต
             </div>
             <div className="grid grid-cols-3 gap-3 mb-3">
                 <Input
                     value={createForm.applicant_name}
                     name="applicant_name"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="ชื่อ-สกุล" />
                 <Input
                     value={createForm.applicant_age as string}
                     name="applicant_age"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="number" label="อายุ" />
                 <Input
                     value={createForm.applicant_nationality}
                     name="applicant_nationality"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="สัญชาติ" />
                 <Input
                     value={createForm.applicant_tel}
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     name="applicant_tel"
                     type="text" label="เบอร์โทรศัพท์" />
                 <Input
                     value={createForm.applicant_fax}
                     name="applicant_fax"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="แฟกซ์" />
                 <Input
                     value={createForm.applicant_ethnicity}
                     name="applicant_ethnicity"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="เชื้อชาติ" />
 
             </div>
@@ -332,17 +354,17 @@ export default function RequestLicenseCreate() {
                 <Input
                     value={createForm.applicant_no}
                     name="applicant_no"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="เลขที่" />
                 <Input
                     value={createForm.applicant_moo}
                     name="applicant_moo"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="หมู่" />
                 <Input
                     value={createForm.applicant_soi}
                     name="applicant_soi"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="ตรอก/ซอย" />
                 <Input
                     value={createForm.applicant_road}
@@ -414,14 +436,14 @@ export default function RequestLicenseCreate() {
                 <Input
                     value={createForm.house_tel}
                     name="house_tel"
-                    onChange={(e)=>updateForm(e.target.name,e.target.value)}
+                    onChange={(e) => updateForm(e.target.name, e.target.value)}
                     type="text" label="เบอร์โทรศัพท์" />
 
             </div>
 
             <div className="flex flex-row lg:w-[50%] text-xl mb-3">
                 <Button className="mr-3" color="primary" onClick={save}>บันทึกและต่อไป</Button>
-                <Button className="mr-3" onClick={()=>{navigate("/licenseRequest")}} color="default">ยกเลิก</Button>
+                <Button className="mr-3" onClick={() => { navigate("/licenseRequest") }} color="default">ยกเลิก</Button>
             </div>
         </div>
 

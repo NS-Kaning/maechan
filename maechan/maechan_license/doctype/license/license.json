@@ -12,6 +12,7 @@
   "license_type",
   "license_main_type",
   "column_break_xrly",
+  "request_license",
   "license_applicant_information",
   "license_applicant_type",
   "column_break_sckh",
@@ -618,12 +619,18 @@
   {
    "fieldname": "column_break_gosx",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "request_license",
+   "fieldtype": "Link",
+   "label": "\u0e2d\u0e49\u0e32\u0e07\u0e2d\u0e34\u0e07\u0e43\u0e1a\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07",
+   "options": "RequestLicense"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-11 14:14:45.088889",
+ "modified": "2024-04-09 08:44:35.988022",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "License",

@@ -75,8 +75,8 @@ class License(Document):
 
     if TYPE_CHECKING:
         from frappe.types import DF
-        from maechan.maechan_core.doctype.licenseapprovehistory.licenseapprovehistory import LicenseApproveHistory
-        from maechan.maechan_core.doctype.licensedetail.licensedetail import LicenseDetail
+        from maechan.maechan_license.doctype.licenseapprovehistory.licenseapprovehistory import LicenseApproveHistory
+        from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
 
         amended_from: DF.Link | None
         approve_histories: DF.Table[LicenseApproveHistory]
@@ -121,6 +121,7 @@ class License(Document):
         license_type: DF.Link | None
         qr_code_base64: DF.LongText | None
         receipt_date: DF.Date | None
+        request_license: DF.Link | None
         telephone: DF.Data | None
         uuid: DF.Data | None
         workflow_state: DF.Link | None
