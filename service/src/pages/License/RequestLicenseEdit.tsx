@@ -303,7 +303,7 @@ export default function RequestLicenseEdit() {
 
     }
 
-    const siteName = import.meta.env.VITE_FRAPPE_URL
+    const siteName = import.meta.env.VITE_FRAPPE_URL ?? window.origin
 
     const DeleteAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
 
