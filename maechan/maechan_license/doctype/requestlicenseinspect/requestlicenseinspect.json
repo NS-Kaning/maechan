@@ -51,13 +51,15 @@
   {
    "fieldname": "request_license",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "RequestLicense",
    "options": "RequestLicense"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-09 00:40:11.130166",
+ "modified": "2024-04-09 11:29:38.512473",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicenseInspect",

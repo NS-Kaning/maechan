@@ -254,11 +254,11 @@ frappe.ui.form.on("RequestLicense", {
 
     }, after_workflow_action(frm) {
         // console.log(frm.doc.request_status);
-        if (frm.doc.request_status == 'รอออกใบอนุญาต') {
-            // console.log("test");
-            // console.log(frm.doc.request_status);
-            frm.call('newLicense')
-        }
+        // if (frm.doc.request_status == 'รอออกใบอนุญาต') {
+        //     // console.log("test");
+        //     // console.log(frm.doc.request_status);
+        //     frm.call('newLicense')
+        // }
     }, before_load(frm) {
         const emailUser = frappe.session.user
         if (frm.doc.applicant_name == null) {
