@@ -294,7 +294,7 @@ export default function RequestLicenseCreate() {
             </div>
             <div className="grid grid-cols-3 gap-3 mb-3">
                 <Select
-                    label="ประเภทการขออนุญาต"
+                    label="ลักษณะการดำเนินงาน"
                     className="" defaultSelectedKeys={["บุคคลธรรมดา"]}
                     onSelectionChange={(k) => updateForm('license_applicant_type', Array.from(k)[0])}
                 >

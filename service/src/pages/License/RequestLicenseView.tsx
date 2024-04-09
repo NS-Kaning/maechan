@@ -10,7 +10,7 @@ import { useAlertContext } from "../../providers/AlertProvider"
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import { FaDownload, FaTrash, FaUpload } from "react-icons/fa6"
 
-export default function RequestLicenseEdit() {
+export default function RequestLicenseView() {
 
     const navigate = useNavigate()
     const alert = useAlertContext()
@@ -262,18 +262,18 @@ export default function RequestLicenseEdit() {
                     if (!childkey.value) {
                         childkey.value = business?.business_name ?? ''
                         return (<div key={x.key} className="lg:w-[50%] mb-3">
-                            <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
+                            <Input isReadOnly defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
                         </div>)
                     } else {
                         return (<div key={x.key} className="lg:w-[50%] mb-3">
-                            <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
+                            <Input isReadOnly defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
                         </div>)
                     }
 
                 } else {
                     return (
                         <div key={x.key} className="lg:w-[50%] mb-3">
-                            <Input defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
+                            <Input isReadOnly defaultValue={childkey.value} value={childkey.value} label={x.key} type="text" onValueChange={(value) => { updateChild(child, x.key, value) }} />
                         </div>
                     )
                 }
@@ -282,7 +282,7 @@ export default function RequestLicenseEdit() {
                 let options = x.options.split('\n')
                 return (
                     <div key={x.key} className="lg:w-[50%] mb-3">
-                        <Select selectedKeys={[childkey.value]} label={x.key} onSelectionChange={(e) => { updateChild(child, x.key, Array.from(e)[0] as string) }}>
+                        <Select isDisabled selectedKeys={[childkey.value]} label={x.key} onSelectionChange={(e) => { updateChild(child, x.key, Array.from(e)[0] as string) }}>
                             {options.map(o => (
                                 <SelectItem key={o} value={o}>
                                     {o}
@@ -449,15 +449,15 @@ export default function RequestLicenseEdit() {
             <Breadcrumbs className="mb-3">
                 <BreadcrumbItem><Link to={"/"}><FaHome /></Link></BreadcrumbItem>
                 <BreadcrumbItem><Link to={'/licenseRequest'}>คำร้องขอใบอนุญาต</Link></BreadcrumbItem>
-                <BreadcrumbItem>แก้ไขคำร้องขอใบอนุญาต : {params.id}
+                <BreadcrumbItem>คำร้องขอใบอนุญาต : {params.id}
                 </BreadcrumbItem>
             </Breadcrumbs>
 
 
             <div className="flex flex-row text-xl mb-3 justify-between">
-                <div>แก้ไขคำร้องขอใบอนุญาต : {params.id}</div>
+                <div>คำร้องขอใบอนุญาต : {params.id}</div>
                 <div>
-                    {workFlowActionButton()}
+                    {/* {workFlowActionButton()} */}
                 </div>
             </div>
 
@@ -466,53 +466,30 @@ export default function RequestLicenseEdit() {
                     <Skeleton isLoaded={!isLoading}>
                         <div className="flex flex-row mb-3 gap-3">
                             <div className="flex flex-row lg:w-[50%] ">
-                                <Select
-                                    label="กิจการ"
-                                    className=""
-                                    onSelectionChange={(key) => { updateForm("business", Array.from(key)[0]) }}
-                                    selectedKeys={[createForm.business as string]}
-                                >
-                                    {businesses.map((b) => (
-                                        <SelectItem key={b.name} >
-                                            {b.business_name}
-                                        </SelectItem>
-                                    ))}
-                                </Select>
-
+                                <Input readOnly label="กิจการ"
+                                    value={businesses.find(x => x.name == createForm.business)?.business_name}
+                                />
                             </div>
                             <div className="flex flex-row lg:w-[50%]">
-                                <Select
-                                    label="ประเภทการขออนุญาต"
-                                    className=""
-                                    selectedKeys={[createForm.request_type as string]}
+                                <Input readOnly label="ประเภทการขออนุญาต"
+                                    value={requestTypes.find(x => x.name == createForm.request_type)?.name}
+                                />
 
-                                    onSelectionChange={(k) => updateForm('request_type', Array.from(k)[0])}
-                                >
-                                    {requestTypes.map((b) => (
-                                        <SelectItem key={b.name} >
-                                            {b.name}
-                                        </SelectItem>
-                                    ))}
-                                </Select>
                             </div>
                         </div>
                         <div className="flex flex-row lg:w-[50%] text-md mb-3">
                             ลักษณะการดำเนินการ
                         </div>
                         <div className="grid grid-cols-3 gap-3 mb-3">
-                            <Select
-                                label="ลักษณะการดำเนินงาน"
-                                className="" 
-                                selectedKeys={[createForm.license_applicant_type as string]}
 
-                                onSelectionChange={(k) => updateForm('license_applicant_type', Array.from(k)[0])}
-                            >
-                                <SelectItem key="บุคคลธรรมดา" >บุคคลธรรมดา</SelectItem>
-                                <SelectItem key="นิติบุคคล" >นิติบุคคล</SelectItem>
-                            </Select>
+                            <Input readOnly label="ลักษณะการดำเนินงาน"
+                                value={createForm.license_applicant_type}
+                            />
+
 
                             {createForm.license_applicant_type == 'นิติบุคคล' ? (
                                 <Input
+                                    readOnly
                                     value={createForm.license_applicant}
                                     name="license_applicant"
                                     onChange={(e) => updateForm(e.target.name, e.target.value)}
@@ -524,31 +501,32 @@ export default function RequestLicenseEdit() {
                         </div>
                         <div className="grid grid-cols-3 gap-3 mb-3">
                             <Input
+                                readOnly
                                 value={createForm.applicant_name}
                                 name="applicant_name"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="ชื่อ-สกุล" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_age as string}
                                 name="applicant_age"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="number" label="อายุ" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_nationality}
                                 name="applicant_nationality"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="สัญชาติ" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_tel}
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 name="applicant_tel"
                                 type="text" label="เบอร์โทรศัพท์" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_fax}
                                 name="applicant_fax"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="แฟกซ์" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_ethnicity}
                                 name="applicant_ethnicity"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
@@ -560,61 +538,44 @@ export default function RequestLicenseEdit() {
                         </div>
 
                         <div className="grid grid-cols-3 gap-3 mb-3">
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_no}
                                 name="applicant_no"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="เลขที่" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_moo}
                                 name="applicant_moo"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="หมู่" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_soi}
                                 name="applicant_soi"
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="ตรอก/ซอย" />
-                            <Input
+                            <Input readOnly
                                 value={createForm.applicant_road}
                                 name="applicant_road"
                                 type="text" label="ถนน" />
                         </div>
 
                         <div className="grid grid-cols-3 gap-3 mb-3">
-                            <Select
-                                items={provinces}
-                                label="จังหวัด"
-                                selectedKeys={[createForm.applicant_province]}
-                                onSelectionChange={(key) => {
-                                    updateForm('applicant_province', Array.from(key)[0])
-                                }}
-                            >
-                                {(province) => <SelectItem key={province.name}>{province.name_th}</SelectItem>}
-                            </Select>
+                            <Input readOnly
+                                value={provinces.find(p => p.name == createForm.applicant_province)?.name_th}
+                                name="applicant_province"
+                                type="text" label="จังหวัด" />
 
-                            <Select
-                                isLoading={amphureLoad}
-                                isDisabled={amphureLoad}
-                                items={amphures}
-                                label="อำเภอ"
-                                selectedKeys={[createForm.applicant_amphur]}
-                                onSelectionChange={(key) => updateForm('applicant_amphur', Array.from(key)[0])}
 
-                            >
-                                {(amphure) => <SelectItem key={amphure.name}>{amphure.name_th}</SelectItem>}
-                            </Select>
-                            <Select
-                                isLoading={districtLoad}
-                                isDisabled={districtLoad}
-                                items={districts}
-                                label="ตำบล"
-                                selectedKeys={[createForm.applicant_distict]}
-                                onSelectionChange={(key) => updateForm('applicant_distict', Array.from(key)[0])}
+                            <Input readOnly
+                                value={amphures.find(p => p.name == createForm.applicant_amphur)?.name_th}
+                                name="applicant_amphur"
+                                type="text" label="อำเภอ" />
 
-                            >
-                                {(district) => <SelectItem key={district.name}>{district.name_th}</SelectItem>}
-                            </Select>
+
+                            <Input readOnly
+                                value={districts.find(p => p.name == createForm.applicant_distict)?.name_th}
+                                name="applicant_distict"
+                                type="text" label="ตำบล" />
                         </div>
 
                         <div className="flex flex-row lg:w-[50%] text-md mb-3">
@@ -622,9 +583,10 @@ export default function RequestLicenseEdit() {
                         </div>
                         <div className="grid grid-cols-3 gap-3 mb-3">
 
+
                             <Autocomplete
                                 className="w-full"
-
+                                isReadOnly
                                 isRequired
                                 inputValue={list.filterText}
                                 isLoading={list.isLoading}
@@ -645,13 +607,13 @@ export default function RequestLicenseEdit() {
                             <Input
                                 value={createForm.house_tel}
                                 name="house_tel"
+                                readOnly
                                 onChange={(e) => updateForm(e.target.name, e.target.value)}
                                 type="text" label="เบอร์โทรศัพท์" />
 
                         </div>
 
                         <div className="flex flex-row lg:w-[50%] text-xl mb-3">
-                            <Button isLoading={isSaving} className="mr-3" color="primary" onClick={save}>บันทึก</Button>
                             <Button className="mr-3" onClick={() => { navigate("/licenseRequest") }} color="default">ยกเลิก</Button>
                         </div>
                     </Skeleton>
@@ -698,16 +660,6 @@ export default function RequestLicenseEdit() {
                                                 </Tooltip>
                                             ) : null}
 
-                                            {a.value ? (
-                                                <DeleteAttachmentButton attachment={a} success={(req) => { updateAttachment(req) }} error={(err) => { }} />
-                                            ) : null}
-
-                                            {
-                                                !a.value ? (
-                                                    <UploadAttachmentButton attachment={a} success={(req) => { }} error={(err) => { }} />
-                                                ) : null
-
-                                            }
                                         </div>
                                     </TableCell>
                                 </TableRow>

@@ -4,6 +4,7 @@ import { useContext, useEffect, useMemo, useState } from "react"
 import { FaEdit, FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
+import { FaMagnifyingGlass } from "react-icons/fa6"
 
 function RequestLicense() {
 
@@ -137,7 +138,17 @@ function RequestLicense() {
                                                             </span>
                                                         </Tooltip>
                                                     </div>
-                                                ) : null
+                                                ) : (
+                                                    <div className="flex flex-row w-fit gap-2">
+                                                        <Tooltip placement="top" content="ดู" aria-label="ดู" >
+                                                            <span
+                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/view`) }}
+                                                                className="text-lg cursor-pointer active:opacity-50">
+                                                                <FaMagnifyingGlass />
+                                                            </span>
+                                                        </Tooltip>
+                                                    </div>
+                                                )
                                         }
 
                                     </TableCell>

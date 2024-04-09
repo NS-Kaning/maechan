@@ -16,6 +16,7 @@ import ProfilePage from './pages/Personal/ProfilePage';
 import BusinessEdit from './pages/Business/BusinessEdit';
 import RequestLicenseCreate from './pages/License/RequestLicenseCreate';
 import RequestLicenseEdit from './pages/License/RequestLicenseEdit';
+import RequestLicenseView from './pages/License/RequestLicenseView';
 function App() {
 
 
@@ -65,6 +66,7 @@ function App() {
 											<Route index element={<RequestLicense/>} />
 											<Route path='create' element={<RequestLicenseCreate/>} />
 											<Route path=':id/edit' element={<RequestLicenseEdit />} />
+											<Route path=':id/view' element={<RequestLicenseView />} />
 
 										</Route>
 
