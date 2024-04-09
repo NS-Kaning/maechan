@@ -457,6 +457,7 @@ export default function RequestLicenseEdit() {
             <div className="flex flex-row text-xl mb-3 justify-between">
                 <div>แก้ไขคำร้องขอใบอนุญาต : {params.id}</div>
                 <div>
+                    <Button isLoading={isSaving} className="mr-3" color="primary" onClick={save}>บันทึก</Button>
                     {workFlowActionButton()}
                 </div>
             </div>
@@ -502,7 +503,7 @@ export default function RequestLicenseEdit() {
                         <div className="grid grid-cols-3 gap-3 mb-3">
                             <Select
                                 label="ลักษณะการดำเนินงาน"
-                                className="" 
+                                className=""
                                 selectedKeys={[createForm.license_applicant_type as string]}
 
                                 onSelectionChange={(k) => updateForm('license_applicant_type', Array.from(k)[0])}

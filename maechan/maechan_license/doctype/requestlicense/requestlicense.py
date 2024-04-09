@@ -151,6 +151,11 @@ def first_step_requestlicense():
     if 'doctype' not in requestLicense:
         requestLicense['doctype'] = 'RequestLicense'
 
+    if 'applicant_title' not in requestLicense or requestLicense['applicant_title'] == '' :
+        business = frappe.get_doc("Business",requestLicense['business'])
+        requestLicense['applicant_title'] = business.business_name # type: ignore
+
+
     requestLicenseObj: RequestLicense = frappe.get_doc(
         requestLicense)  # type: ignore
     requestLicenseObj.save()
