@@ -63,12 +63,12 @@ class RequestLicense(Document):
 
 def get_active_workflow():
 
-    workflows = frappe.db.get_list("Workflow",
+    workflows = frappe.db.get_all("Workflow",
                                    filters={
                                        'document_type': "RequestLicense",
                                        'is_active': True
                                    },
-                                   fields='*'
+                                   fields='*',
                                    )
 
     workflow = workflows[0] if len(workflows) > 0 else None

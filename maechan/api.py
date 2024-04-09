@@ -52,81 +52,80 @@ def house_chart():
 
 
 @frappe.whitelist(allow_guest=True)
-def license_preivew() :
+def license_preivew():
     request = frappe.form_dict
-    if request['type'] == "License" :
-        
-        if 'name' in request :
+    if request['type'] == "License":
+
+        if 'name' in request:
             doc_name = request['name']
-            doc : License = frappe.get_doc("License", doc_name) # type: ignore
-            
+            doc: License = frappe.get_doc("License", doc_name)  # type: ignore
+
             from frappe.core.doctype.file.utils import get_local_image
-            
-            if doc.license_signature_img :
+
+            if doc.license_signature_img:
                 localImg = get_local_image(doc.license_signature_img)
                 buffered = BytesIO()
                 localImg[0].save(buffered, format="png")
                 img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
-                
-                doc.license_signature_img = 'data: image/png;base64, ' +  img_str # type: ignore
-            
-            
-            content = frappe.render_template('templates/license/licensedefault.html', {'doc':doc})
+
+                doc.license_signature_img = 'data: image/png;base64, ' + img_str  # type: ignore
+
+            content = frappe.render_template(
+                'templates/license/licensedefault.html', {'doc': doc})
             content = f"<html>{content}</html>"
             return content
-        elif 'uuid' in request : 
+        elif 'uuid' in request:
             from frappe.query_builder import DocType
             LicenseDocType = frappe.qb.DocType('License')
 
-            q =(frappe.qb.from_(LicenseDocType)
+            q = (frappe.qb.from_(LicenseDocType)
                 .limit(1)
                 .select("*")
                 .where(LicenseDocType.uuid == request['uuid']))
-            
+
             result = q.run(as_dict=True)
-            if(len(result) == 1) : 
-                
-                doc : License = frappe.get_doc("License", result[0]['name']) # type: ignore
+            if (len(result) == 1):
+
+                doc: License = frappe.get_doc(
+                    "License", result[0]['name'])  # type: ignore
 
                 from frappe.core.doctype.file.utils import get_local_image
-                
-                if doc.license_signature_img :
+
+                if doc.license_signature_img:
                     localImg = get_local_image(doc.license_signature_img)
                     buffered = BytesIO()
                     localImg[0].save(buffered, format="png")
-                    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
-                    
-                    doc.license_signature_img = 'data: image/png;base64, ' +  img_str # type: ignore
-                
-                
-                content = frappe.render_template('templates/license/licensedefault.html', {'doc':doc})
+                    img_str = base64.b64encode(
+                        buffered.getvalue()).decode("utf-8")
+
+                    doc.license_signature_img = 'data: image/png;base64, ' + img_str  # type: ignore
+
+                content = frappe.render_template(
+                    'templates/license/licensedefault.html', {'doc': doc})
                 content = f"<html>{content}</html>"
                 return content
-                
+
             return "Not found"
 
-            
-
-        
     frappe.throw("Request is invalid")
-    
-    
+
+
 @frappe.whitelist(allow_guest=True)
 def login_via_line(code: str, state: str):
     provider = "line"
-    decoder=decoder_compat
+    decoder = decoder_compat
     info = get_info_via_oauth(provider, code, decoder, id_token=True)
     logger.debug("TEST")
     logger.debug(info)
     login_oauth_user(info, provider=provider, state=state)
+
 
 def decoder_compat(b):
     # https://github.com/litl/rauth/issues/145#issuecomment-31199471
     return json.loads(bytes(b).decode("utf-8"))
 
 
-
-#create api for register
+# create api for register
 @frappe.whitelist(allow_guest=True)
 def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
     if is_signup_disabled():
@@ -149,7 +148,7 @@ def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
             )
 
         from frappe.utils import random_string
-        
+
         user = frappe.get_doc(
             {
                 "doctype": "User",
@@ -160,13 +159,14 @@ def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
                 "user_type": "Website User",
             }
         )
-        
+
         user.flags.ignore_permissions = True
         user.flags.ignore_password_policy = True
         user.insert()
-        
+
         # set default signup role as per Portal Settings
-        default_role = frappe.db.get_single_value("Portal Settings", "default_role")
+        default_role = frappe.db.get_single_value(
+            "Portal Settings", "default_role")
         if default_role:
             user.add_roles(default_role)
 
@@ -177,16 +177,16 @@ def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
             return 1, _("Please check your email for verification")
         else:
             return 2, _("Please ask your administrator to verify your sign-up")
-        
-    
+
+
 @frappe.whitelist(allow_guest=True)
-def register() :
+def register():
     request = frappe.form_dict
-    
+
     profileUser = frappe.db.get("User", {"email": request.email})
     if profileUser:
         return 0
-    else :
+    else:
         profileUser = frappe.get_doc(
         {
             "doctype": "UserProfile",
@@ -205,25 +205,26 @@ def register() :
             "address_province": request.address_province,
             }
         )
-        
+
         profileUser.flags.ignore_permissions = True
         profileUser.flags.ignore_password_policy = True
         profileUser.insert()
 
         return 1
 
+
 @frappe.whitelist(allow_guest=True)
-def createUser() :
+def createUser():
     request = frappe.form_dict
-    
+
     user = frappe.db.get("User", {"email": request.email})
     if user:
         if user.enabled:
             return "Already Registered"
         else:
             return "Registered but disabled"
-    else :
-        from frappe.utils import random_string    
+    else:
+        from frappe.utils import random_string
         user = frappe.get_doc(
                 {
                     "doctype": "User",
@@ -234,31 +235,63 @@ def createUser() :
                     "user_type": "Website User",
                 }
             )
-            
+
         user.flags.ignore_permissions = True
         user.flags.ignore_password_policy = True
         user.insert()
-        
-        default_role = frappe.db.get_single_value("Portal Settings", "default_role")
+
+        default_role = frappe.db.get_single_value(
+            "Portal Settings", "default_role")
         if default_role:
             user.add_roles(default_role)
         return "Please check your email for verification"
 
+
 @frappe.whitelist(allow_guest=True)
-def checkEmail() :
-    request = frappe.form_dict    
+def checkEmail():
+    request = frappe.form_dict
     email = frappe.db.get("User", {"email": request.email})
-    return  email
+    return email
+
 
 @frappe.whitelist(allow_guest=True)
 def setOwner():
     request = frappe.form_dict
-    sql_query = "UPDATE `tabUserProfile`SET owner='"+request.email+"' WHERE name='"+request.email+"'"
+    sql_query = "UPDATE `tabUserProfile`SET owner='" + \
+        request.email+"' WHERE name='"+request.email+"'"
     frappe.db.sql(sql_query)
     frappe.db.commit()
 
+
 @frappe.whitelist(allow_guest=True)
-def checkTel() :
-    request = frappe.form_dict    
+def checkTel():
+    request = frappe.form_dict
     tel = frappe.db.get("UserProfile", {"tel": request.tel})
-    return  tel
+    return tel
+
+
+@frappe.whitelist(allow_guest=True )
+def app_register():
+    
+    request = frappe.form_dict
+    if 'register' in request :
+        registerReq = request['register']
+
+        registerReq['doctype'] = 'User'
+        registerReq['new_password'] = registerReq['password']
+        user = frappe.get_doc(
+            registerReq
+        )
+        
+        user.flags.ignore_permissions = True
+        user.flags.ignore_password_policy = True
+        user.insert()
+        
+        default_role = frappe.db.get_single_value(
+            "Portal Settings", "default_role")
+        if default_role:
+            user.add_roles(default_role) # type: ignore
+        return "Please check your email for verification"
+
+
+
