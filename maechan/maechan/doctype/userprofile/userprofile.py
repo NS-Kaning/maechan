@@ -54,7 +54,7 @@ def get_current_userprofile():
             "UserProfile", as_dict=True)  # type: ignore
         newprofile.email = userdoc.email
         newprofile.fullname = ' '.join(
-            [userdoc.first_name, userdoc.last_name])  # type: ignore
+            [userdoc.first_name if userdoc.first_name else '', userdoc.last_name if  userdoc.last_name else ''])  # type: ignore
         newprofile.tel = userdoc.mobile_no
 
         return newprofile
