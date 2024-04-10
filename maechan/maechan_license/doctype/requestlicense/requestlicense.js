@@ -252,14 +252,42 @@ frappe.ui.form.on("RequestLicense", {
         refreshAppointment(frm)
 
 
-    }, after_workflow_action(frm) {
+    }, async after_workflow_action(frm) {
         // console.log(frm.doc.request_status);
         // if (frm.doc.request_status == 'รอออกใบอนุญาต') {
         //     // console.log("test");
         //     // console.log(frm.doc.request_status);
         //     frm.call('newLicense')
         // }
-    }, before_load(frm) {
+
+    }, async create_license_btn(frm) {
+        console.log(frm.doc.workflow_state)
+        let licensedata = {
+            license_type : frm.doc.license_type ,
+            request_license: frm.doc.name ,
+            license_applicant_type: frm.doc.license_applicant_type ,
+            license_applicant: frm.doc.license_applicant_type == 'นิติบุคคล' ? frm.doc.license_applicant : frm.doc.applicant_name ,
+            license_applicant_by : frm.doc.applicant_name,
+            license_applicant_title: frm.doc.applicant_title ,
+            license_applicant_nationality: frm.doc.applicant_nationality ,
+            license_applicant_ethnicity: frm.doc.applicant_ethnicity ,
+            license_applicant_address_no: frm.doc.applicant_no ,
+            license_applicant_address_moo: frm.doc.applicant_moo ,
+            license_applicant_address_soi: frm.doc.applicant_soi ,
+            license_applicant_address_road: frm.doc.applicant_road,
+            license_applicant_address_district: frm.doc.applicant_distict ,
+            license_applicant_telephone: frm.doc.applicant_tel,
+            license_applicant_fax: frm.doc.applicant_fax,
+            house_id: frm.doc.house_no,
+            telephone: frm.doc.house_tel,
+            license_fee : frm.doc.license_fee,
+            
+        }
+        console.log(licensedata)
+        frappe.new_doc("License", licensedata )
+
+    }
+    , before_load(frm) {
         const emailUser = frappe.session.user
         if (frm.doc.applicant_name == null) {
             frappe.db.get_doc("UserProfile", emailUser).then(r => {

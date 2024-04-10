@@ -1,5 +1,5 @@
 import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Autocomplete, AutocompleteItem, Skeleton, Tooltip } from "@nextui-org/react"
-import { PropsWithChildren, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { PropsWithChildren, createRef, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon, IUserProfile } from "../../interfaces"
@@ -357,11 +357,12 @@ export default function RequestLicenseEdit() {
 
         const { file } = useContext(FrappeContext) as FrappeConfig
 
-        const inputFile = useRef(null)
+        const inputFile = createRef<HTMLInputElement>();
 
         const [isUploading, setIsUploading] = useState(false)
         const openInputFile = () => {
-            inputFile.current.click();
+            inputFile?.current?.click();
+
 
         }
 
@@ -401,8 +402,6 @@ export default function RequestLicenseEdit() {
                     }).catch(e => alert.showError(JSON.stringify(e)))
                 })
                 .catch(e => console.error(e))
-
-
         }
 
         return (

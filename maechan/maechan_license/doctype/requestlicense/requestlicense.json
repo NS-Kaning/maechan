@@ -53,6 +53,7 @@
   "request_checklist_tab",
   "check_datatable",
   "section_break_zqzh",
+  "create_license_btn",
   "applicant_title",
   "license_type",
   "license_fee",
@@ -396,13 +397,18 @@
    "fieldname": "license_fee",
    "fieldtype": "Currency",
    "label": "\u0e04\u0e48\u0e32\u0e18\u0e23\u0e23\u0e21\u0e40\u0e19\u0e35\u0e22\u0e21"
+  },
+  {
+   "fieldname": "create_license_btn",
+   "fieldtype": "Button",
+   "label": "create_license_btn"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2024-04-10 09:20:41.956992",
+ "modified": "2024-04-10 10:33:45.896132",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicense",
