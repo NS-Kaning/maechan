@@ -47,7 +47,9 @@ class RequestLicense(Document):
         house_tel: DF.Data | None
         license_applicant: DF.Data | None
         license_applicant_type: DF.Literal["\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32", "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"]
+        license_fee: DF.Currency
         license_type: DF.Link | None
+        payment_attachment: DF.Attach | None
         request_extra: DF.Table[RequestDetail]
         request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48", "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
         request_type: DF.Link | None
@@ -88,7 +90,7 @@ def get_transitions(workflow, doc):
     return transition
 
 
-def get_workflow_transision(doc):
+def get_workflow_transition(doc):
     workflow = get_active_workflow()
     if (workflow):
         transition = get_transitions(workflow, doc)
@@ -222,6 +224,36 @@ def update_attachment():
 
     return attachmentDoc
 
+@frappe.whitelist()
+def update_payment():
+
+    req = frappe.form_dict
+    assert 'requestlicense' in req
+    assert 'fileresponse' in req
+    requestLicenseReq = req['requestlicense']
+    fileReq = req['fileresponse']
+    
+    requestLicenseDoc : RequestLicense = frappe.get_doc(requestLicenseReq) # type: ignore
+    requestLicenseDoc.payment_attachment = fileReq['file_url']
+    requestLicenseDoc.save()
+
+    return requestLicenseDoc
+
+@frappe.whitelist()
+def clear_payment():
+
+    req = frappe.form_dict
+    assert 'requestlicense' in req
+    
+    requestLicenseReq = req['requestlicense']
+    
+    requestLicenseDoc : RequestLicense = frappe.get_doc(requestLicenseReq) # type: ignore
+    requestLicenseDoc.payment_attachment = None
+    requestLicenseDoc.save()
+
+    return requestLicenseDoc
+
+
 
 @frappe.whitelist()
 def citizen_submit():
@@ -234,7 +266,7 @@ def citizen_submit():
         "RequestLicense", name
     )   # type: ignore
 
-    transition = get_workflow_transision(doc=doc)
+    transition = get_workflow_transition(doc=doc)
 
     if (transition):
         if req['action'] == 'ปรับปรุงสถานที่แล้วเสร็จ':

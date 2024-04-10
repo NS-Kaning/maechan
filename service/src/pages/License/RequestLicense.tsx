@@ -1,10 +1,10 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useContext, useEffect, useMemo, useState } from "react"
-import { FaEdit, FaHome, FaPlus } from "react-icons/fa"
+import { FaEdit, FaFileImage, FaHome, FaPlus, FaReceipt } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
-import { FaMagnifyingGlass } from "react-icons/fa6"
+import { FaFileImport, FaMagnifyingGlass } from "react-icons/fa6"
 
 function RequestLicense() {
 
@@ -76,6 +76,10 @@ function RequestLicense() {
 
                     </div>
                 )
+            } else if (doc.request_status == 'รอชำระเงิน') {
+                return (
+                    <div>ค่าธรรมเนียม {doc.license_fee} บาท</div>
+                )
             }
             return null
         }
@@ -125,11 +129,23 @@ function RequestLicense() {
                                     <TableCell>{x.house_no.text_display}</TableCell>
                                     <TableCell>{getDocStatus(x)}</TableCell>
                                     <TableCell>{getDocComment(x)}</TableCell>
-                                    <TableCell>
-                                        {
-                                            x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
-                                                (
-                                                    <div className="flex flex-row w-fit gap-2">
+                                    <TableCell >
+                                        <div className="flex flex-row gap-1 justify-center">
+                                            {
+                                                x.docstatus == 0 && ["รอชำระเงิน"].indexOf(x.request_status) >= 0 ?
+                                                    (
+                                                        <Tooltip placement="top" content="อัพโหลดหลักฐานการชำระเงิน" aria-label="อัพโหลดหลักฐานการชำระเงิน" >
+                                                            <span
+                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/payment`) }}
+                                                                className="text-lg cursor-pointer active:opacity-50">
+                                                                <FaFileImport />
+                                                            </span>
+                                                        </Tooltip>
+                                                    ) : (null)
+                                            }
+                                            {
+                                                x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
+                                                    (
                                                         <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
                                                             <span
                                                                 onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
@@ -137,9 +153,7 @@ function RequestLicense() {
                                                                 <FaEdit />
                                                             </span>
                                                         </Tooltip>
-                                                    </div>
-                                                ) : (
-                                                    <div className="flex flex-row w-fit gap-2">
+                                                    ) : (
                                                         <Tooltip placement="top" content="ดู" aria-label="ดู" >
                                                             <span
                                                                 onClick={() => { navigate(`/licenseRequest/${x.name}/view`) }}
@@ -147,9 +161,14 @@ function RequestLicense() {
                                                                 <FaMagnifyingGlass />
                                                             </span>
                                                         </Tooltip>
-                                                    </div>
-                                                )
-                                        }
+                                                    )
+
+
+                                            }
+
+
+
+                                        </div>
 
                                     </TableCell>
                                 </TableRow>

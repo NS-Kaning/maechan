@@ -17,6 +17,7 @@ import BusinessEdit from './pages/Business/BusinessEdit';
 import RequestLicenseCreate from './pages/License/RequestLicenseCreate';
 import RequestLicenseEdit from './pages/License/RequestLicenseEdit';
 import RequestLicenseView from './pages/License/RequestLicenseView';
+import RequestLicensePayment from './pages/License/RequestLicensePayment';
 function App() {
 
 
@@ -67,6 +68,8 @@ function App() {
 											<Route path='create' element={<RequestLicenseCreate/>} />
 											<Route path=':id/edit' element={<RequestLicenseEdit />} />
 											<Route path=':id/view' element={<RequestLicenseView />} />
+											<Route path=':id/payment' element={<RequestLicensePayment />} />
+
 
 										</Route>
 
