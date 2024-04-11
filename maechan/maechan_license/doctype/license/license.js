@@ -91,10 +91,6 @@ frappe.ui.form.on('License', {
         frm.refresh_field('approve_histories');
         update_province_amphure_district(frm)
 
-        if(frm.doc.workflow_state == "Created"){
-            frm.set_df_property('license_end_date','reqd',true)
-        }
-
     },
 
     async before_workflow_action(frm) {
@@ -211,10 +207,14 @@ frappe.ui.form.on('License', {
         console.log(frm.doc.request_license)
         if (!frm.doc.request_license) {
             frm.set_df_property('license_type','read_only',0)
+            frm.set_df_property('receipt_date','reqd',0)
+            frm.set_df_property('license_end_date','reqd',0)
         } else {
 
             frm.set_df_property('license_type','read_only',1)
-
+            frm.set_df_property('receipt_date','reqd',1)
+            frm.set_df_property('license_end_date','reqd',1)
+            
 
             frappe.db.get_doc("RequestLicense", frm.doc.request_license)
                 .then((r => {
