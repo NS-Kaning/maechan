@@ -57,6 +57,9 @@
   "applicant_title",
   "license_type",
   "license_fee",
+  "extra_information",
+  "btn_dialog_extra",
+  "license_extra",
   "payment_section",
   "payment_column",
   "payment_attachment",
@@ -402,13 +405,28 @@
    "fieldname": "create_license_btn",
    "fieldtype": "Button",
    "label": "create_license_btn"
+  },
+  {
+   "fieldname": "extra_information",
+   "fieldtype": "Section Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a"
+  },
+  {
+   "fieldname": "btn_dialog_extra",
+   "fieldtype": "Button",
+   "label": "\u0e01\u0e23\u0e2d\u0e01\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1b\u0e23\u0e30\u0e01\u0e2d\u0e1a"
+  },
+  {
+   "fieldname": "license_extra",
+   "fieldtype": "Table",
+   "options": "LicenseDetail"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
  "make_attachments_public": 1,
- "modified": "2024-04-10 10:33:45.896132",
+ "modified": "2024-04-11 09:04:53.845469",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "RequestLicense",

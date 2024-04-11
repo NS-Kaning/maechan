@@ -19,6 +19,7 @@ class RequestLicense(Document):
         from frappe.types import DF
         from maechan.maechan_license.doctype.attachment.attachment import Attachment
         from maechan.maechan_license.doctype.licenseapprovehistory.licenseapprovehistory import LicenseApproveHistory
+        from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
         from maechan.maechan_license.doctype.requestdetail.requestdetail import RequestDetail
 
         amended_from: DF.Link | None
@@ -47,6 +48,7 @@ class RequestLicense(Document):
         house_tel: DF.Data | None
         license_applicant: DF.Data | None
         license_applicant_type: DF.Literal["\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32", "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"]
+        license_extra: DF.Table[LicenseDetail]
         license_fee: DF.Currency
         license_type: DF.Link | None
         payment_attachment: DF.Attach | None

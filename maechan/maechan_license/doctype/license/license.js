@@ -83,15 +83,17 @@ async function update_province_amphure_district(frm) {
 let do_clear = [true, true]
 
 frappe.ui.form.on('License', {
-    setup(frm) {
-        console.log("setup")
-    },
+
     refresh(frm) {
         console.log(frm)
         // your code here
         // frm.set_df_property("license_type", "read_only", frm.is_new() ? 0 : 1);
         frm.refresh_field('approve_histories');
         update_province_amphure_district(frm)
+
+        if(frm.doc.workflow_state == "Created"){
+            frm.set_df_property('license_end_date','reqd',true)
+        }
 
     },
 
@@ -203,6 +205,72 @@ frappe.ui.form.on('License', {
                 d.show();
             })
         }
+    },
+    request_license(frm) {
+
+        console.log(frm.doc.request_license)
+        if (!frm.doc.request_license) {
+            frm.set_df_property('license_type','read_only',0)
+        } else {
+
+            frm.set_df_property('license_type','read_only',1)
+
+
+            frappe.db.get_doc("RequestLicense", frm.doc.request_license)
+                .then((r => {
+                    console.log(r)
+
+                    let licensedata = {
+                        license_type: r.license_type,
+                        request_license: r.name,
+                        license_applicant_type: r.license_applicant_type,
+                        license_applicant: r.license_applicant_type == 'นิติบุคคล' ? r.license_applicant : r.applicant_name,
+                        license_applicant_by: r.applicant_name,
+                        license_applicant_title: r.applicant_title,
+                        license_applicant_nationality: r.applicant_nationality,
+                        license_applicant_ethnicity: r.applicant_ethnicity,
+                        license_applicant_address_no: r.applicant_no,
+                        license_applicant_address_moo: r.applicant_moo,
+                        license_applicant_address_soi: r.applicant_soi,
+                        license_applicant_address_road: r.applicant_road,
+                        license_applicant_address_district: r.applicant_distict,
+                        license_applicant_telephone: r.applicant_tel,
+                        license_applicant_fax: r.applicant_fax,
+                        house_id: r.house_no,
+                        telephone: r.house_tel,
+                        license_fee: r.license_fee,
+                    }
+
+                    for (var key in licensedata) {
+                        if (key == 'license_type') {
+                            frm.doc[key] = licensedata[key]
+                            frappe.db.get_doc("LicenseType", frm.doc.license_type).then(r2 => {
+                                frm.doc.license_main_type = r2.group
+                                frm.refresh_field('license_main_type')
+
+                            })
+                            frm.clear_table('license_extra')
+                            for (x in r.license_extra) {
+                                console.log("x", r.license_extra[x])
+                                extraDetail = frm.add_child('license_extra')
+                                extraDetail.key = r.license_extra[x].key
+                                extraDetail.value = r.license_extra[x].value
+                            }
+                            frm.refresh_field(key)
+                            frm.refresh_field('license_extra')
+
+                        } else {
+                            frm.set_value(key, licensedata[key])
+                        }
+
+                    }
+                }))
+        }
+
+
+
+
+
     },
     license_type(frm) {
 

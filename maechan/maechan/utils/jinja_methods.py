@@ -39,14 +39,25 @@ def strToDate(date):
         return date
     elif isinstance(date,str):
         return datetime.datetime.strptime(date,"%Y-%m-%d")
+    else :
+        return None
+    
+def getThaiFullDay(dateObject : datetime.date) :
+    if(dateObject) :
+        return dateObject.strftime("%d") | int
+    return '-'
 
 def getThaiFullMonth(dateObj : datetime.date):
-    month = dateObj.month
-    return _TH_FULL_MONTHS[month-1]
+    if(dateObj) :
+        month = dateObj.month
+        return _TH_FULL_MONTHS[month-1]
+    return '-'
 
 def getThaiFullYear(dateObj : datetime.date):
-    year = dateObj.year
-    return year + 543
+    if(dateObj) :
+        year = dateObj.year
+        return year + 543
+    return '-'
     
 def handleNone(s:str) :
     return s if s != None else "-"
