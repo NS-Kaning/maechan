@@ -59,6 +59,13 @@ function RequestLicense() {
 
     const getDocComment = (doc: IRequestLicense) => {
         if (doc.docstatus == 0) {
+            if (doc.request_status == 'เอกสารไม่ครบ') {
+                return (
+                    <>
+                    {doc.comment}
+                    </>
+                )
+            }
             if (doc.request_status == 'รอตรวจสถานที่') {
                 return (
                     <div>

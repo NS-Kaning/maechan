@@ -171,6 +171,7 @@ export type IRequestLicense = Doctype & {
 
     license_fee : number;
     payment_attachment : string;
+    comment : string;
 
 }
 

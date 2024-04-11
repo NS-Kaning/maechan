@@ -140,7 +140,7 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                                 </div>
                                 {% endfor %}
 
-                                <div class="col"><div class="btn-open-row" data-toggle="tooltip" data-placement="right" title="" data-original-title="Edit" aria-describedby="tooltip56951">
+                                <div class="col" data="{{row.name}}"><div data="{{row.name}}" class="btn-open-row" data-toggle="tooltip" data-placement="right" title="" data-original-title="Edit" aria-describedby="tooltip56951">
 									<a class="edit_row" data="{{row.name}}">
 									<svg data="{{row.name}}" class="icon  icon-xs" style="" aria-hidden="true">
 									<use class="" href="#icon-edit"></use></svg></a>
@@ -186,6 +186,7 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                     $(`[data-fieldname=${fieldName}] .edit_row`).unbind('click')
                     $(`[data-fieldname=${fieldName}] .edit_row`).click(async (x) => {
 
+                        console.log(x)
                         let name = $(x.target).attr('data')
                         frappe.set_route(`requestlicenseinspect/${name}`);
 
@@ -252,7 +253,51 @@ frappe.ui.form.on("RequestLicense", {
         refreshAppointment(frm)
 
 
-    }, async after_workflow_action(frm) {
+    },
+    async before_workflow_action(frm){
+
+        let select_action = frm.selected_workflow_action
+        console.log(select_action)
+        frappe.dom.unfreeze();
+        let wait = true;
+
+        if (select_action == "ปฏิเสธ") {
+
+            const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+
+            let d = new frappe.ui.Dialog({
+                title: __('Enter Comment'),
+                fields: [
+                    {
+                        label: __('Comment'),
+                        fieldname: 'comment',
+                        fieldtype: 'Text'
+                    }
+                ],
+                size: 'small', // small, large, extra-large 
+                primary_action_label: __('Submit'),
+                primary_action: async (values) => {
+                    let today = new Date()
+                    frm.set_value('comment',values.comment)
+                    await frm.save()
+                    frappe.dom.freeze();
+                    wait = false
+
+                    d.hide();
+                }
+            });
+
+            d.show();
+            while (wait) {
+                await sleep(1000)
+            }
+        }
+        console.log(frm)
+
+    },
+    
+    async after_workflow_action(frm) {
         // console.log(frm.doc.request_status);
         // if (frm.doc.request_status == 'รอออกใบอนุญาต') {
         //     // console.log("test");

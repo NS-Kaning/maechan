@@ -266,11 +266,6 @@ frappe.ui.form.on('License', {
                     }
                 }))
         }
-
-
-
-
-
     },
     license_type(frm) {
 

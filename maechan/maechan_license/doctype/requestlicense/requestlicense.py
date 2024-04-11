@@ -18,7 +18,6 @@ class RequestLicense(Document):
     if TYPE_CHECKING:
         from frappe.types import DF
         from maechan.maechan_license.doctype.attachment.attachment import Attachment
-        from maechan.maechan_license.doctype.licenseapprovehistory.licenseapprovehistory import LicenseApproveHistory
         from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
         from maechan.maechan_license.doctype.requestdetail.requestdetail import RequestDetail
 
@@ -40,9 +39,9 @@ class RequestLicense(Document):
         applicant_soi: DF.Data | None
         applicant_tel: DF.Data | None
         applicant_title: DF.Data | None
-        approve_history: DF.Table[LicenseApproveHistory]
         attachment_extra: DF.Table[Attachment]
         business: DF.Link | None
+        comment: DF.SmallText | None
         date: DF.Date | None
         house_no: DF.Link | None
         house_tel: DF.Data | None
