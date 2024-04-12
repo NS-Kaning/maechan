@@ -409,7 +409,7 @@ export default function RequestLicenseCreate() {
             </div>
 
             <div className="flex flex-row lg:w-[50%] text-md mb-3">
-                ที่อยู่สถานประกอบการ
+                ที่อยู่สถานประกอบการ (หากไม่พบบ้านเลขที่กรุณาแจ้งผู้ดูแลระบบ)
             </div>
             <div className="grid grid-cols-3 gap-3 mb-3">
 
