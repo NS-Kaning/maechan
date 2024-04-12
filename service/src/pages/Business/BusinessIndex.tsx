@@ -1,5 +1,5 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
+import { FrappeConfig, FrappeContext, useFrappeGetDocList, useSWR } from "frappe-react-sdk"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useAlertContext } from "../../providers/AlertProvider"
 import { FaEdit, FaHome } from "react-icons/fa"
@@ -7,37 +7,29 @@ import { IBusiness } from "../../interfaces"
 import { Link, Navigate, useNavigate } from "react-router-dom"
 import { FaPlus } from "react-icons/fa6"
 
+
+
+
 function BusinessIndex() {
 
-    const [businesses, setBusinesses] = useState([])
     const { call } = useContext(FrappeContext) as FrappeConfig
+    const fetcher = (url:any) => call.post(url).then((res) => res.message);
+
+
+    const { data, error, isLoading } = useSWR(
+        "maechan.maechan_license.doctype.business.business.get_businesses",
+        fetcher
+      );
+    
+    const [businesses, setBusinesses] = useState([])
     const alert = useAlertContext()
-    const [isLoading,setIsLoading] = useState(true)
-    const loadBusiness = async () => {
-        setIsLoading(true)
-        try {
-            let result = await call.post('maechan.maechan_license.doctype.business.business.get_businesses')
-            console.log(result)
-            setBusinesses(result.message)
-        } catch (error) {
-            console.log(error)
-            alert.showError(JSON.stringify(error))
-        }finally{
-            setIsLoading(false)
-        }
-
-
-    }
 
     useEffect(() => {
-        loadBusiness()
-    }, [])
+        setBusinesses(data)
+    }, [data])
 
     const navigate = useNavigate()
 
-    const editBusiness = (business_name: string) => {
-        navigate(`/business/${business_name}/edit`)
-    }
 
     const topContent = useMemo(() => {
         return (
