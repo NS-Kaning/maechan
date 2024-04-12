@@ -29,7 +29,10 @@ function RequestLicense() {
 
     useEffect(() => {
         console.log(data)
-        loadRequestLicenses()
+        if(data){
+            loadRequestLicenses()
+        }
+        
     }, [data])
 
     useEffect(() => {

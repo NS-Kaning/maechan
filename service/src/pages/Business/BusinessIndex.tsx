@@ -71,7 +71,7 @@ function BusinessIndex() {
 
                         <TableBody emptyContent={"No rows to display."}>
                             {
-                                businesses.map((b: IBusiness & { business_address_text_display: string }) => (
+                                businesses?.map((b: IBusiness & { business_address_text_display: string }) => (
                                     <TableRow key={b.name}>
                                         <TableCell>{b.business_name}</TableCell>
                                         <TableCell>{b.business_address_text_display}</TableCell>
