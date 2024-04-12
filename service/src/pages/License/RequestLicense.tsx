@@ -1,32 +1,43 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
+import { FrappeConfig, FrappeContext, useSWR } from "frappe-react-sdk"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { FaEdit, FaFileImage, FaHome, FaPlus, FaReceipt } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
 import { FaFileImport, FaMagnifyingGlass } from "react-icons/fa6"
+import { useAlertContext } from "../../providers/AlertProvider"
 
 function RequestLicense() {
 
     const navigate = useNavigate()
+    const alert = useAlertContext()
     const { call } = useContext(FrappeContext) as FrappeConfig
+    const fetcher = (url: any) => call.post(url).then((res) => res);
 
-    const [isLoading, setIsLoading] = useState(true)
+
+    const { data, error, isLoading } = useSWR(
+        "maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_licenses",
+        fetcher
+    );
     const [requestLicenses, setRequestLicenses] = useState([] as (IRequestLicense & { business: IBusiness, house_no: IHouse })[])
     const [appointments, setAppointments] = useState({} as any)
 
     const loadRequestLicenses = async () => {
-        setIsLoading(true)
-        let response = await call.post('maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_licenses')
-        setRequestLicenses(response.message)
-        setAppointments(response.appointment)
-        setIsLoading(false)
+        setRequestLicenses(data.message)
+        setAppointments(data.appointment)
     }
 
     useEffect(() => {
+        console.log(data)
         loadRequestLicenses()
-    }, [])
+    }, [data])
 
+    useEffect(() => {
+        if (error) {
+            alert.showError(JSON.stringify(error))
+        }
+
+    }, [error])
 
     const topContent = useMemo(() => {
 
@@ -62,7 +73,7 @@ function RequestLicense() {
             if (doc.request_status == 'เอกสารไม่ครบ') {
                 return (
                     <>
-                    {doc.comment}
+                        {doc.comment}
                     </>
                 )
             }
@@ -121,68 +132,69 @@ function RequestLicense() {
                         <TableColumn>หมายเหตุ</TableColumn>
                         <TableColumn>การกระทำ</TableColumn>
                     </TableHeader>
-                    <TableBody>
+                    {isLoading ? (
+                        <TableBody emptyContent={"ไม่มีข้อมูล"}>{[]}</TableBody>)
+                        : (
+                            <TableBody>
+                                {
+                                    requestLicenses.map(x => (
+                                        <TableRow key={x.name}>
+                                            <TableCell>
+                                                <div>
+                                                    <div className="font-bold">{x.business.business_name}</div>
+                                                    <div>{x.request_type}</div>
+                                                </div>
+                                            </TableCell>
 
-                        {
-                            requestLicenses.map(x => (
-                                <TableRow key={x.name}>
-                                    <TableCell>
-                                        <div>
-                                            <div className="font-bold">{x.business.business_name}</div>
-                                            <div>{x.request_type}</div>
-                                        </div>
-                                    </TableCell>
+                                            <TableCell>{x.house_no.text_display}</TableCell>
+                                            <TableCell>{getDocStatus(x)}</TableCell>
+                                            <TableCell>{getDocComment(x)}</TableCell>
+                                            <TableCell >
+                                                <div className="flex flex-row gap-1 justify-center">
+                                                    {
+                                                        x.docstatus == 0 && ["รอชำระเงิน"].indexOf(x.request_status) >= 0 ?
+                                                            (
+                                                                <Tooltip placement="top" content="อัพโหลดหลักฐานการชำระเงิน" aria-label="อัพโหลดหลักฐานการชำระเงิน" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/licenseRequest/${x.name}/payment`) }}
+                                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                                        <FaFileImport />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            ) : (null)
+                                                    }
+                                                    {
+                                                        x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
+                                                            (
+                                                                <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
+                                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                                        <FaEdit />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            ) : (
+                                                                <Tooltip placement="top" content="ดู" aria-label="ดู" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/licenseRequest/${x.name}/view`) }}
+                                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                                        <FaMagnifyingGlass />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            )
+                                                    }
 
-                                    <TableCell>{x.house_no.text_display}</TableCell>
-                                    <TableCell>{getDocStatus(x)}</TableCell>
-                                    <TableCell>{getDocComment(x)}</TableCell>
-                                    <TableCell >
-                                        <div className="flex flex-row gap-1 justify-center">
-                                            {
-                                                x.docstatus == 0 && ["รอชำระเงิน"].indexOf(x.request_status) >= 0 ?
-                                                    (
-                                                        <Tooltip placement="top" content="อัพโหลดหลักฐานการชำระเงิน" aria-label="อัพโหลดหลักฐานการชำระเงิน" >
-                                                            <span
-                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/payment`) }}
-                                                                className="text-lg cursor-pointer active:opacity-50">
-                                                                <FaFileImport />
-                                                            </span>
-                                                        </Tooltip>
-                                                    ) : (null)
-                                            }
-                                            {
-                                                x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
-                                                    (
-                                                        <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
-                                                            <span
-                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
-                                                                className="text-lg cursor-pointer active:opacity-50">
-                                                                <FaEdit />
-                                                            </span>
-                                                        </Tooltip>
-                                                    ) : (
-                                                        <Tooltip placement="top" content="ดู" aria-label="ดู" >
-                                                            <span
-                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/view`) }}
-                                                                className="text-lg cursor-pointer active:opacity-50">
-                                                                <FaMagnifyingGlass />
-                                                            </span>
-                                                        </Tooltip>
-                                                    )
+                                                </div>
 
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
 
-                                            }
+                            </TableBody>
 
-
-
-                                        </div>
-
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        }
-
-                    </TableBody>
+                        )
+                    }
 
                 </Table>
 

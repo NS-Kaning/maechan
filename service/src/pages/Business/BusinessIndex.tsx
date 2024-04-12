@@ -13,14 +13,14 @@ import { FaPlus } from "react-icons/fa6"
 function BusinessIndex() {
 
     const { call } = useContext(FrappeContext) as FrappeConfig
-    const fetcher = (url:any) => call.post(url).then((res) => res.message);
+    const fetcher = (url: any) => call.post(url).then((res) => res.message);
 
 
     const { data, error, isLoading } = useSWR(
         "maechan.maechan_license.doctype.business.business.get_businesses",
         fetcher
-      );
-    
+    );
+
     const [businesses, setBusinesses] = useState([])
     const alert = useAlertContext()
 
@@ -54,46 +54,46 @@ function BusinessIndex() {
 
             <div className="flex flex-row w-full text-xl mb-3">
                 <Skeleton isLoaded={!isLoading} className="w-full rounded-lg">
-                <Table isStriped shadow="none" aria-label="รายการกิจการ"
-                    topContent={topContent}
-                    topContentPlacement="outside"
-                    classNames={{
-                        wrapper: 'p-0'
-                    }}
+                    <Table isStriped shadow="none" aria-label="รายการกิจการ"
+                        topContent={topContent}
+                        topContentPlacement="outside"
+                        classNames={{
+                            wrapper: 'p-0'
+                        }}
 
-                >
-                    <TableHeader>
-                        <TableColumn>ชื่อกิจการ</TableColumn>
-                        <TableColumn>ที่อยู่</TableColumn>
-                        <TableColumn>โทร</TableColumn>
-                        <TableColumn>การกระทำ</TableColumn>
-                    </TableHeader>
+                    >
+                        <TableHeader>
+                            <TableColumn>ชื่อกิจการ</TableColumn>
+                            <TableColumn>ที่อยู่</TableColumn>
+                            <TableColumn>โทร</TableColumn>
+                            <TableColumn>การกระทำ</TableColumn>
+                        </TableHeader>
 
-                    <TableBody emptyContent={"No rows to display."}>
-                        {
-                            businesses.map((b: IBusiness & { business_address_text_display: string }) => (
-                                <TableRow key={b.name}>
-                                    <TableCell>{b.business_name}</TableCell>
-                                    <TableCell>{b.business_address_text_display}</TableCell>
-                                    <TableCell>{b.tel}</TableCell>
+                        <TableBody emptyContent={"No rows to display."}>
+                            {
+                                businesses.map((b: IBusiness & { business_address_text_display: string }) => (
+                                    <TableRow key={b.name}>
+                                        <TableCell>{b.business_name}</TableCell>
+                                        <TableCell>{b.business_address_text_display}</TableCell>
+                                        <TableCell>{b.tel}</TableCell>
 
-                                    <TableCell>
-                                        <div className="flex flex-row w-fit gap-2">
-                                            <Tooltip placement="top" content="แก้ไข" >
-                                                <span
-                                                    onClick={() => { navigate(`/business/${b.name}/edit`) }}
-                                                    className="text-lg cursor-pointer active:opacity-50">
-                                                    <FaEdit />
-                                                </span>
-                                            </Tooltip>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        }
+                                        <TableCell>
+                                            <div className="flex flex-row w-fit gap-2">
+                                                <Tooltip placement="top" content="แก้ไข" >
+                                                    <span
+                                                        onClick={() => { navigate(`/business/${b.name}/edit`) }}
+                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                        <FaEdit />
+                                                    </span>
+                                                </Tooltip>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            }
 
-                    </TableBody>
-                </Table>
+                        </TableBody>
+                    </Table>
                 </Skeleton>
             </div>
 
