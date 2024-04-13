@@ -15,6 +15,11 @@ from frappe.types import DF
 from qrcode.main import QRCode
 from maechan.maechan_core.doctype.maechanconfig.maechanconfig import MaechanConfig
 
+from maechan.maechan_license.doctype.requestlicense.requestlicense import RequestLicense
+from maechan.maechan_license.doctype.licensetype.licensetype import LicenseType
+from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
+
+
 def getQrCodeBase64(type,name) :
     qrdict = {
         "type" : type,
@@ -119,6 +124,7 @@ class License(Document):
         license_signature_img: DF.AttachImage | None
         license_start_date: DF.Date | None
         license_type: DF.Link | None
+        manage_user: DF.Link | None
         qr_code_base64: DF.LongText | None
         receipt_date: DF.Date | None
         request_license: DF.Link | None
@@ -173,6 +179,11 @@ class License(Document):
             
         if self.license_seal == None or self.license_seal == "" :
            self.license_seal = maechanConfig.seal 
+
+        if self.request_license :
+            reqlicense : RequestLicense = frappe.get_doc('RequestLicense',self.request_license) # type: ignore
+            if reqlicense :
+                self.manage_user = reqlicense.owner
         
         
     def _update_qr_code(self) :
@@ -206,9 +217,6 @@ class License(Document):
 @frappe.whitelist()
 def create_from_requestlicense(name : str|None = None) :
 
-    from maechan.maechan_license.doctype.requestlicense.requestlicense import RequestLicense
-    from maechan.maechan_license.doctype.licensetype.licensetype import LicenseType
-    from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
 
     if name :
         
