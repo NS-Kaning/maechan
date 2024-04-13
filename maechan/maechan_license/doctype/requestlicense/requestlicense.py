@@ -144,7 +144,7 @@ def load_request_licenses():
 
         licenses[x.name] = (frappe.db.get_all("License", fields="*", filters={
             'request_license': x.name,
-            'workflow_state' : 'Approved'
+            'workflow_state' : ['in',['Approved','Expired']]
         }))
 
     frappe.response['appointment'] = appointments
