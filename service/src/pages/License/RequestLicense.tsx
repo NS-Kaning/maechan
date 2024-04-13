@@ -1,14 +1,15 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { FrappeConfig, FrappeContext, useSWR } from "frappe-react-sdk"
 import { useContext, useEffect, useMemo, useState } from "react"
-import { FaEdit, FaFileImage, FaHome, FaPlus, FaReceipt } from "react-icons/fa"
+import { FaEdit, FaFileDownload, FaFileImage, FaHome, FaPlus, FaReceipt } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
 import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
-import { FaFileImport, FaMagnifyingGlass } from "react-icons/fa6"
+import { FaFile, FaFileImport, FaMagnifyingGlass } from "react-icons/fa6"
 import { useAlertContext } from "../../providers/AlertProvider"
 
 function RequestLicense() {
 
+    const siteName = import.meta.env.VITE_FRAPPE_URL ?? window.origin
     const navigate = useNavigate()
     const alert = useAlertContext()
     const { call } = useContext(FrappeContext) as FrappeConfig
@@ -21,18 +22,21 @@ function RequestLicense() {
     );
     const [requestLicenses, setRequestLicenses] = useState([] as (IRequestLicense & { business: IBusiness, house_no: IHouse })[])
     const [appointments, setAppointments] = useState({} as any)
+    const [licenses, setLicenses] = useState({} as any)
 
     const loadRequestLicenses = async () => {
         setRequestLicenses(data.message)
         setAppointments(data.appointment)
+        setLicenses(data.licenses)
+
     }
 
     useEffect(() => {
         console.log(data)
-        if(data){
+        if (data) {
             loadRequestLicenses()
         }
-        
+
     }, [data])
 
     useEffect(() => {
@@ -73,14 +77,14 @@ function RequestLicense() {
 
     const getDocComment = (doc: IRequestLicense) => {
         if (doc.docstatus == 0) {
-            if (doc.request_status == 'เอกสารไม่ครบ') {
+            if (doc.workflow_state == 'เอกสารไม่ครบ') {
                 return (
                     <>
                         {doc.comment}
                     </>
                 )
             }
-            if (doc.request_status == 'รอตรวจสถานที่') {
+            else if (doc.workflow_state == 'รอตรวจสถานที่') {
                 return (
                     <div>
                         <div>
@@ -97,9 +101,18 @@ function RequestLicense() {
 
                     </div>
                 )
-            } else if (doc.request_status == 'รอชำระเงิน') {
+            } else if (doc.workflow_state == 'รอชำระเงิน') {
                 return (
                     <div>ค่าธรรมเนียม {doc.license_fee} บาท</div>
+                )
+            } else if (doc.workflow_state == 'คำร้องสำเร็จ') {
+                if (licenses[doc.name].length > 0) {
+                    return (
+                        <span>ใบอนุญาตเสร็จสิ้น</span>
+                    )
+                }
+                return (
+                    <span>กำลังดำเนินการ</span>
                 )
             }
             return null
@@ -185,6 +198,18 @@ function RequestLicense() {
                                                                     </span>
                                                                 </Tooltip>
                                                             )
+                                                    }
+                                                    {
+                                                        x.docstatus == 0 && ['คำร้องสำเร็จ'].indexOf(x.workflow_state) >= 0 && licenses[x.name].length > 0 ?
+                                                            (
+                                                                <Tooltip placement="top" content="ใบอนุญาต" aria-label="ใบอนุญาติ" >
+                                                                    <span
+                                                                        onClick={() => { window.open(`${siteName}/printview?doctype=License&name=${licenses[x.name][0].name}&trigger_print=1&format=LicenseDefault&no_letterhead=1&letterhead=No%20Letterhead&settings=%7B%7D&_lang=th`) }}
+                                                                        className="text-lg text-violet-600 cursor-pointer active:opacity-50">
+                                                                        <FaFileDownload   />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            ) : (null)
                                                     }
 
                                                 </div>

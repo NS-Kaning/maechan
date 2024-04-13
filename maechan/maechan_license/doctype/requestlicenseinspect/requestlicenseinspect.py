@@ -16,6 +16,7 @@ class RequestLicenseInspect(Document):
 		from maechan.maechan_license.doctype.checklist.checklist import CheckList
 		from maechan.maechan_license.doctype.checklistdetail.checklistdetail import CheckListDetail
 
+		amended_from: DF.Link | None
 		checklist_comment: DF.SmallText | None
 		checklist_date: DF.Date | None
 		checklist_extra: DF.Table[CheckListDetail]

@@ -200,3 +200,66 @@ class License(Document):
         self.qr_code_base64 = None
         frappe.db.commit()
         self._update_qr_code()
+
+
+
+@frappe.whitelist()
+def create_from_requestlicense(name : str|None = None) :
+
+    from maechan.maechan_license.doctype.requestlicense.requestlicense import RequestLicense
+    from maechan.maechan_license.doctype.licensetype.licensetype import LicenseType
+    from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
+
+    if name :
+        
+        requestLicense : RequestLicense = frappe.get_doc("RequestLicense",name)  # type: ignore
+        licenses = frappe.get_list('License',filters={
+            'request_license' : requestLicense.name,
+            'workflow_state' : ['!=','Cancelled']
+        })
+        if len(licenses) > 0 :
+            return frappe.get_doc('License',licenses[0])
+        else  :
+            
+            
+            
+            newlicense : License = frappe.get_doc({
+                'doctype' : 'License',
+                'license_type': requestLicense.license_type,
+                'request_license': requestLicense.name,
+                'license_applicant_type': requestLicense.license_applicant_type,
+                'license_applicant': requestLicense.license_applicant if requestLicense.license_applicant_type == 'นิติบุคคล' else  requestLicense.applicant_name,
+                'license_applicant_by': requestLicense.applicant_name,
+                'license_applicant_title': requestLicense.applicant_title,
+                'license_applicant_nationality': requestLicense.applicant_nationality,
+                'license_applicant_ethnicity': requestLicense.applicant_ethnicity,
+                'license_applicant_address_no': requestLicense.applicant_no,
+                'license_applicant_address_moo': requestLicense.applicant_moo,
+                'license_applicant_address_soi': requestLicense.applicant_soi,
+                'license_applicant_address_road': requestLicense.applicant_road,
+                'license_applicant_address_district': requestLicense.applicant_distict,
+                'license_applicant_telephone': requestLicense.applicant_tel,
+                'license_applicant_fax': requestLicense.applicant_fax,
+                'house_id': requestLicense.house_no,
+                'telephone': requestLicense.house_tel,
+                'license_fee': requestLicense.license_fee,
+                'license_applicant_address_province' : requestLicense.applicant_province,
+                'license_applicant_address_amphur' : requestLicense.applicant_amphur
+            }) # type: ignore
+
+            licenseType :LicenseType = frappe.get_doc("LicenseType", requestLicense.license_type) # type: ignore
+            newlicense.license_main_type = licenseType.group
+
+            for x in requestLicense.license_extra  :
+                newlicense.append('license_extra', {
+                    'key' : x.key,
+                    'value' : x.value
+                })
+            newlicense.save()
+
+            return newlicense
+    else :
+        frappe.response['http_status_code'] = 400
+        return {
+            'name' : 'name is required',
+        }

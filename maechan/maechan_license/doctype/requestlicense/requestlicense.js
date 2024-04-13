@@ -79,7 +79,7 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
             // console.log("fields", JSON.stringify(fields))
             let self = async () => {
                 frappe.db.get_list(doctype, {
-                    fields: "*",
+                    fields: ["*"],
                     filters: parent_values
                 }).then(docs => {
 
@@ -129,12 +129,19 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                                     <button class="btn btn-xs btn-default" data-fieldtype="Button" placeholder="" data-doctype="{{doctype}}" value="">แก้ไข</button>
                                     {% else %}
 
-                                    {% if col['id'] == 'name' %}
-                                    <a class="text-underline"><span>{{row[col['id']]}}</span></a>
+                                        {% if col['id'] == 'name' || col['id'] == 'checklist_result'   %}
+                                            {% if col['id'] == 'name' %}
+                                            <a class="text-underline"><span>{{row[col['id']]}}</span></a>
+                                            {% endif %}
 
-                                    {% else %}
-                                    <span>{{row[col['id']]}}</span>
-                                    {% endif %}
+
+                                            {% if col['id'] == 'checklist_result' %}
+                                            <span>  {{row[col['id']]}} {{row['docstatus'] == 0 ? '(ร่าง)' : row['docstatus'] == 1 ? '(สำเร็จ)' : '(ยกเลิก)' }} </span>
+                                            {% endif %}
+                             
+                                        {% else %}
+                                        <span>{{row[col['id']]}}</span>
+                                        {% endif %}
 
                                     {% endif %}
                                 </div>
@@ -232,6 +239,18 @@ function calAge(a, b) {
     return Math.floor((tDay - bDay) / ms);
 }
 
+async function create_edit_associate_license(frm) {
+
+
+    let result = await frappe.call('maechan.maechan_license.doctype.license.license.create_from_requestlicense', {
+        'name' : frm.doc.name
+    })
+
+    console.log("result",result)
+
+    frappe.set_route(['Form',"License",result.message.name])
+}
+
 frappe.ui.form.on("RequestLicense", {
     async refresh(frm) {
 
@@ -244,13 +263,20 @@ frappe.ui.form.on("RequestLicense", {
         let refreshAppointment = await make_table(
             'RequestLicenseInspect',
             'check_datatable',
-            ['checklist_date', 'checklist_result', 'checklist_comment'],
+            ['checklist_date', 'checklist_result', 'checklist_comment',],
             parent_values,
             ['checklist_date'],
             ['checklist_date', 'checklist_list', 'checklist_extra', 'checklist_result', 'checklist_comment'],
             frm.doc.request_type
         )
         refreshAppointment(frm)
+
+        if(frm.doc.workflow_state == "รอออกใบอนุญาต"){
+            frm.set_df_property('license_type','reqd',1)
+            frm.set_df_property('license_fee','reqd',1)
+            
+
+        }
 
 
     },
@@ -305,32 +331,12 @@ frappe.ui.form.on("RequestLicense", {
         //     frm.call('newLicense')
         // }
 
-    }, async create_license_btn(frm) {
-        console.log(frm.doc.workflow_state)
-        let licensedata = {
-            license_type: frm.doc.license_type,
-            request_license: frm.doc.name,
-            license_applicant_type: frm.doc.license_applicant_type,
-            license_applicant: frm.doc.license_applicant_type == 'นิติบุคคล' ? frm.doc.license_applicant : frm.doc.applicant_name,
-            license_applicant_by: frm.doc.applicant_name,
-            license_applicant_title: frm.doc.applicant_title,
-            license_applicant_nationality: frm.doc.applicant_nationality,
-            license_applicant_ethnicity: frm.doc.applicant_ethnicity,
-            license_applicant_address_no: frm.doc.applicant_no,
-            license_applicant_address_moo: frm.doc.applicant_moo,
-            license_applicant_address_soi: frm.doc.applicant_soi,
-            license_applicant_address_road: frm.doc.applicant_road,
-            license_applicant_address_district: frm.doc.applicant_distict,
-            license_applicant_telephone: frm.doc.applicant_tel,
-            license_applicant_fax: frm.doc.applicant_fax,
-            house_id: frm.doc.house_no,
-            telephone: frm.doc.house_tel,
-            license_fee: frm.doc.license_fee,
-
+        if(frm.doc.workflow_state == "คำร้องสำเร็จ"){
+            await create_edit_associate_license(frm)     
         }
-        console.log(licensedata)
-        frappe.new_doc("License", licensedata)
 
+    }, async create_license_btn(frm) {
+       await create_edit_associate_license(frm)
     }
     , before_load(frm) {
         const emailUser = frappe.session.user
