@@ -18,6 +18,8 @@ import RequestLicenseCreate from './pages/License/RequestLicenseCreate';
 import RequestLicenseEdit from './pages/License/RequestLicenseEdit';
 import RequestLicenseView from './pages/License/RequestLicenseView';
 import RequestLicensePayment from './pages/License/RequestLicensePayment';
+import LicenseIndex from './pages/License/LicenseIndex';
+import LicenseView from './pages/License/LicenseView';
 function App() {
 
 
@@ -73,11 +75,9 @@ function App() {
 
 										</Route>
 
-										<Route path="license">
-											<Route index element={<LicenseDashboard />} />
-											<Route path='requestLicense' element={<RequestLicense/>} />
-											<Route path='requestStatus' element={<h1>สร้างคำร้องขอใบอนุญาต</h1>} />
-
+										<Route path="pageLicense">
+											<Route index element={<LicenseIndex />} />
+											<Route path=':id/view' element={<LicenseView/>} />
 										</Route>
 
 										<Route path="business">

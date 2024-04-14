@@ -146,7 +146,7 @@ function RequestLicense() {
                         <TableColumn>ที่อยู่</TableColumn>
                         <TableColumn>สถานะ</TableColumn>
                         <TableColumn>หมายเหตุ</TableColumn>
-                        <TableColumn>การกระทำ</TableColumn>
+                        <TableColumn className="text-center">การกระทำ</TableColumn>
                     </TableHeader>
                     {isLoading ? (
                         <TableBody emptyContent={"ไม่มีข้อมูล"}>{[]}</TableBody>)

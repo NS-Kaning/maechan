@@ -2,6 +2,7 @@ import { Button, ButtonProps } from "@nextui-org/react"
 import { PropsWithChildren } from "react"
 import { FaBuilding, FaHome } from "react-icons/fa"
 import { FaFileLines, FaUserPen } from "react-icons/fa6"
+import { TbLicense } from "react-icons/tb"
 import { useLocation, useNavigate } from "react-router-dom"
 
 function AppSidebarButton(props: PropsWithChildren<ButtonProps & {exact? : boolean}>) {
@@ -55,6 +56,9 @@ export function SidebarMenu() {
             </li>
             <li>
                 <AppSidebarButton exact={false} href="/licenseRequest" startContent={<FaFileLines />}>คำร้องขอใบอนุญาต</AppSidebarButton>
+            </li>
+            <li>
+                <AppSidebarButton exact={false} href="/pageLicense" startContent={<TbLicense />}>ใบอนุญาต</AppSidebarButton>
             </li>
 
             <li>
