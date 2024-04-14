@@ -204,7 +204,7 @@ function RequestLicense() {
                                                             (
                                                                 <Tooltip placement="top" content="ใบอนุญาต" aria-label="ใบอนุญาติ" >
                                                                     <span
-                                                                        onClick={() => { window.open(`${siteName}/printview?doctype=License&name=${licenses[x.name][0].name}&trigger_print=1&format=LicenseDefault&no_letterhead=1&letterhead=No%20Letterhead&settings=%7B%7D&_lang=th`) }}
+                                                                        onClick={() => { navigate(`/pageLicense/${licenses[x.name][0].name}/view`) }}
                                                                         className="text-lg text-violet-600 cursor-pointer active:opacity-50">
                                                                         <FaFileDownload   />
                                                                     </span>
