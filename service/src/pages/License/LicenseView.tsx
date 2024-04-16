@@ -15,7 +15,7 @@ export default function LicenseView() {
     const { call } = useContext(FrappeContext) as FrappeConfig
     const fetcher = (url: any) => call.post(url).then((res) => res);
 
-    const iframeRef = useRef(null)
+    const iframeRef = useRef<HTMLIFrameElement>(null)
 
     const [data, setData] = useState(null as any)
 
@@ -54,7 +54,7 @@ export default function LicenseView() {
         </Breadcrumbs>
 
         <div>
-            <Button color="primary" onClick={() => { iframeRef.current.contentWindow.print() }}><FaPrint /></Button>
+            <Button color="primary" onClick={() => { iframeRef.current?.contentWindow?.print() }}><FaPrint /></Button>
         </div>
 
         <iframe ref={iframeRef} srcDoc={data} id="frame" width="100%" height="0"

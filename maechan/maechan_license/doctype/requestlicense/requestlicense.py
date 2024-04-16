@@ -5,8 +5,11 @@ from typing import List
 import frappe
 from frappe.model.naming import getseries
 from frappe.model.document import Document
+from maechan.maechan_license.doctype.license.license import License
+from maechan.maechan_license.doctype.licensetype.licensetype import LicenseType
 from maechan.maechan_license.doctype.requestlicensetype.requestlicensetype import RequestLicenseType
 from frappe.model.workflow import apply_workflow
+from maechan.maechan_license.doctype.business.business import Business
 
 
 class RequestLicense(Document):
@@ -51,7 +54,9 @@ class RequestLicense(Document):
         license_extra: DF.Table[LicenseDetail]
         license_fee: DF.Currency
         license_type: DF.Link | None
+        old_request_license: DF.Link | None
         payment_attachment: DF.Attach | None
+        renew_license: DF.Link | None
         request_extra: DF.Table[RequestDetail]
         request_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23", "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e44\u0e21\u0e48\u0e04\u0e23\u0e1a", "\u0e41\u0e01\u0e49\u0e44\u0e02", "\u0e23\u0e2d\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48",
                                    "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19", "\u0e23\u0e2d\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15", "\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19", "\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01"]
@@ -63,6 +68,24 @@ class RequestLicense(Document):
         number = getseries('REQ-LICENSE', 5)
         self.name = f"REQ-LICENSE-{number}"
         return self.name
+
+    def fetch_license_extra(self, license: License | None = None):
+        if license == None:
+            if self.license_type:
+                licenseTypeDoc: LicenseType = frappe.get_doc(
+                    'LicenseType', self.license_type)  # type: ignore
+                for detail in licenseTypeDoc.details:
+
+                    self.append('license_extra', {
+                        'key': detail.key,
+                    })
+        else:
+            for extra in license.license_extra:
+                self.append('license_extra', {
+                            'key': extra.key, # type: ignore
+                            'value': extra.value # type: ignore
+                            })
+
     pass
 
 
@@ -109,7 +132,8 @@ def load_request_license():
     assert 'name' in request
 
     name = request['name']
-    requestLicenseDoc = frappe.get_doc("RequestLicense", name)
+    requestLicenseDoc: RequestLicense = frappe.get_doc(
+        "RequestLicense", name)  # type: ignore
 
     workflow = get_active_workflow()
 
@@ -118,6 +142,9 @@ def load_request_license():
     else:
         transition = None
 
+    frappe.response['requestLicenseInspect'] = frappe.get_all("RequestLicenseInspect", fields="*", filters={
+        'request_license': requestLicenseDoc.name
+    })
     frappe.response['workflow'] = workflow
     frappe.response['transition'] = transition
     return requestLicenseDoc
@@ -135,7 +162,8 @@ def load_request_licenses():
     appointments = {}
     licenses = {}
     for (i, x) in enumerate(docs):
-        x.business = frappe.get_doc('Business', x.business)  # type: ignore
+        if x.business :
+            x.business = frappe.get_doc('Business', x.business)  # type: ignore
         x.house_no = frappe.get_doc('House', x.house_no)  # type: ignore
 
         appointments[x.name] = (frappe.db.get_all("RequestLicenseInspect", fields="*", filters={  # type: ignore
@@ -144,7 +172,7 @@ def load_request_licenses():
 
         licenses[x.name] = (frappe.db.get_all("License", fields="*", filters={
             'request_license': x.name,
-            'workflow_state' : ['in',['Approved','Expired']]
+            'workflow_state': ['in', ['Approved', 'Expired']]
         }))
 
     frappe.response['appointment'] = appointments
@@ -164,9 +192,10 @@ def first_step_requestlicense():
         requestLicense['doctype'] = 'RequestLicense'
 
     if 'applicant_title' not in requestLicense or requestLicense['applicant_title'] == '':
-        business = frappe.get_doc("Business", requestLicense['business'])
-        # type: ignore
-        requestLicense['applicant_title'] = business.business_name
+        if 'business' in requestLicense and requestLicense['business'] :
+            business: Business = frappe.get_doc(
+                "Business", requestLicense['business'])  # type: ignore
+            requestLicense['applicant_title'] = business.business_name
 
     requestLicenseObj: RequestLicense = frappe.get_doc(
         requestLicense)  # type: ignore
@@ -288,3 +317,61 @@ def citizen_submit():
         apply_workflow(doc, req['action'])
 
     return doc
+
+
+@frappe.whitelist()
+def renew_license():
+    request = frappe.form_dict
+    assert 'license' in request
+
+    licenseDoc: License = frappe.get_doc(
+        'License', request['license'])  # type: ignore
+    if licenseDoc:
+        if licenseDoc.request_license:
+            requestLicenseDoc: RequestLicense = frappe.get_doc(
+                "RequestLicense", licenseDoc.request_license)  # type: ignore
+            renew_request_license: RequestLicense = frappe.copy_doc(
+                requestLicenseDoc)  # type: ignore
+            renew_request_license.renew_license = licenseDoc.name
+            renew_request_license.old_request_license = requestLicenseDoc.name
+            renew_request_license.workflow_state='สร้าง'
+            renew_request_license.request_status='สร้าง'
+            renew_request_license.save()
+
+            licenseDoc.renew_request = renew_request_license.name
+            licenseDoc.save()
+
+            return renew_request_license
+        else:
+            renew_request_license = frappe.new_doc(
+                "RequestLicense")  # type: ignore
+            renew_request_license.renew_license = licenseDoc.name
+            renew_request_license.license_applicant_type = licenseDoc.license_applicant_type
+            renew_request_license.applicant_name = licenseDoc.license_applicant
+            renew_request_license.applicant_nationality = licenseDoc.license_applicant_nationality
+            renew_request_license.applicant_ethnicity = licenseDoc.license_applicant_ethnicity
+            renew_request_license.applicant_tel = licenseDoc.license_applicant_telephone
+            renew_request_license.applicant_fax = licenseDoc.license_applicant_fax
+            renew_request_license.applicant_no = licenseDoc.license_applicant_address_no
+            renew_request_license.applicant_moo = licenseDoc.license_applicant_address_moo
+            renew_request_license.applicant_soi = licenseDoc.license_applicant_address_soi
+            renew_request_license.applicant_road = licenseDoc.license_applicant_address_road
+            renew_request_license.applicant_distict = licenseDoc.license_applicant_address_district
+            renew_request_license.applicant_amphur = licenseDoc.license_applicant_address_amphur
+            renew_request_license.applicant_province = licenseDoc.license_applicant_address_province
+            renew_request_license.applicant_amphur_th = licenseDoc.license_applicant_address_amphur_th
+            renew_request_license.applicant_province_th = licenseDoc.license_applicant_address_province_th
+            renew_request_license.house_no = licenseDoc.house_id
+            renew_request_license.house_tel = licenseDoc.telephone
+            renew_request_license.applicant_title = licenseDoc.license_applicant_title
+            renew_request_license.license_type = licenseDoc.license_type
+            renew_request_license.fetch_license_extra(license=licenseDoc)
+
+            renew_request_license.save()
+            licenseDoc.renew_request = renew_request_license.name
+            licenseDoc.save()
+            return renew_request_license
+
+    else:
+        frappe.response['http_status_code'] = 400
+        return "License not found."

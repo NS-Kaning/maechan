@@ -15,7 +15,6 @@ from frappe.types import DF
 from qrcode.main import QRCode
 from maechan.maechan_core.doctype.maechanconfig.maechanconfig import MaechanConfig
 
-from maechan.maechan_license.doctype.requestlicense.requestlicense import RequestLicense
 from maechan.maechan_license.doctype.licensetype.licensetype import LicenseType
 from maechan.maechan_license.doctype.licensedetail.licensedetail import LicenseDetail
 
@@ -89,6 +88,8 @@ class License(Document):
         house_road: DF.Data | None
         house_soi: DF.Data | None
         house_tambon: DF.Data | None
+        is_not_continue: DF.Check
+        is_notify_by_officer: DF.Check
         issue_position: DF.Data | None
         issuer_name: DF.Data | None
         license_applicant: DF.Data | None
@@ -108,13 +109,10 @@ class License(Document):
         license_applicant_nationality: DF.Data | None
         license_applicant_telephone: DF.Data | None
         license_applicant_title: DF.Data | None
-        license_applicant_type: DF.Literal["\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32",
-                                           "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"]
-        license_approve_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32",
-                                           "\u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34", "\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01", "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"]
+        license_applicant_type: DF.Literal["\u0e1a\u0e38\u0e04\u0e04\u0e25\u0e18\u0e23\u0e23\u0e21\u0e14\u0e32", "\u0e19\u0e34\u0e15\u0e34\u0e1a\u0e38\u0e04\u0e04\u0e25"]
+        license_approve_status: DF.Literal["\u0e2a\u0e23\u0e49\u0e32\u0e07", "\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e32", "\u0e23\u0e2d\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34", "\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34", "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01", "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"]
         license_end_date: DF.Date | None
-        license_enddate: DF.Literal["-", "60\u0e27\u0e31\u0e19", "60\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27", "30\u0e27\u0e31\u0e19",
-                                    "30\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27", "15\u0e27\u0e31\u0e19", "15\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27", "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"]
+        license_enddate: DF.Literal["-", "60\u0e27\u0e31\u0e19", "60\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27", "30\u0e27\u0e31\u0e19", "30\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27", "15\u0e27\u0e31\u0e19", "15\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27", "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"]
         license_extra: DF.Table[LicenseDetail]
         license_fee: DF.Currency
         license_main_type: DF.Data | None
@@ -126,6 +124,7 @@ class License(Document):
         manage_user: DF.Link | None
         qr_code_base64: DF.LongText | None
         receipt_date: DF.Date | None
+        renew_request: DF.Link | None
         request_license: DF.Link | None
         telephone: DF.Data | None
         uuid: DF.Data | None
@@ -165,6 +164,9 @@ class License(Document):
             self.license_signature_img = maechanConfig.mayor_signature
 
     def before_save(self):
+
+        from maechan.maechan_license.doctype.requestlicense.requestlicense import RequestLicense
+
 
         maechanConfig: MaechanConfig = frappe.get_single(
             "MaechanConfig")  # type: ignore
@@ -256,8 +258,8 @@ def create_from_requestlicense(name: str | None = None):
 
             for x in requestLicense.license_extra:
                 newlicense.append('license_extra', {
-                    'key': x.key,
-                    'value': x.value
+                    'key': x.key, # type: ignore
+                    'value': x.value # type: ignore
                 })
             newlicense.save()
 
@@ -277,18 +279,19 @@ def load_licenses():
             tabLicense.*, 
             tabLicenseType.title as licensetype_title,
             tabHouse.text_display as house_text_display
-        from tabLicense join `tabRequestLicense` on tabLicense.request_license = tabRequestLicense.name
+        from tabLicense
+        left join `tabRequestLicense` on tabLicense.request_license = tabRequestLicense.name
         join tabLicenseType on tabLicenseType.name = tabLicense.license_type
         join tabHouse on tabHouse.name = tabLicense.house_id
         where (tabRequestLicense.owner = %(user)s or tabLicense.manage_user = %(user)s)
-        and tabLicense.workflow_state = 'Approved'
+        and tabLicense.workflow_state in ('Approved','Expired')
     """
 
     result = frappe.db.sql(query,{
         'user' : frappe.session.user
     },as_dict=True)
 
-
+    frappe.response['user'] = frappe.session.user
     return result
 
 
@@ -300,3 +303,63 @@ def get_by_name (name=None) :
         frappe.response['http_status_code'] = 400
         frappe.response['error'] = "name value is none"
         return "error"
+    
+
+
+@frappe.whitelist(allow_guest=True)
+def license_preivew():
+    request = frappe.form_dict
+    if request['type'] == "License":
+
+        if 'name' in request:
+            doc_name = request['name']
+            doc: License = frappe.get_doc("License", doc_name)  # type: ignore
+
+            from frappe.core.doctype.file.utils import get_local_image
+
+            if doc.license_signature_img:
+                localImg = get_local_image(doc.license_signature_img)
+                buffered = BytesIO()
+                localImg[0].save(buffered, format="png")
+                img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+                doc.license_signature_img = 'data: image/png;base64, ' + img_str  # type: ignore
+
+            content = frappe.render_template(
+                'templates/license/licensedefault.html', {'doc': doc})
+            content = f"<html>{content}</html>"
+            return content
+        elif 'uuid' in request:
+            from frappe.query_builder import DocType
+            LicenseDocType = frappe.qb.DocType('License')
+
+            q = (frappe.qb.from_(LicenseDocType)
+                .limit(1)
+                .select("*")
+                .where(LicenseDocType.uuid == request['uuid']))
+
+            result = q.run(as_dict=True)
+            if (len(result) == 1):
+
+                doc: License = frappe.get_doc(
+                    "License", result[0]['name'])  # type: ignore
+
+                from frappe.core.doctype.file.utils import get_local_image
+
+                if doc.license_signature_img:
+                    localImg = get_local_image(doc.license_signature_img)
+                    buffered = BytesIO()
+                    localImg[0].save(buffered, format="png")
+                    img_str = base64.b64encode(
+                        buffered.getvalue()).decode("utf-8")
+
+                    doc.license_signature_img = 'data: image/png;base64, ' + img_str  # type: ignore
+
+                content = frappe.render_template(
+                    'templates/license/licensedefault.html', {'doc': doc})
+                content = f"<html>{content}</html>"
+                return content
+
+            return "Not found"
+
+    frappe.throw("Request is invalid")

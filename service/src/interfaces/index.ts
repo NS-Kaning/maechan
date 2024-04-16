@@ -172,6 +172,7 @@ export type IRequestLicense = Doctype & {
     license_fee : number;
     payment_attachment : string;
     comment : string;
+    
 
 }
 
@@ -181,3 +182,14 @@ export type ILicenseType = Doctype & {
     rule_year : string;
 
 }
+
+export type IRequestLicenseInspect = Doctype & {
+    checklist_comment: string;
+    checklist_date: string | Date;
+    checklist_extra: ICheckListDetail[]
+    checklist_list: ICheckList[]
+    checklist_result: "-"| "\u0e1c\u0e48\u0e32\u0e19"| "\u0e44\u0e21\u0e48\u0e1c\u0e48\u0e32\u0e19"
+    request_license: string | IRequestLicense
+}
+
+export type IAppointment = IRequestLicenseInspect

@@ -102,7 +102,10 @@
   "qr_code_base64",
   "tab_6_tab",
   "license_enddate_report",
-  "license_enddate"
+  "license_enddate",
+  "is_notify_by_officer",
+  "is_not_continue",
+  "renew_request"
  ],
  "fields": [
   {
@@ -326,6 +329,7 @@
    "label": "\u0e2b\u0e21\u0e39\u0e48"
   },
   {
+   "fetch_from": "license_applicant_address_district.province_id",
    "fieldname": "license_applicant_address_province",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -604,6 +608,7 @@
   {
    "fieldname": "license_enddate",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38\u0e20\u0e32\u0e22\u0e43\u0e19",
    "options": "-\n60\u0e27\u0e31\u0e19\n60\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27\n30\u0e27\u0e31\u0e19\n30\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27\n15\u0e27\u0e31\u0e19\n15\u0e27\u0e31\u0e19 \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e41\u0e25\u0e49\u0e27\n\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38"
   },
@@ -624,22 +629,45 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "request_license",
    "fieldtype": "Link",
    "label": "\u0e2d\u0e49\u0e32\u0e07\u0e2d\u0e34\u0e07\u0e43\u0e1a\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07",
    "options": "RequestLicense"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "manage_user",
    "fieldtype": "Link",
    "label": "\u0e1c\u0e39\u0e49\u0e08\u0e31\u0e14\u0e01\u0e32\u0e23 (\u0e2d\u0e49\u0e32\u0e07\u0e2d\u0e34\u0e07\u0e15\u0e32\u0e21\u0e04\u0e19\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07)",
    "options": "User"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "is_notify_by_officer",
+   "fieldtype": "Check",
+   "label": "\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e15\u0e48\u0e2d\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e41\u0e25\u0e49\u0e27"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "is_not_continue",
+   "fieldtype": "Check",
+   "label": "\u0e44\u0e21\u0e48\u0e1b\u0e23\u0e30\u0e2a\u0e07\u0e04\u0e4c\u0e15\u0e48\u0e2d\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "renew_request",
+   "fieldtype": "Link",
+   "label": "\u0e43\u0e1a\u0e04\u0e33\u0e23\u0e49\u0e2d\u0e07\u0e15\u0e48\u0e2d\u0e2d\u0e32\u0e22\u0e38",
+   "options": "RequestLicense"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-04-13 20:30:20.133439",
+ "modified": "2024-04-15 17:07:43.753792",
  "modified_by": "Administrator",
  "module": "maechan_license",
  "name": "License",

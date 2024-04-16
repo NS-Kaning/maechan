@@ -20,6 +20,7 @@ import RequestLicenseView from './pages/License/RequestLicenseView';
 import RequestLicensePayment from './pages/License/RequestLicensePayment';
 import LicenseIndex from './pages/License/LicenseIndex';
 import LicenseView from './pages/License/LicenseView';
+import RequestInspectView from './pages/License/RequestInspectView';
 function App() {
 
 
@@ -70,6 +71,8 @@ function App() {
 											<Route path='create' element={<RequestLicenseCreate/>} />
 											<Route path=':id/edit' element={<RequestLicenseEdit />} />
 											<Route path=':id/view' element={<RequestLicenseView />} />
+											<Route path=':id/inspect/:inspectId/view' element={<RequestInspectView />} />
+
 											<Route path=':id/payment' element={<RequestLicensePayment />} />
 
 

@@ -1,13 +1,11 @@
-import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Autocomplete, AutocompleteItem, Skeleton, Tooltip, CardBody, Card, CardFooter } from "@nextui-org/react"
+import { BreadcrumbItem, Breadcrumbs, Button, CardBody, Card, CardFooter } from "@nextui-org/react"
 import { useContext, useEffect, useRef, useState } from "react"
 import { FaHome } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon } from "../../interfaces"
+import { ILicenseType, IRequestLicense } from "../../interfaces"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
-import { useAsyncList } from "@react-stately/data"
 import { useAlertContext } from "../../providers/AlertProvider"
 import { Tabs, Tab } from "@nextui-org/react";
-import { FaDownload, FaTrash, FaUpload } from "react-icons/fa6"
 
 export default function RequestLicensePayment() {
 
@@ -46,7 +44,7 @@ export default function RequestLicensePayment() {
 
     useEffect(() => {
         setIsLoading(true)
-        loadRequestLicense().then((requestLicense: IRequestLicense) => {
+        loadRequestLicense().then(() => {
             setIsLoading(false)
 
         })
@@ -54,17 +52,12 @@ export default function RequestLicensePayment() {
     }, [])
 
 
-    const [isSaving, setIsSaving] = useState(false)
-
-
-
-
     const workFlowActionButton = () => {
         let currentState = workflowTransition.find(w => w.state == createForm.workflow_state)
         console.log("XXX", createForm.workflow_state)
         if (currentState) {
             return (
-                <Button onClick={(e) => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
+                <Button onClick={() => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
             )
         }
         else {
@@ -74,7 +67,7 @@ export default function RequestLicensePayment() {
 
     const validate = () => {
 
-        if(createForm.payment_attachment) {
+        if (createForm.payment_attachment) {
             return true
         }
 
@@ -85,7 +78,7 @@ export default function RequestLicensePayment() {
 
 
     const submitDoc = async (action: string) => {
-        if (validate()){
+        if (validate()) {
             call.post(`maechan.maechan_license.doctype.requestlicense.requestlicense.citizen_submit`, {
                 name: createForm.name,
                 state: createForm.workflow_state,
@@ -96,18 +89,18 @@ export default function RequestLicensePayment() {
                 alert.showError(JSON.stringify(err))
             })
         }
-        
+
     }
 
     const UploadButton = ({ doc }: { doc: IRequestLicense }) => {
 
         const { file } = useContext(FrappeContext) as FrappeConfig
 
-        const inputFile = useRef(null)
+        const inputFile = useRef<HTMLInputElement>(null)
 
         const [isUploading, setIsUploading] = useState(false)
         const openInputFile = () => {
-            inputFile.current.click();
+            inputFile?.current?.click();
 
         }
 
@@ -141,7 +134,7 @@ export default function RequestLicensePayment() {
                 myFile,
                 fileArgs,
                 /** Progress Indicator callback function **/
-                (completedBytes, totalBytes) => console.log(Math.round((c / t) * 100), " completed")
+                (completedBytes, totalBytes) => console.log(Math.round((completedBytes / (totalBytes ?? completedBytes + 1)) * 100), " completed")
             )
                 .then((response) => {
                     console.log("File Upload complete")
@@ -164,8 +157,10 @@ export default function RequestLicensePayment() {
         if (doc.payment_attachment) {
             return (
                 <div className="flex flex-row gap-3">
-                    <Button isLoading={isUploading}  onClick={(e)=>{window.open(`${siteName}/${doc.payment_attachment}`)}}  color="primary">ดูหลักฐาน</Button>
-                    <Button isLoading={isUploading} onClick={clearPayment}  color="danger">ลบ</Button>
+                    <Button isLoading={isUploading} onClick={() => { window.open(`${siteName}/${doc.payment_attachment}`) }} color="primary">
+                        ดูหลักฐาน
+                    </Button>
+                    <Button isLoading={isUploading} onClick={clearPayment} color="danger">ลบ</Button>
                 </div>
             )
         } else {

@@ -150,7 +150,7 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                                 <div class="col" data="{{row.name}}"><div data="{{row.name}}" class="btn-open-row" data-toggle="tooltip" data-placement="right" title="" data-original-title="Edit" aria-describedby="tooltip56951">
 									<a class="edit_row" data="{{row.name}}">
 									<svg data="{{row.name}}" class="icon  icon-xs" style="" aria-hidden="true">
-									<use class="" href="#icon-edit"></use></svg></a>
+									<use data="{{row.name}}" class="" href="#icon-edit"></use></svg></a>
 									</div></div>
                             </div>
                         </div>

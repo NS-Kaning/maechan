@@ -156,6 +156,8 @@ export default function RequestLicenseEdit() {
             if (!value) {
                 createFormValue.house_no = ''
             }
+        }else if(key == 'request_type'){
+            loadRequestLicenseType(createFormValue)
         }
         reloadProvinceAmphurDistrict(createFormValue, key)
         setCreateForm(createFormValue)

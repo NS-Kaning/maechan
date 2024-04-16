@@ -2,13 +2,13 @@ import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, 
 import { PropsWithChildren, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FaHome, FaPlus } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon, IUserProfile } from "../../interfaces"
+import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseInspect, IRequestLicenseType, IRequestTypeDetail, ITambon, IUserProfile } from "../../interfaces"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useAsyncList } from "@react-stately/data"
 import { DateTime } from "luxon";
 import { useAlertContext } from "../../providers/AlertProvider"
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { FaDownload, FaTrash, FaUpload } from "react-icons/fa6"
+import { FaDownload, FaMagnifyingGlass, FaTrash, FaUpload } from "react-icons/fa6"
 
 export default function RequestLicenseView() {
 
@@ -37,6 +37,8 @@ export default function RequestLicenseView() {
 
 
     let [createForm, setCreateForm] = useState({} as IRequestLicense)
+    let [requestLicenseInspect, setRequestLicenseInspect] = useState([] as IRequestLicenseInspect[])
+
     let [provinces, setProvinces] = useState([] as IProvince[])
     let [amphures, setAmphures] = useState([] as IAmphure[])
     let [districts, setDistricts] = useState([] as ITambon[])
@@ -162,9 +164,6 @@ export default function RequestLicenseView() {
         setCreateForm(createFormValue)
     }
 
-    const [workflowTransition, setWorkflowTransition] = useState([] as any[])
-
-
     const loadRequestLicense = async () => {
         let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_license", {
             name: params.id
@@ -172,7 +171,7 @@ export default function RequestLicenseView() {
         let requestLicense: IRequestLicense = response.message
 
         setCreateForm(requestLicense)
-        setWorkflowTransition(response.transition)
+        setRequestLicenseInspect(response.requestLicenseInspect)
         await updateHouseAutocomplete(requestLicense.house_no)
         await loadProvinceAmphureDistrict(requestLicense)
 
@@ -211,19 +210,13 @@ export default function RequestLicenseView() {
     }, [])
 
     let list = useAsyncList<IHouse>({
-        async load({ signal, filterText }) {
+        async load({ filterText }) {
             let res = await call.post("maechan.maechan_core.api.house_filter", { keyword: filterText })
             return {
                 items: res.message,
             };
         },
     });
-
-    const [error, setError] = useState({
-        business_address: '',
-        business_name: '',
-        result: null,
-    })
 
     const [isSaving, setIsSaving] = useState(false)
 
@@ -253,7 +246,9 @@ export default function RequestLicenseView() {
     const renderForm = (x: IRequestTypeDetail, child: keyof IRequestLicense) => {
         let requestExtras = createForm[child] as IRequestDetail[]
         let childkey = requestExtras.find(e => e.key == x.key)
+        console.log(createForm,childkey,x,requestExtras)
         if (childkey) {
+            
             if (x.datatype == 'Data') {
 
                 if (x.key == "ชื่อสถานประกอบการ") {
@@ -305,144 +300,7 @@ export default function RequestLicenseView() {
 
     const siteName = import.meta.env.VITE_FRAPPE_URL
 
-    const DeleteAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
 
-        const [isLoading, setIsLoading] = useState(false)
-        const deleteAttachment = async (a: IAttachment) => {
-            setIsLoading(true)
-            try {
-                let response = await call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.deleteAttachment", {
-                    attachment: a
-                })
-                if (success) {
-                    success(response)
-                }
-            } catch (err) {
-                if (error) {
-                    error(err)
-                }
-
-            } finally {
-                setIsLoading(false)
-            }
-
-        }
-
-        return (
-            <Tooltip showArrow={true} content="Delete">
-                <Button isLoading={isLoading} onClick={() => { deleteAttachment(attachment) }} isIconOnly color="danger">
-                    <FaTrash />
-                </Button>
-            </Tooltip>
-        )
-    }
-
-    const updateAttachment = (req: any) => {
-        console.log(req)
-        let attachment = req.message
-        if (attachment) {
-            let createFormValue = { ...createForm }
-            let attachmentUpdate = createFormValue.attachment_extra.find(a => a.name == attachment.name)
-            if (attachmentUpdate) {
-                let index = createFormValue.attachment_extra.indexOf(attachmentUpdate)
-                createFormValue.attachment_extra[index] = attachment
-                setCreateForm({
-                    ...createFormValue
-                })
-            }
-        }
-    }
-
-    const UploadAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
-
-        const { file } = useContext(FrappeContext) as FrappeConfig
-
-        const inputFile = useRef(null)
-
-        const [isUploading, setIsUploading] = useState(false)
-        const openInputFile = () => {
-            inputFile.current.click();
-
-        }
-
-        const uploadFile = async (e: any) => {
-            setIsUploading(true)
-            console.log(e.target.files[0])
-            let myFile = e.target.files[0]
-            const fileArgs = {
-                /** If the file access is private then set to TRUE (optional) */
-                "isPrivate": false,
-                /** Folder the file exists in (optional) */
-                "folder": "home/RequestLicenseAttachment",
-                // /** File URL (optional) */
-                // /** Doctype associated with the file (optional) */
-                // "doctype": "Attachment",
-                // /** Docname associated with the file (mandatory if doctype is present) */
-                // "docname": attachment.name,
-                // /** Field to be linked in the Document **/
-                // "fieldname" : "value"
-            }
-
-            file.uploadFile(
-                myFile,
-                fileArgs,
-                /** Progress Indicator callback function **/
-                (completedBytes, totalBytes) => console.log(Math.round((c / t) * 100), " completed")
-            )
-                .then((response) => {
-                    console.log("File Upload complete")
-                    let fileResponse = response.data.message
-                    console.log(response)
-                    call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.update_attachment", {
-                        'fileresponse': fileResponse,
-                        'attachment': attachment
-                    }).then(() => {
-                        loadRequestLicense().then(() => setIsLoading(false))
-                    }).catch(e => alert.showError(JSON.stringify(e)))
-                })
-                .catch(e => console.error(e))
-
-
-        }
-
-        return (
-            <div>
-                <Tooltip aria-label="Upload" showArrow={true} content="Upload">
-                    <Button isLoading={isUploading} aria-label="Upload" onClick={openInputFile} isIconOnly color="primary">
-                        <FaUpload />
-                    </Button>
-                </Tooltip>
-                <input type="file" id="file" onChange={uploadFile} ref={inputFile} style={{ display: "none" }} />
-
-            </div>
-        )
-    }
-
-    const workFlowActionButton = () => {
-        let currentState = workflowTransition.find(w => w.state == createForm.workflow_state)
-        console.log("XXX", createForm.workflow_state)
-        if (currentState) {
-            return (
-                <Button onClick={(e) => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
-            )
-        }
-        else {
-            return null
-        }
-    }
-
-
-    const submitDoc = async (action) => {
-        call.post(`maechan.maechan_license.doctype.requestlicense.requestlicense.citizen_submit`, {
-            name: createForm.name,
-            state: createForm.workflow_state,
-            action: action
-        }).then(() => {
-            navigate("/licenseRequest")
-        }).catch(err => {
-            alert.showError(JSON.stringify(err))
-        })
-    }
 
     return (
         <div className="flex flex-col">
@@ -667,6 +525,55 @@ export default function RequestLicenseView() {
 
                         </TableBody>
                     </Table>
+                </Tab>
+
+                <Tab key="requestLicenseInspect" title="ผลการตรวจสถานที่" aria-label="ผลการตรวจสถานที่" className="flex flex-col">
+                    <Table isStriped shadow="none" aria-label="เอกสารแนบ">
+                        <TableHeader>
+                            <TableColumn className="text-center">
+                                ลำดับ
+                            </TableColumn>
+                            <TableColumn className="">
+                                วันที่ตรวจ
+                            </TableColumn>
+                            <TableColumn className="">
+                                ผลการตรวจ
+                            </TableColumn>
+                            <TableColumn className="">
+                                หมายเหตุ
+                            </TableColumn>
+                            <TableColumn className="text-center">
+                                การกระทำ
+                            </TableColumn>
+                        </TableHeader>
+                        <TableBody>
+                            {requestLicenseInspect?.map((a: IRequestLicenseInspect, index: number) => (
+                                <TableRow key={a.name}>
+                                    <TableCell className="text-center">{index + 1}</TableCell>
+                                    <TableCell>{a.checklist_date instanceof Date ? DateTime.fromJSDate(a.checklist_date).toISODate() : a.checklist_date}</TableCell>
+                                    <TableCell>{a.checklist_result}</TableCell>
+                                    <TableCell>{a.checklist_comment}</TableCell>
+
+                                    <TableCell className="text-center">
+                                        <div className="flex flex-row justify-center gap-1">
+                                            <Tooltip showArrow={true} content="ดู">
+
+                                                <span
+                                                    onClick={() => { navigate(`/licenseRequest/${createForm.name}/inspect/${a.name}/view`) }}
+                                                    className="text-lg cursor-pointer active:opacity-50">
+                                                    <FaMagnifyingGlass />
+                                                </span>
+
+                                            </Tooltip>
+
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+
+                        </TableBody>
+                    </Table>
+
                 </Tab>
             </Tabs>
         </div >

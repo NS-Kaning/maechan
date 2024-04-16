@@ -1,7 +1,7 @@
-import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react";
-import { useContext, useMemo } from "react";
+import { BreadcrumbItem, Breadcrumbs, Button, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { FaEdit, FaFileDownload, FaFileImport, FaHome, FaPlus } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaRotate } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useAlertContext } from "../../providers/AlertProvider";
 import { FrappeContext, FrappeConfig, useSWR } from "frappe-react-sdk";
@@ -14,7 +14,7 @@ export default function LicenseIndex() {
     const { call } = useContext(FrappeContext) as FrappeConfig
     const fetcher = (url: any) => call.post(url).then((res) => res);
 
-    const { data, error, isLoading } = useSWR(
+    const { data, error, isLoading, mutate } = useSWR(
         "maechan.maechan_license.doctype.license.license.load_licenses",
         fetcher
     );
@@ -28,6 +28,65 @@ export default function LicenseIndex() {
             </div>
         )
     }, [])
+
+    const RenewLicense = ({ doc }: { doc: any }) => {
+
+        const [renewLoading, setRenewLoading] = useState(false)
+        const [isRenew, setIsRenew] = useState(false)
+
+        const { call } = useContext(FrappeContext) as FrappeConfig
+
+
+        useEffect(() => {
+            setIsRenew(!!doc.renew_request)
+        }, doc)
+
+        const createRenew = () => {
+            setRenewLoading(true)
+            call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.renew_license", {
+                license: doc.name
+            }).then(r => {
+                mutate().then(r2 => {
+                    setRenewLoading(false)
+                })
+
+            })
+
+        }
+
+        if (isRenew) {
+            return (
+                <Tooltip placement="top" content="ดูใบคำร้องขออนุญาต" aria-label="ดูใบคำร้องขออนุญาต" >
+                    <span
+                        onClick={() => { navigate(`licenseRequest/${doc.renew_request}/view`) }}
+                        className="text-lg  cursor-pointer active:opacity-50">
+                        <FaMagnifyingGlass />
+                    </span>
+                </Tooltip>
+            )
+        }
+
+        if (renewLoading) {
+
+            return (
+                <Spinner size="sm" />
+            )
+
+        } else {
+            return (
+                <Tooltip placement="top" content="สร้างคำร้องต่อใบอนุญาต" aria-label="สร้างคำร้องต่อใบอนุญาต" >
+                    <span
+                        onClick={() => { createRenew() }}
+                        className="text-lg text-green-500 cursor-pointer active:opacity-50">
+                        <FaRotate />
+                    </span>
+                </Tooltip>
+            )
+        }
+
+
+
+    }
 
     return (<div className="flex flex-col">
         <Breadcrumbs className="mb-3">
@@ -45,9 +104,10 @@ export default function LicenseIndex() {
                 aria-label="รายการคำร้องใบอนุญาต"
             >
                 <TableHeader>
-                    <TableColumn>คำร้อง</TableColumn>
+                    <TableColumn className="w-4/12">คำร้อง</TableColumn>
                     <TableColumn>ที่อยู่</TableColumn>
                     <TableColumn>วันสิ้นอายุ</TableColumn>
+                    <TableColumn>สถานะ</TableColumn>
                     <TableColumn className="text-center">การกระทำ</TableColumn>
                 </TableHeader>
                 {isLoading ? (
@@ -55,17 +115,18 @@ export default function LicenseIndex() {
                     : (
                         <TableBody>
                             {
-                                data.message.map(x => (
+                                data.message.map((x: any) => (
                                     <TableRow key={x.name}>
                                         <TableCell>
                                             <div>
-                                                <div className="font-bold">{x.license_applicant_title}</div>
+                                                <div className="font-bold">{x.license_applicant_title ?? x.license_applicant}</div>
                                                 <div>{x.licensetype_title}</div>
                                             </div>
                                         </TableCell>
 
                                         <TableCell>{x.house_text_display}</TableCell>
                                         <TableCell>{x.license_end_date}</TableCell>
+                                        <TableCell>{x.license_approve_status}</TableCell>
 
                                         <TableCell>
 
@@ -77,6 +138,12 @@ export default function LicenseIndex() {
                                                         <FaFileDownload />
                                                     </span>
                                                 </Tooltip>
+
+                                                {
+                                                    x.workflow_state == 'Expired' || x.workflow_state == 'Approved' ? (
+                                                        <RenewLicense doc={x} />
+                                                    ) : (null)
+                                                }
                                             </div>
 
                                         </TableCell>

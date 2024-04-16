@@ -1,11 +1,12 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
 import { FrappeConfig, FrappeContext, useSWR } from "frappe-react-sdk"
-import { useContext, useEffect, useMemo, useState } from "react"
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useContext, useEffect, useMemo, useState } from "react"
 import { FaEdit, FaFileDownload, FaFileImage, FaHome, FaPlus, FaReceipt } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
+import { Doctype, IBusiness, IHouse, IRequestLicense, IRequestLicenseInspect } from "../../interfaces"
 import { FaFile, FaFileImport, FaMagnifyingGlass } from "react-icons/fa6"
 import { useAlertContext } from "../../providers/AlertProvider"
+import { DateTime } from "luxon"
 
 function RequestLicense() {
 
@@ -88,11 +89,11 @@ function RequestLicense() {
                 return (
                     <div>
                         <div>
-                            {appointments[doc.name].map((a, i) => (
+                            {appointments[doc.name].map((a: IRequestLicenseInspect, i: number) => (
                                 <ul key={a.name}>
                                     <li>
                                         <div>ครั้งที่ {i + 1} </div>
-                                        <div>วันที่ {a.checklist_date}</div>
+                                        <div>วันที่ {a.checklist_date instanceof Date ? DateTime.fromJSDate(a.checklist_date).toISODate()  : a.checklist_date}</div>
                                         <div>ผลการตรวจ : {a.checklist_result} </div>
                                     </li>
                                 </ul>
@@ -157,7 +158,7 @@ function RequestLicense() {
                                         <TableRow key={x.name}>
                                             <TableCell>
                                                 <div>
-                                                    <div className="font-bold">{x.business.business_name}</div>
+                                                    <div className="font-bold">{x.business?.business_name ?? x.applicant_name}</div>
                                                     <div>{x.request_type}</div>
                                                 </div>
                                             </TableCell>
