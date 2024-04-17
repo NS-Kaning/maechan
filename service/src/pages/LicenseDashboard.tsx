@@ -1,5 +1,5 @@
 function LicenseDashboard(){
-    return (<h1>dashboard</h1>)
+    return (<h1>ยินดีต้อนรับสู่ระบบริการประชาชน</h1>)
 }
 
 export default LicenseDashboard
