@@ -278,9 +278,11 @@ def load_licenses():
         select 
             tabLicense.*, 
             tabLicenseType.title as licensetype_title,
-            tabHouse.text_display as house_text_display
+            tabHouse.text_display as house_text_display,
+            renew.workflow_state as renew_workflow_state
         from tabLicense
         left join `tabRequestLicense` on tabLicense.request_license = tabRequestLicense.name
+        left join `tabRequestLicense` as renew on tabLicense.renew_request = renew.name
         join tabLicenseType on tabLicenseType.name = tabLicense.license_type
         join tabHouse on tabHouse.name = tabLicense.house_id
         where (tabRequestLicense.owner = %(user)s or tabLicense.manage_user = %(user)s)

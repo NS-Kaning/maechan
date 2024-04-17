@@ -1,7 +1,7 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FaEdit, FaFileDownload, FaFileImport, FaHome, FaPlus } from "react-icons/fa";
-import { FaMagnifyingGlass, FaRotate } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaMagnifyingGlassArrowRight, FaRotate } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useAlertContext } from "../../providers/AlertProvider";
 import { FrappeContext, FrappeConfig, useSWR } from "frappe-react-sdk";
@@ -55,15 +55,28 @@ export default function LicenseIndex() {
         }
 
         if (isRenew) {
-            return (
-                <Tooltip placement="top" content="ดูใบคำร้องขออนุญาต" aria-label="ดูใบคำร้องขออนุญาต" >
-                    <span
-                        onClick={() => { navigate(`licenseRequest/${doc.renew_request}/view`) }}
-                        className="text-lg  cursor-pointer active:opacity-50">
-                        <FaMagnifyingGlass />
-                    </span>
-                </Tooltip>
-            )
+            if (doc.renew_workflow_state == "สร้าง") {
+                return (
+                    <Tooltip placement="top" content="แก้ไขใบคำร้องขอต่อใบอนุญาต" aria-label="แก้ไขใบคำร้องขอต่อใบอนุญาต" >
+                        <span
+                            onClick={() => { navigate(`/licenseRequest/${doc.renew_request}/edit`) }}
+                            className="text-lg  cursor-pointer active:opacity-50">
+                            <FaMagnifyingGlassArrowRight />
+                        </span>
+                    </Tooltip>
+                )
+            } else {
+                return (
+                    <Tooltip placement="top" content="ดูใบคำร้องขอต่อใบอนุญาต" aria-label="ดูใบคำร้องขอต่อใบอนุญาต" >
+                        <span
+                            onClick={() => { navigate(`/licenseRequest/${doc.renew_request}/view`) }}
+                            className="text-lg  cursor-pointer active:opacity-50">
+                            <FaMagnifyingGlass />
+                        </span>
+                    </Tooltip>
+                )
+            }
+
         }
 
         if (renewLoading) {
@@ -73,6 +86,7 @@ export default function LicenseIndex() {
             )
 
         } else {
+
             return (
                 <Tooltip placement="top" content="สร้างคำร้องต่อใบอนุญาต" aria-label="สร้างคำร้องต่อใบอนุญาต" >
                     <span
