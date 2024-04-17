@@ -1,13 +1,12 @@
 import { BreadcrumbItem, Breadcrumbs, Input, Button, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Autocomplete, AutocompleteItem, Skeleton, Tooltip } from "@nextui-org/react"
-import { PropsWithChildren, useContext, useEffect, useMemo, useRef, useState } from "react"
-import { FaHome, FaPlus } from "react-icons/fa"
+import { createRef, useContext, useEffect, useState } from "react"
+import { FaHome } from "react-icons/fa"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon, IUserProfile } from "../../interfaces"
+import { IAmphure, IAttachment, IBusiness, IHouse, IProvince, IRequestDetail, IRequestLicense, IRequestLicenseType, IRequestTypeDetail, ITambon } from "../../interfaces"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
 import { useAsyncList } from "@react-stately/data"
-import { DateTime } from "luxon";
 import { useAlertContext } from "../../providers/AlertProvider"
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
+import { Tabs, Tab } from "@nextui-org/react";
 import { FaDownload, FaTrash, FaUpload } from "react-icons/fa6"
 
 export default function RequestLicenseEdit() {
@@ -157,6 +156,8 @@ export default function RequestLicenseEdit() {
             if (!value) {
                 createFormValue.house_no = ''
             }
+        }else if(key == 'request_type'){
+            loadRequestLicenseType(createFormValue)
         }
         reloadProvinceAmphurDistrict(createFormValue, key)
         setCreateForm(createFormValue)
@@ -211,19 +212,13 @@ export default function RequestLicenseEdit() {
     }, [])
 
     let list = useAsyncList<IHouse>({
-        async load({ signal, filterText }) {
+        async load({ filterText }) {
             let res = await call.post("maechan.maechan_core.api.house_filter", { keyword: filterText })
             return {
                 items: res.message,
             };
         },
     });
-
-    const [error, setError] = useState({
-        business_address: '',
-        business_name: '',
-        result: null,
-    })
 
     const [isSaving, setIsSaving] = useState(false)
 
@@ -305,7 +300,7 @@ export default function RequestLicenseEdit() {
 
     const siteName = import.meta.env.VITE_FRAPPE_URL ?? window.origin
 
-    const DeleteAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success: (request: any) => void, error: (err: any) => void }) => {
+    const DeleteAttachmentButton = ({ attachment, success, error }: { attachment: IAttachment, success?: (request: any) => void, error?: (err: any) => void }) => {
 
         const [isLoading, setIsLoading] = useState(false)
         const deleteAttachment = async (a: IAttachment) => {
@@ -357,11 +352,12 @@ export default function RequestLicenseEdit() {
 
         const { file } = useContext(FrappeContext) as FrappeConfig
 
-        const inputFile = useRef(null)
+        const inputFile = createRef<HTMLInputElement>();
 
         const [isUploading, setIsUploading] = useState(false)
         const openInputFile = () => {
-            inputFile.current.click();
+            inputFile?.current?.click();
+
 
         }
 
@@ -387,7 +383,7 @@ export default function RequestLicenseEdit() {
                 myFile,
                 fileArgs,
                 /** Progress Indicator callback function **/
-                (completedBytes, totalBytes) => console.log(Math.round((c / t) * 100), " completed")
+                (completedBytes, totalBytes) => console.log(Math.round((completedBytes / (totalBytes ?? completedBytes)) * 100), " completed")
             )
                 .then((response) => {
                     console.log("File Upload complete")
@@ -396,13 +392,19 @@ export default function RequestLicenseEdit() {
                     call.post("maechan.maechan_license.doctype.requestlicense.requestlicense.update_attachment", {
                         'fileresponse': fileResponse,
                         'attachment': attachment
-                    }).then(() => {
+                    }).then((req) => {
                         loadRequestLicense().then(() => setIsLoading(false))
-                    }).catch(e => alert.showError(JSON.stringify(e)))
+                        if (success) {
+                            success(req)
+                        }
+                    }).catch(e => {
+                        alert.showError(JSON.stringify(e))
+                        if (error) {
+                            error(e)
+                        }
+                    })
                 })
                 .catch(e => console.error(e))
-
-
         }
 
         return (
@@ -423,7 +425,7 @@ export default function RequestLicenseEdit() {
         console.log("XXX", createForm.workflow_state)
         if (currentState) {
             return (
-                <Button onClick={(e) => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
+                <Button onClick={(_e) => submitDoc(currentState.action)} type="button" color="secondary">{currentState.action}</Button>
             )
         }
         else {
@@ -432,7 +434,7 @@ export default function RequestLicenseEdit() {
     }
 
 
-    const submitDoc = async (action) => {
+    const submitDoc = async (action: any) => {
         call.post(`maechan.maechan_license.doctype.requestlicense.requestlicense.citizen_submit`, {
             name: createForm.name,
             state: createForm.workflow_state,
@@ -700,12 +702,12 @@ export default function RequestLicenseEdit() {
                                             ) : null}
 
                                             {a.value ? (
-                                                <DeleteAttachmentButton attachment={a} success={(req) => { updateAttachment(req) }} error={(err) => { }} />
+                                                <DeleteAttachmentButton attachment={a} success={(req) => { updateAttachment(req) }} />
                                             ) : null}
 
                                             {
                                                 !a.value ? (
-                                                    <UploadAttachmentButton attachment={a} success={(req) => { }} error={(err) => { }} />
+                                                    <UploadAttachmentButton attachment={a} />
                                                 ) : null
 
                                             }

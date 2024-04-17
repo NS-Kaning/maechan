@@ -1,32 +1,51 @@
 import { BreadcrumbItem, Breadcrumbs, Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from "@nextui-org/react"
-import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
-import { useContext, useEffect, useMemo, useState } from "react"
-import { FaEdit, FaHome, FaPlus } from "react-icons/fa"
+import { FrappeConfig, FrappeContext, useSWR } from "frappe-react-sdk"
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useContext, useEffect, useMemo, useState } from "react"
+import { FaEdit, FaFileDownload, FaFileImage, FaHome, FaPlus, FaReceipt } from "react-icons/fa"
 import { Link, useNavigate } from "react-router-dom"
-import { Doctype, IBusiness, IHouse, IRequestLicense } from "../../interfaces"
-import { FaMagnifyingGlass } from "react-icons/fa6"
+import { Doctype, IBusiness, IHouse, IRequestLicense, IRequestLicenseInspect } from "../../interfaces"
+import { FaFile, FaFileImport, FaMagnifyingGlass } from "react-icons/fa6"
+import { useAlertContext } from "../../providers/AlertProvider"
+import { DateTime } from "luxon"
 
 function RequestLicense() {
 
+    const siteName = import.meta.env.VITE_FRAPPE_URL ?? window.origin
     const navigate = useNavigate()
+    const alert = useAlertContext()
     const { call } = useContext(FrappeContext) as FrappeConfig
+    const fetcher = (url: any) => call.post(url).then((res) => res);
 
-    const [isLoading, setIsLoading] = useState(true)
+
+    const { data, error, isLoading } = useSWR(
+        "maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_licenses",
+        fetcher
+    );
     const [requestLicenses, setRequestLicenses] = useState([] as (IRequestLicense & { business: IBusiness, house_no: IHouse })[])
     const [appointments, setAppointments] = useState({} as any)
+    const [licenses, setLicenses] = useState({} as any)
 
     const loadRequestLicenses = async () => {
-        setIsLoading(true)
-        let response = await call.post('maechan.maechan_license.doctype.requestlicense.requestlicense.load_request_licenses')
-        setRequestLicenses(response.message)
-        setAppointments(response.appointment)
-        setIsLoading(false)
+        setRequestLicenses(data.message)
+        setAppointments(data.appointment)
+        setLicenses(data.licenses)
+
     }
 
     useEffect(() => {
-        loadRequestLicenses()
-    }, [])
+        console.log(data)
+        if (data) {
+            loadRequestLicenses()
+        }
 
+    }, [data])
+
+    useEffect(() => {
+        if (error) {
+            alert.showError(JSON.stringify(error))
+        }
+
+    }, [error])
 
     const topContent = useMemo(() => {
 
@@ -59,15 +78,22 @@ function RequestLicense() {
 
     const getDocComment = (doc: IRequestLicense) => {
         if (doc.docstatus == 0) {
-            if (doc.request_status == 'รอตรวจสถานที่') {
+            if (doc.workflow_state == 'เอกสารไม่ครบ') {
+                return (
+                    <>
+                        {doc.comment}
+                    </>
+                )
+            }
+            else if (doc.workflow_state == 'รอตรวจสถานที่') {
                 return (
                     <div>
                         <div>
-                            {appointments[doc.name].map((a, i) => (
+                            {appointments[doc.name].map((a: IRequestLicenseInspect, i: number) => (
                                 <ul key={a.name}>
                                     <li>
                                         <div>ครั้งที่ {i + 1} </div>
-                                        <div>วันที่ {a.checklist_date}</div>
+                                        <div>วันที่ {a.checklist_date instanceof Date ? DateTime.fromJSDate(a.checklist_date).toISODate()  : a.checklist_date}</div>
                                         <div>ผลการตรวจ : {a.checklist_result} </div>
                                     </li>
                                 </ul>
@@ -75,6 +101,19 @@ function RequestLicense() {
                         </div>
 
                     </div>
+                )
+            } else if (doc.workflow_state == 'รอชำระเงิน') {
+                return (
+                    <div>ค่าธรรมเนียม {doc.license_fee} บาท</div>
+                )
+            } else if (doc.workflow_state == 'คำร้องสำเร็จ') {
+                if (licenses[doc.name].length > 0) {
+                    return (
+                        <span>ใบอนุญาตเสร็จสิ้น</span>
+                    )
+                }
+                return (
+                    <span>กำลังดำเนินการ</span>
                 )
             }
             return null
@@ -108,55 +147,83 @@ function RequestLicense() {
                         <TableColumn>ที่อยู่</TableColumn>
                         <TableColumn>สถานะ</TableColumn>
                         <TableColumn>หมายเหตุ</TableColumn>
-                        <TableColumn>การกระทำ</TableColumn>
+                        <TableColumn className="text-center">การกระทำ</TableColumn>
                     </TableHeader>
-                    <TableBody>
+                    {isLoading ? (
+                        <TableBody emptyContent={"ไม่มีข้อมูล"}>{[]}</TableBody>)
+                        : (
+                            <TableBody>
+                                {
+                                    requestLicenses.map(x => (
+                                        <TableRow key={x.name}>
+                                            <TableCell>
+                                                <div>
+                                                    <div className="font-bold">{x.business?.business_name ?? x.applicant_name}</div>
+                                                    <div>{x.request_type}</div>
+                                                </div>
+                                            </TableCell>
 
-                        {
-                            requestLicenses.map(x => (
-                                <TableRow key={x.name}>
-                                    <TableCell>
-                                        <div>
-                                            <div className="font-bold">{x.business.business_name}</div>
-                                            <div>{x.request_type}</div>
-                                        </div>
-                                    </TableCell>
+                                            <TableCell>{x.house_no.text_display}</TableCell>
+                                            <TableCell>{getDocStatus(x)}</TableCell>
+                                            <TableCell>{getDocComment(x)}</TableCell>
+                                            <TableCell >
+                                                <div className="flex flex-row gap-1 justify-center">
+                                                    {
+                                                        x.docstatus == 0 && ["รอชำระเงิน"].indexOf(x.request_status) >= 0 ?
+                                                            (
+                                                                <Tooltip placement="top" content="อัพโหลดหลักฐานการชำระเงิน" aria-label="อัพโหลดหลักฐานการชำระเงิน" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/licenseRequest/${x.name}/payment`) }}
+                                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                                        <FaFileImport />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            ) : (null)
+                                                    }
+                                                    {
+                                                        x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
+                                                            (
+                                                                <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
+                                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                                        <FaEdit />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            ) : (
+                                                                <Tooltip placement="top" content="ดู" aria-label="ดู" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/licenseRequest/${x.name}/view`) }}
+                                                                        className="text-lg cursor-pointer active:opacity-50">
+                                                                        <FaMagnifyingGlass />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            )
+                                                    }
+                                                    {
+                                                        x.docstatus == 0 && ['คำร้องสำเร็จ'].indexOf(x.workflow_state) >= 0 && licenses[x.name].length > 0 ?
+                                                            (
+                                                                <Tooltip placement="top" content="ใบอนุญาต" aria-label="ใบอนุญาติ" >
+                                                                    <span
+                                                                        onClick={() => { navigate(`/pageLicense/${licenses[x.name][0].name}/view`) }}
+                                                                        className="text-lg text-violet-600 cursor-pointer active:opacity-50">
+                                                                        <FaFileDownload   />
+                                                                    </span>
+                                                                </Tooltip>
+                                                            ) : (null)
+                                                    }
 
-                                    <TableCell>{x.house_no.text_display}</TableCell>
-                                    <TableCell>{getDocStatus(x)}</TableCell>
-                                    <TableCell>{getDocComment(x)}</TableCell>
-                                    <TableCell>
-                                        {
-                                            x.docstatus == 0 && ["เอกสารไม่ครบ", "สร้าง", "ไม่ผ่าน"].indexOf(x.request_status) >= 0 ?
-                                                (
-                                                    <div className="flex flex-row w-fit gap-2">
-                                                        <Tooltip placement="top" content="แก้ไข" aria-label="แก้ไข" >
-                                                            <span
-                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/edit`) }}
-                                                                className="text-lg cursor-pointer active:opacity-50">
-                                                                <FaEdit />
-                                                            </span>
-                                                        </Tooltip>
-                                                    </div>
-                                                ) : (
-                                                    <div className="flex flex-row w-fit gap-2">
-                                                        <Tooltip placement="top" content="ดู" aria-label="ดู" >
-                                                            <span
-                                                                onClick={() => { navigate(`/licenseRequest/${x.name}/view`) }}
-                                                                className="text-lg cursor-pointer active:opacity-50">
-                                                                <FaMagnifyingGlass />
-                                                            </span>
-                                                        </Tooltip>
-                                                    </div>
-                                                )
-                                        }
+                                                </div>
 
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        }
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                }
 
-                    </TableBody>
+                            </TableBody>
+
+                        )
+                    }
 
                 </Table>
 

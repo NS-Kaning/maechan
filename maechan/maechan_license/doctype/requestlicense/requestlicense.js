@@ -79,7 +79,7 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
             // console.log("fields", JSON.stringify(fields))
             let self = async () => {
                 frappe.db.get_list(doctype, {
-                    fields: "*",
+                    fields: ["*"],
                     filters: parent_values
                 }).then(docs => {
 
@@ -129,21 +129,28 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                                     <button class="btn btn-xs btn-default" data-fieldtype="Button" placeholder="" data-doctype="{{doctype}}" value="">แก้ไข</button>
                                     {% else %}
 
-                                    {% if col['id'] == 'name' %}
-                                    <a class="text-underline"><span>{{row[col['id']]}}</span></a>
+                                        {% if col['id'] == 'name' || col['id'] == 'checklist_result'   %}
+                                            {% if col['id'] == 'name' %}
+                                            <a class="text-underline"><span>{{row[col['id']]}}</span></a>
+                                            {% endif %}
 
-                                    {% else %}
-                                    <span>{{row[col['id']]}}</span>
-                                    {% endif %}
+
+                                            {% if col['id'] == 'checklist_result' %}
+                                            <span>  {{row[col['id']]}} {{row['docstatus'] == 0 ? '(ร่าง)' : row['docstatus'] == 1 ? '(สำเร็จ)' : '(ยกเลิก)' }} </span>
+                                            {% endif %}
+                             
+                                        {% else %}
+                                        <span>{{row[col['id']]}}</span>
+                                        {% endif %}
 
                                     {% endif %}
                                 </div>
                                 {% endfor %}
 
-                                <div class="col"><div class="btn-open-row" data-toggle="tooltip" data-placement="right" title="" data-original-title="Edit" aria-describedby="tooltip56951">
+                                <div class="col" data="{{row.name}}"><div data="{{row.name}}" class="btn-open-row" data-toggle="tooltip" data-placement="right" title="" data-original-title="Edit" aria-describedby="tooltip56951">
 									<a class="edit_row" data="{{row.name}}">
 									<svg data="{{row.name}}" class="icon  icon-xs" style="" aria-hidden="true">
-									<use class="" href="#icon-edit"></use></svg></a>
+									<use data="{{row.name}}" class="" href="#icon-edit"></use></svg></a>
 									</div></div>
                             </div>
                         </div>
@@ -186,6 +193,7 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                     $(`[data-fieldname=${fieldName}] .edit_row`).unbind('click')
                     $(`[data-fieldname=${fieldName}] .edit_row`).click(async (x) => {
 
+                        console.log(x)
                         let name = $(x.target).attr('data')
                         frappe.set_route(`requestlicenseinspect/${name}`);
 
@@ -231,6 +239,18 @@ function calAge(a, b) {
     return Math.floor((tDay - bDay) / ms);
 }
 
+async function create_edit_associate_license(frm) {
+
+
+    let result = await frappe.call('maechan.maechan_license.doctype.license.license.create_from_requestlicense', {
+        'name' : frm.doc.name
+    })
+
+    console.log("result",result)
+
+    frappe.set_route(['Form',"License",result.message.name])
+}
+
 frappe.ui.form.on("RequestLicense", {
     async refresh(frm) {
 
@@ -243,7 +263,7 @@ frappe.ui.form.on("RequestLicense", {
         let refreshAppointment = await make_table(
             'RequestLicenseInspect',
             'check_datatable',
-            ['checklist_date', 'checklist_result', 'checklist_comment'],
+            ['checklist_date', 'checklist_result', 'checklist_comment',],
             parent_values,
             ['checklist_date'],
             ['checklist_date', 'checklist_list', 'checklist_extra', 'checklist_result', 'checklist_comment'],
@@ -251,15 +271,74 @@ frappe.ui.form.on("RequestLicense", {
         )
         refreshAppointment(frm)
 
+        if(frm.doc.workflow_state == "รอออกใบอนุญาต"){
+            frm.set_df_property('license_type','reqd',1)
+            frm.set_df_property('license_fee','reqd',1)
+            
 
-    }, after_workflow_action(frm) {
+        }
+
+
+    },
+    async before_workflow_action(frm){
+
+        let select_action = frm.selected_workflow_action
+        console.log(select_action)
+        frappe.dom.unfreeze();
+        let wait = true;
+
+        if (select_action == "ปฏิเสธ") {
+
+            const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+
+            let d = new frappe.ui.Dialog({
+                title: __('Enter Comment'),
+                fields: [
+                    {
+                        label: __('Comment'),
+                        fieldname: 'comment',
+                        fieldtype: 'Text'
+                    }
+                ],
+                size: 'small', // small, large, extra-large 
+                primary_action_label: __('Submit'),
+                primary_action: async (values) => {
+                    let today = new Date()
+                    frm.set_value('comment',values.comment)
+                    await frm.save()
+                    frappe.dom.freeze();
+                    wait = false
+
+                    d.hide();
+                }
+            });
+
+            d.show();
+            while (wait) {
+                await sleep(1000)
+            }
+        }
+        console.log(frm)
+
+    },
+    
+    async after_workflow_action(frm) {
         // console.log(frm.doc.request_status);
         // if (frm.doc.request_status == 'รอออกใบอนุญาต') {
         //     // console.log("test");
         //     // console.log(frm.doc.request_status);
         //     frm.call('newLicense')
         // }
-    }, before_load(frm) {
+
+        if(frm.doc.workflow_state == "คำร้องสำเร็จ"){
+            await create_edit_associate_license(frm)     
+        }
+
+    }, async create_license_btn(frm) {
+       await create_edit_associate_license(frm)
+    }
+    , before_load(frm) {
         const emailUser = frappe.session.user
         if (frm.doc.applicant_name == null) {
             frappe.db.get_doc("UserProfile", emailUser).then(r => {
@@ -330,6 +409,67 @@ frappe.ui.form.on("RequestLicense", {
 
         }
 
+    },
+    btn_dialog_extra(frm) {
+        console.log(frm.doc.license_type)
+        if (frm.doc.license_type) {
+            frappe.db.get_doc("LicenseType", frm.doc.license_type).then(r => {
+                let licenseType = r;
+                fields = []
+                licenseType.details.forEach(x => {
+                    let defaultValue = findValue(x.key, frm.doc.license_extra);
+                    console.log("DEFAULT", defaultValue)
+                    let f = {
+                        label: x.key,
+                        fieldname: x.key,
+                        fieldtype: x.datatype,
+                        options: x.options,
+                        default: defaultValue
+                    }
+                    fields.push(f)
+
+                })
+
+                let d = new frappe.ui.Dialog({
+                    title: 'Enter details',
+                    fields: fields,
+                    size: 'small', // small, large, extra-large 
+                    primary_action_label: 'Submit',
+                    primary_action(values) {
+                        console.log(values);
+                        frm.doc.license_extra.forEach(x => {
+                            console.log(values, x)
+                            x.value = values[x.key]
+                        })
+                        d.hide();
+                        frm.dirty()
+                        frm.refresh_fields("license_extra");
+
+                        
+                    }
+                });
+
+                d.show();
+            })
+        }
+    },
+    license_type(frm) {
+
+        frm.clear_table("license_extra")
+
+        frappe.db.get_doc("LicenseType", frm.doc.license_type)
+            .then(r => {
+
+                r.details.forEach(x => {
+                    console.log(x)
+
+                    extraDetails = frm.add_child("license_extra");
+                    extraDetails.key = x.key
+
+                })
+
+                frm.refresh_fields("license_extra");
+            })
     },
     request_type(frm) {
 

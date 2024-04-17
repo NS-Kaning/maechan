@@ -17,6 +17,10 @@ import BusinessEdit from './pages/Business/BusinessEdit';
 import RequestLicenseCreate from './pages/License/RequestLicenseCreate';
 import RequestLicenseEdit from './pages/License/RequestLicenseEdit';
 import RequestLicenseView from './pages/License/RequestLicenseView';
+import RequestLicensePayment from './pages/License/RequestLicensePayment';
+import LicenseIndex from './pages/License/LicenseIndex';
+import LicenseView from './pages/License/LicenseView';
+import RequestInspectView from './pages/License/RequestInspectView';
 function App() {
 
 
@@ -67,14 +71,16 @@ function App() {
 											<Route path='create' element={<RequestLicenseCreate/>} />
 											<Route path=':id/edit' element={<RequestLicenseEdit />} />
 											<Route path=':id/view' element={<RequestLicenseView />} />
+											<Route path=':id/inspect/:inspectId/view' element={<RequestInspectView />} />
+
+											<Route path=':id/payment' element={<RequestLicensePayment />} />
+
 
 										</Route>
 
-										<Route path="license">
-											<Route index element={<LicenseDashboard />} />
-											<Route path='requestLicense' element={<RequestLicense/>} />
-											<Route path='requestStatus' element={<h1>สร้างคำร้องขอใบอนุญาต</h1>} />
-
+										<Route path="pageLicense">
+											<Route index element={<LicenseIndex />} />
+											<Route path=':id/view' element={<LicenseView/>} />
 										</Route>
 
 										<Route path="business">

@@ -1,7 +1,7 @@
 # Copyright (c) 2023, SE and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 
@@ -13,7 +13,7 @@ class LicenseType(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from maechan.maechan_core.doctype.licensetypedetail.licensetypedetail import LicenseTypeDetail
+		from maechan.maechan_license.doctype.licensetypedetail.licensetypedetail import LicenseTypeDetail
 
 		details: DF.Table[LicenseTypeDetail]
 		group: DF.Link
@@ -23,3 +23,17 @@ class LicenseType(Document):
 	# end: auto-generated types
 
 	pass
+
+
+@frappe.whitelist()
+def get(name=None) :
+    
+    if name :
+        licenseTypeDoc = frappe.get_doc("LicenseType",name)
+        return licenseTypeDoc
+        pass
+    else :
+        frappe.response['http_status_code'] = 400
+        frappe.response['error']  = "params name is required"
+        return 'error'
+    

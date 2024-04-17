@@ -7,6 +7,7 @@ import frappe.utils
 import frappe.utils.logger
 from frappe.utils.password import update_password as _update_password
 from frappe.utils.oauth import login_oauth_user, login_via_oauth2_id_token, get_info_via_oauth
+from frappe.core.doctype.user.user import User
 
 from maechan.maechan_license.doctype.license.license import License
 
@@ -217,7 +218,7 @@ def register():
 def createUser():
     request = frappe.form_dict
 
-    user = frappe.db.get("User", {"email": request.email})
+    user : User = frappe.db.get("User", {"email": request.email}) # type: ignore
     if user:
         if user.enabled:
             return "Already Registered"
@@ -225,7 +226,7 @@ def createUser():
             return "Registered but disabled"
     else:
         from frappe.utils import random_string
-        user = frappe.get_doc(
+        user  = frappe.get_doc(
                 {
                     "doctype": "User",
                     "email": request.email,
@@ -234,7 +235,7 @@ def createUser():
                     "new_password": request.pwd,
                     "user_type": "Website User",
                 }
-            )
+            ) # type: ignore
 
         user.flags.ignore_permissions = True
         user.flags.ignore_password_policy = True
@@ -257,9 +258,8 @@ def checkEmail():
 @frappe.whitelist(allow_guest=True)
 def setOwner():
     request = frappe.form_dict
-    sql_query = "UPDATE `tabUserProfile`SET owner='" + \
-        request.email+"' WHERE name='"+request.email+"'"
-    frappe.db.sql(sql_query)
+    sql_query = """UPDATE `tabUserProfile`SET owner= %(owner)s WHERE name = %(owner)s"""
+    frappe.db.sql(sql_query,{'owner' : request.email})
     frappe.db.commit()
 
 

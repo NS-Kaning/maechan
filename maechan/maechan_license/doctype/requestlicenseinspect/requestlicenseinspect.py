@@ -1,7 +1,7 @@
 # Copyright (c) 2024, SE and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 
@@ -16,6 +16,7 @@ class RequestLicenseInspect(Document):
 		from maechan.maechan_license.doctype.checklist.checklist import CheckList
 		from maechan.maechan_license.doctype.checklistdetail.checklistdetail import CheckListDetail
 
+		amended_from: DF.Link | None
 		checklist_comment: DF.SmallText | None
 		checklist_date: DF.Date | None
 		checklist_extra: DF.Table[CheckListDetail]
@@ -25,3 +26,17 @@ class RequestLicenseInspect(Document):
 	# end: auto-generated types
 
 	pass
+@frappe.whitelist()
+def get_requestlicenseinspect() :
+	name = frappe.form_dict['name']
+	if name :
+		doc = frappe.get_doc("RequestLicenseInspect",name)
+		owner = frappe.get_doc("User",doc.owner)
+		doc.owner = owner # type: ignore
+
+		return doc
+	else :
+		frappe.response['http_status_code'] = 400
+		return "error"
+	
+
