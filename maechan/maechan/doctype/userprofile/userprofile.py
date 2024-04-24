@@ -26,6 +26,7 @@ class UserProfile(Document):
         email: DF.Data | None
         fullname: DF.Data | None
         nationality: DF.Data | None
+        personal_id: DF.Data | None
         race: DF.Data | None
         tel: DF.Data | None
     # end: auto-generated types

@@ -8,6 +8,7 @@
   "information",
   "fullname",
   "tel",
+  "personal_id",
   "column_break_yuhs",
   "birthdate",
   "email",
@@ -134,11 +135,17 @@
   {
    "fieldname": "column_break_oyeq",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "personal_id",
+   "fieldtype": "Data",
+   "label": "\u0e40\u0e25\u0e02\u0e1a\u0e31\u0e15\u0e23\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19",
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-09 18:40:03.333530",
+ "modified": "2024-04-24 13:45:35.310191",
  "modified_by": "Administrator",
  "module": "Maechan",
  "name": "UserProfile",
