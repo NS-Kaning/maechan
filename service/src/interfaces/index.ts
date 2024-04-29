@@ -42,6 +42,7 @@ export type IUserProfile = Doctype & {
     address_province: string;
     address_amphur: string;
     address_district: string;
+    personal_id: string;
 }
 
 export type IProvince = Doctype & {

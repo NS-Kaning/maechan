@@ -271,7 +271,7 @@ frappe.ui.form.on("RequestLicense", {
         )
         refreshAppointment(frm)
 
-        if(frm.doc.workflow_state == "รอออกใบอนุญาต"){
+        if (frm.doc.workflow_state == "รอออกใบอนุญาต" || frm.doc.workflow_state == "รอตรวจสถานที่") {
             frm.set_df_property('license_type','reqd',1)
             frm.set_df_property('license_fee','reqd',1)
             
@@ -287,7 +287,7 @@ frappe.ui.form.on("RequestLicense", {
         frappe.dom.unfreeze();
         let wait = true;
 
-        if (select_action == "ปฏิเสธ") {
+        if (select_action == "ปฏิเสธ" || select_action == "ส่งกลับ") {
 
             const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
@@ -318,11 +318,34 @@ frappe.ui.form.on("RequestLicense", {
             while (wait) {
                 await sleep(1000)
             }
+        } else if (select_action == 'ส่งต่อ') {
+            if (frm.doc.workflow_state == 'รอตรวจสถานที่') {
+                let result = await frappe.db.get_list('RequestLicenseInspect', {
+                    fields: ["*"],
+                    filters: {
+                        request_license: frm.doc.name,
+                        checklist_result: 'ผ่าน',
+                        docstatus: 1
+                    }
+                })
+                if (result.length == 0) {
+                    frappe.throw({ message: 'ยังไม่ได้นัดหมาย ยังไม่ได้ตรวจสถานที่ให้เรียบร้อย กรุณานัดหมายและยืนยันผลการตรวจสถานที่', title: __("กรุณาตรวจสอบข้อมูล") }
+                    )
+                }
+                if (frm.doc.license_fee <= 0) {
+                    frappe.throw({ message: 'ค่าธรรมเนียมต้องมากกว่า 0 บาท', title: __("กรุณาตรวจสอบข้อมูล") }
+                    )
+                }
+                
+
+
+            }
+
         }
         console.log(frm)
 
     },
-    
+
     async after_workflow_action(frm) {
         // console.log(frm.doc.request_status);
         // if (frm.doc.request_status == 'รอออกใบอนุญาต') {
@@ -331,12 +354,12 @@ frappe.ui.form.on("RequestLicense", {
         //     frm.call('newLicense')
         // }
 
-        if(frm.doc.workflow_state == "คำร้องสำเร็จ"){
-            await create_edit_associate_license(frm)     
+        if (frm.doc.workflow_state == "คำร้องสำเร็จ"){
+            await create_edit_associate_license(frm)
         }
 
     }, async create_license_btn(frm) {
-       await create_edit_associate_license(frm)
+        await create_edit_associate_license(frm)
     }
     , before_load(frm) {
         const emailUser = frappe.session.user
@@ -445,7 +468,7 @@ frappe.ui.form.on("RequestLicense", {
                         frm.dirty()
                         frm.refresh_fields("license_extra");
 
-                        
+
                     }
                 });
 

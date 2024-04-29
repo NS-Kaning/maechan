@@ -261,7 +261,7 @@ export default function RequestLicenseCreate() {
                 เพิ่มคำร้องขอใบอนุญาต
             </div>
             <div className="flex flex-row mb-3 gap-3">
-                <div className="flex flex-row lg:w-[50%] ">
+                <div className="flex flex-row lg:w-[50%] w-full">
                     <Select
                         label="กิจการ"
                         className=""
@@ -275,7 +275,7 @@ export default function RequestLicenseCreate() {
                     </Select>
 
                 </div>
-                <div className="flex flex-row lg:w-[50%]">
+                <div className="flex flex-row lg:w-[50%] w-full">
                     <Select
                         label="ประเภทการขออนุญาต"
                         className=""

@@ -165,7 +165,8 @@ def load_request_licenses():
         x.house_no = frappe.get_doc('House', x.house_no)  # type: ignore
 
         appointments[x.name] = (frappe.db.get_all("RequestLicenseInspect", fields="*", filters={  # type: ignore
-            'request_license': x.name
+            'request_license': x.name,
+            'docstatus' : 1
         }))
 
         licenses[x.name] = (frappe.db.get_all("License", fields="*", filters={

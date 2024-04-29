@@ -193,6 +193,10 @@ export default function ProfilePage() {
                             onChange={(e) => {
                                 updateForm(e.target.name, e.target.value)
                             }} />
+                        <Input type="text" name="personal_id" value={createForm.personal_id} label="เลขบัตรประชาชน" placeholder="เลขบัตรประชาชน"
+                            onChange={(e) => {
+                                updateForm(e.target.name, e.target.value)
+                            }} />
                     </div>
 
                 </Skeleton>
