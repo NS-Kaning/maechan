@@ -260,7 +260,7 @@ export default function RequestLicenseCreate() {
             <div className="flex flex-row lg:w-[50%] text-xl mb-3">
                 เพิ่มคำร้องขอใบอนุญาต
             </div>
-            <div className="flex flex-row mb-3 gap-3">
+            <div className="flex flex-col mb-3 gap-3 sm:flex-row">
                 <div className="flex flex-row lg:w-[50%] w-full">
                     <Select
                         label="กิจการ"
@@ -411,7 +411,7 @@ export default function RequestLicenseCreate() {
             <div className="flex flex-row lg:w-[50%] text-md mb-3">
                 ที่อยู่สถานประกอบการ (หากไม่พบบ้านเลขที่กรุณาแจ้งผู้ดูแลระบบ)
             </div>
-            <div className="grid grid-cols-3 gap-3 mb-3">
+            <div className="grid gap-3 mb-3 grid-row sm:grid-cols-3">
 
                 <Autocomplete
                     className="w-full"

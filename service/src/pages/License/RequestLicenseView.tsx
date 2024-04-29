@@ -322,13 +322,13 @@ export default function RequestLicenseView() {
             <Tabs aria-label="Tabs" isDisabled={isLoading}>
                 <Tab key="basic_information" aria-label="ข้อมูลพื้นฐาน" title="ข้อมูลพื้นฐาน" className="flex flex-col">
                     <Skeleton isLoaded={!isLoading}>
-                        <div className="flex flex-row mb-3 gap-3">
-                            <div className="flex flex-row lg:w-[50%] ">
+                        <div className="flex flex-col mb-3 gap-3 sm:flex-row">
+                            <div className="flex flex-row lg:w-[50%] w-full">
                                 <Input readOnly label="กิจการ"
                                     value={businesses.find(x => x.name == createForm.business)?.business_name}
                                 />
                             </div>
-                            <div className="flex flex-row lg:w-[50%]">
+                            <div className="flex flex-row lg:w-[50%] w-full">
                                 <Input readOnly label="ประเภทการขออนุญาต"
                                     value={requestTypes.find(x => x.name == createForm.request_type)?.name}
                                 />
@@ -439,7 +439,7 @@ export default function RequestLicenseView() {
                         <div className="flex flex-row lg:w-[50%] text-md mb-3">
                             ที่อยู่สถานประกอบการ (หากไม่พบบ้านเลขที่กรุณาแจ้งผู้ดูแลระบบ)
                         </div>
-                        <div className="grid grid-cols-3 gap-3 mb-3">
+                        <div className="grid gap-3 mb-3 grid-row sm:grid-cols-3">
 
 
                             <Autocomplete
