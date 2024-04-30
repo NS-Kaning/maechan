@@ -268,7 +268,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "\u0e01\u0e32\u0e23\u0e02\u0e2d\u0e43\u0e1a\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15 (\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e14\u0e33\u0e40\u0e19\u0e34\u0e19\u0e01\u0e32\u0e23)",
-   "link_count": 1,
+   "link_count": 2,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -282,9 +282,19 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "\u0e01\u0e32\u0e23\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e16\u0e32\u0e19\u0e17\u0e35\u0e48",
+   "link_count": 0,
+   "link_to": "RequestLicenseInspect",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-04-17 18:52:33.216467",
+ "modified": "2024-04-30 09:10:39.583379",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "\u0e40\u0e17\u0e28\u0e1a\u0e32\u0e25\u0e41\u0e21\u0e48\u0e08\u0e31\u0e19",

@@ -467,8 +467,8 @@ export default function RequestLicenseEdit() {
             <Tabs aria-label="Tabs" isDisabled={isLoading}>
                 <Tab key="basic_information" aria-label="ข้อมูลพื้นฐาน" title="ข้อมูลพื้นฐาน" className="flex flex-col">
                     <Skeleton isLoaded={!isLoading}>
-                        <div className="flex flex-row mb-3 gap-3">
-                            <div className="flex flex-row lg:w-[50%] ">
+                        <div className="flex flex-col mb-3 gap-3 sm:flex-row">
+                            <div className="flex flex-row lg:w-[50%] w-full">
                                 <Select
                                     label="กิจการ"
                                     className=""
@@ -483,7 +483,7 @@ export default function RequestLicenseEdit() {
                                 </Select>
 
                             </div>
-                            <div className="flex flex-row lg:w-[50%]">
+                            <div className="flex flex-row lg:w-[50%] w-full">
                                 <Select
                                     label="ประเภทการขออนุญาต"
                                     className=""
@@ -623,7 +623,7 @@ export default function RequestLicenseEdit() {
                         <div className="flex flex-row lg:w-[50%] text-md mb-3">
                             ที่อยู่สถานประกอบการ
                         </div>
-                        <div className="grid grid-cols-3 gap-3 mb-3">
+                        <div className="grid gap-3 mb-3 grid-row sm:grid-cols-3">
 
                             <Autocomplete
                                 className="w-full"
