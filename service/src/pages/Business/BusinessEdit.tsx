@@ -54,6 +54,7 @@ function BusinessEdit() {
                     'business': createForm
                 })
                 console.log('submit result', result)
+                setCreateForm(result.message)
 
             } catch (error) {
                 console.log(error)

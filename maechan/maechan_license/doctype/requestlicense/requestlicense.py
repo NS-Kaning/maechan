@@ -231,6 +231,7 @@ def first_step_requestlicense():
 
         requestLicenseObj.save()
 
+    
     frappe.response['message'] = requestLicenseObj
 
 

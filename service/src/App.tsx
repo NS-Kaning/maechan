@@ -48,6 +48,8 @@ function App() {
 	}
 
 
+	console.log(import.meta.env.VITE_FRAPPE_URL)
+	
 	return (
 		<div className="App">
 
