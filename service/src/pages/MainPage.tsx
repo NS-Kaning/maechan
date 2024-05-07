@@ -14,13 +14,15 @@ function AppNavbarBrand() {
         "maechan.maechan.api.get_application_context", {}
     )
 
+    console.log(import.meta.env)
+
 
     return (
         <NavbarBrand>
             <Skeleton isLoaded={!isLoading} className="rounded-lg">
                 <Image
                     classNames={{ 'wrapper': 'mr-1' }}
-                    height={40} width={40} src={`${import.meta.env.VITE_FRAPPE_URL ?? window.location.origin}/${data?.message?.app_logo}`} />
+                    height={40} width={40} src={`${import.meta.env.VITE_FRAPPE_URL ? import.meta.env.VITE_FRAPPE_URL  : window.location.origin}/${data?.message?.app_logo}`} />
             </Skeleton>
 
             <Skeleton isLoaded={!isLoading} className="rounded-lg w-[10rem]" >
