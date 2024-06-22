@@ -14,7 +14,7 @@ frappe.query_reports["LicenseStatusReport2"] = {
             fieldname: 'start_date',
             label: __('Start Date'),
             fieldtype: 'Date',
-			default : format
+			default : null
         },
 
 		{
