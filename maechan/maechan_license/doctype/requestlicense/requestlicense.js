@@ -41,9 +41,12 @@ async function make_table(doctype, fieldName, show_fields, parent_values, add_fi
                         })
                     })
 
-                    await fetch(`/api/resource/${doctype}/`, {
+                    await fetch(`/api/resource/${doctype}`, {
                         method: "POST",
-                        body: JSON.stringify(val)
+                        body: JSON.stringify(val),
+                        headers : {
+                            'X-Frappe-CSRF-Token': frappe.csrf_token
+                        }
                     })
                     df.hide();
                     reload_callback()
