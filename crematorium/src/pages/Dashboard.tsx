@@ -1,5 +1,24 @@
-import { useFrappeAuth } from 'frappe-react-sdk';
+import React, { useContext, useState } from 'react'
+import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
+
+
+function Test() {
+
+    const frappeConfig = useContext(FrappeContext)
+
+    const save = () => {
+
+        frappeConfig?.db.createDoc('Crematorium', {
+            crematory: 'test',
+            crematorium_name: 'db1'
+        }).then((doc) => console.log(doc))
+            .catch((error) => console.error(error));
+
+    }
+    return (<div>ADD DATA <button onClick={save}>SAVE</button></div>)
+}
+
 
 function Dashboard() {
     const { logout } = useFrappeAuth();
@@ -24,6 +43,7 @@ function Dashboard() {
             >
                 Logout
             </button>
+            <Test></Test>
         </div>
     );
 }
