@@ -75,7 +75,7 @@
   {
    "fieldname": "land_owner",
    "fieldtype": "Data",
-   "label": "name"
+   "label": "land owner"
   },
   {
    "fieldname": "land_size",
@@ -95,7 +95,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-22 13:02:23.192036",
+ "modified": "2024-07-01 16:05:21.460087",
  "modified_by": "Administrator",
  "module": "maechan_core",
  "name": "Land",
