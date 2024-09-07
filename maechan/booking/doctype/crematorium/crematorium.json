@@ -1,0 +1,50 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:{crematory} - {crematorium_name}",
+ "creation": "2024-07-16 15:40:15.599530",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "crematory",
+  "crematorium_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "crematory",
+   "fieldtype": "Link",
+   "label": "\u0e40\u0e21\u0e23\u0e38",
+   "options": "Crematory"
+  },
+  {
+   "fieldname": "crematorium_name",
+   "fieldtype": "Data",
+   "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e15\u0e32"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-16 15:43:28.393551",
+ "modified_by": "Administrator",
+ "module": "Booking",
+ "name": "Crematorium",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

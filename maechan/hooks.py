@@ -202,4 +202,4 @@ scheduler_events = {
 #	"maechan.auth.validate"
 # ]
 
-website_route_rules = [{'from_route': '/service/<path:app_path>', 'to_route': 'service'},]
+website_route_rules = [{'from_route': '/crematorium/<path:app_path>', 'to_route': 'crematorium'}, {'from_route': '/service/<path:app_path>', 'to_route': 'service'},]

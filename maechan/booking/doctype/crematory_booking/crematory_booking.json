@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2024-07-16 15:45:20.588797",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_6ryn",
+  "crematorium",
+  "column_break_shgt",
+  "date",
+  "time",
+  "section_break_shek",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_6ryn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Crematory Booking",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "crematorium",
+   "fieldtype": "Link",
+   "label": "\u0e40\u0e15\u0e32\u0e17\u0e35\u0e48\u0e15\u0e49\u0e2d\u0e01\u0e32\u0e23",
+   "options": "Crematorium"
+  },
+  {
+   "fieldname": "column_break_shgt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "\u0e27\u0e31\u0e19\u0e40\u0e1c\u0e32"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Select",
+   "label": "\u0e40\u0e27\u0e25\u0e32",
+   "options": "13.00-14.00\n14.00-15.00"
+  },
+  {
+   "fieldname": "section_break_shek",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-07-16 15:52:08.183779",
+ "modified_by": "Administrator",
+ "module": "Booking",
+ "name": "Crematory Booking",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
