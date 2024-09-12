@@ -11,7 +11,7 @@ function Test() {
 
         frappeConfig?.db.createDoc('Crematorium', {
             crematory: 'test',
-            crematorium_name: 'db1'
+            crematorium_name: 't12'
         }).then((doc) => console.log(doc))
             .catch((error) => console.error(error));
 
