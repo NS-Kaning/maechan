@@ -3,7 +3,7 @@ import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
 
 
-function Test() {
+function Test() {d
 
     const frappeConfig = useContext(FrappeContext)
 
@@ -20,21 +20,9 @@ function Test() {
 }
 
 
-function Dashboard() {
-    const { logout } = useFrappeAuth();
-    const navigate = useNavigate();
-
-    const handleLogout = async () => {
-        try {
-            await logout();
-            navigate('/login');
-        } catch (err) {
-            console.error('Logout failed:', err);
-        }
-    };
-
-    return (
-        <div>
+export default function HOME() {
+  return (
+    <div>
       <div className="flex flex-col pt-6 bg-white h-screen">
         <div className="flex justify-between items-center px-20 w-full max-h-6">
           <div className="flex items-center gap-3">
@@ -95,8 +83,8 @@ function Dashboard() {
                 <div className="self-stretch my-auto basis-auto">
                   Book Crematorium
                 </div>
-                </div>
-               
+              </div>
+
 
               {/* list process */}
 
@@ -113,7 +101,7 @@ function Dashboard() {
               </select>
             </form> */}
 
-              <form class="max-w-lg m-4 bg-white dark:bg-[#EEEEEE] rounded-lg p-2">
+              <form class="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
                 <label class="block text-[10px] font-medium dark:text-[#585858] pl-3">Select temple</label>
                 <select id="countries" class="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
                   <option selected >Wat Kasa</option>
@@ -123,7 +111,7 @@ function Dashboard() {
 
               <div className="text-[14px] font-bold mt-2 ml-4">Type of furnace</div>
 
-              <form class="max-w-lg m-4 mt-2 bg-white dark:bg-[#EEEEEE] rounded-lg p-2">
+              <form class="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
                 <label class="block text-[10px] font-medium dark:text-[#585858] pl-3">Type of furnace</label>
                 <select id="countries" class="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
                   <option selected >Pollution-free furnace</option>
@@ -133,7 +121,7 @@ function Dashboard() {
 
               <div className="text-[14px] font-bold mt-4 ml-4">Date</div>
 
-              <div class="max-w-lg m-4 mt-2 bg-white dark:bg-[#EEEEEE] rounded-lg p-2">
+              <div class="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
                 <div class="block text-[10px] font-medium dark:text-[#585858] pl-3">Date</div>
                 <div class="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
                   <div class="flex-grow">13/04/2024</div>
@@ -146,27 +134,27 @@ function Dashboard() {
               </div>
               <div className="text-[14px] font-bold mt-4 ml-4">Time</div>
 
-              <div className="flex flex items-center  mt-2 ml-4">
-                <div className="flex items-center justify-center text-center  bg-[#E51C23] text-white rounded-xl mr-5" style={{ width: "161px", height: "55px" }}>
+              <div className="flex items-center  mt-2 ml-4">
+                <div className="flex items-center justify-center text-center  bg-[#E51C23] text-white  rounded-md mr-4" style={{ width: "161px", height: "55px" }}>
                   12:00 - 01:00 PM
                 </div>
 
-                <div className="flex items-center justify-center text-center bg-[#F9A825] text-white rounded-xl mr-5" style={{ width: "161px", height: "55px" }}>
+                <div className="flex items-center justify-center text-center bg-[#F9A825] text-white  rounded-md mr-4 " style={{ width: "161px", height: "55px" }}>
                   01:00 - 02:00 PM
                 </div>
 
-                <div className="flex items-center justify-center text-center bg-[#0A8F08] text-white rounded-xl " style={{ width: "161px", height: "55px" }}>
+                <div className="flex items-center justify-center text-center bg-[#0A8F08] text-white  rounded-md " style={{ width: "161px", height: "55px" }}>
                   02:00 - 03:00 PM
                 </div>
               </div>
 
-              <div class="flex items-center mt-7 ml-4">
-                <div class="flex items-center justify-center text-center bg-[#EEEEEE] text-back rounded-md mr-5" style={{ width: "171px", height: "39px" }}>
-                  Clear Data
+              <div className="flex flex-col  gap-3 sm:flex-row  mt-6 font-bold text-xs sm:text-sm ml-4">
+                <div className="flex items-center justify-center text-centerbg-[#EEEEEE] text-back rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
+                Clear Data
                 </div>
 
-                <div class="flex items-center justify-center text-center bg-[#225EC4] text-white rounded-md mr-5" style={{ width: "171px", height: "39px" }}>
-                  Confirm to Forward
+                <div className="flex items-center justify-center text-center  bg-[#225EC4] text-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
+                Confirm to Forward
                 </div>
               </div>
 
@@ -177,7 +165,5 @@ function Dashboard() {
         </div>
       </div>
     </div>
-    );
+  );
 }
-
-export default Dashboard;

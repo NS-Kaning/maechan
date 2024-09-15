@@ -62,7 +62,7 @@ const LoginComponent: React.FC = () => {
 
           <div className="flex flex-col self-stretch px-9 py-11 mt-6 bg-white rounded-xl">
             <div className="relative">
-              <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+              <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-4 pointer-events-none">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/b961fc12893165df6e5aa85bebc932ef8ead11595d4ef16d8266eae41c4a1c3d?"
                   alt="User Icon"
@@ -72,8 +72,8 @@ const LoginComponent: React.FC = () => {
                 type="text"
                 id="codeid-input"
                 aria-describedby="helper-text-explanation"
-                className="flex flex-col justify-center px-7 py-3 rounded-md bg-gray-200 bg-opacity-70"
-                style={{ paddingLeft: '35px' }}
+                className="flex flex-col justify-center px-7 py-2.5 rounded-md bg-gray-200 bg-opacity-70"
+                style={{ paddingLeft: '40px' }}
                 placeholder="Enter Code ID"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -82,7 +82,7 @@ const LoginComponent: React.FC = () => {
             </div>
 
             <div className="relative mt-5">
-              <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+              <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-4 pointer-events-none">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c1cb0f599709636b2849b0ee3d1603d2c3071eedcb8a34536e7cc327e1591bf?"
                   alt="Phone Icon"
@@ -92,8 +92,8 @@ const LoginComponent: React.FC = () => {
                 type="password"
                 id="phone-input"
                 aria-describedby="helper-text-explanation"
-                className="flex flex-col justify-center px-7 py-3 rounded-md bg-gray-200 bg-opacity-70"
-                style={{ paddingLeft: '35px' }}
+                className="flex flex-col justify-center px-7 py-2.5 rounded-md bg-gray-200 bg-opacity-70"
+                style={{ paddingLeft: '40px' }}
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -104,7 +104,7 @@ const LoginComponent: React.FC = () => {
             <button
               onClick={handleLogin}
               type="button"
-              className="justify-center px-16 py-2 mt-6 text-sm text-white bg-black rounded-md max-md:pr-7 max-md:pl-6"
+              className="justify-center px-16 py-2.5 mt-6 text-sm text-white bg-black rounded-md max-md:pr-7 max-md:pl-6"
             >
               Login
             </button>
