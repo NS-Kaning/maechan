@@ -14,8 +14,10 @@ class Crematorium(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		crematorium_name: DF.Data | None
-		crematory: DF.Link | None
+		crematorium_name: DF.Literal["\u0e40\u0e15\u0e321", "\u0e40\u0e15\u0e322", "\u0e40\u0e15\u0e323"]
+		crematory: DF.Literal["\u0e27\u0e31\u0e141", "\u0e27\u0e31\u0e142", "\u0e27\u0e31\u0e143"]
+		date: DF.Date | None
+		time: DF.Time | None
 	# end: auto-generated types
 
 	pass

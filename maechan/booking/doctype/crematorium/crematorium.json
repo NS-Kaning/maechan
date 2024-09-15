@@ -7,24 +7,37 @@
  "engine": "InnoDB",
  "field_order": [
   "crematory",
-  "crematorium_name"
+  "crematorium_name",
+  "date",
+  "time"
  ],
  "fields": [
   {
    "fieldname": "crematory",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "label": "\u0e40\u0e21\u0e23\u0e38",
-   "options": "Crematory"
+   "options": "\u0e27\u0e31\u0e141\n\u0e27\u0e31\u0e142\n\u0e27\u0e31\u0e143"
   },
   {
    "fieldname": "crematorium_name",
-   "fieldtype": "Data",
-   "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e15\u0e32"
+   "fieldtype": "Select",
+   "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e15\u0e32",
+   "options": "\u0e40\u0e15\u0e321\n\u0e40\u0e15\u0e322\n\u0e40\u0e15\u0e323"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "label": "\u0e40\u0e27\u0e25\u0e32"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-16 15:43:28.393551",
+ "modified": "2024-09-15 13:39:20.640835",
  "modified_by": "Administrator",
  "module": "Booking",
  "name": "Crematorium",
