@@ -6,38 +6,197 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "crematory_booking",
+  "booking",
   "crematory",
   "crematorium_name",
   "date",
-  "time"
+  "time",
+  "request",
+  "section_break_wgeb",
+  "column_break_hdwy",
+  "crenatory_type",
+  "column_break_xisp",
+  "date_time",
+  "data_user",
+  "username",
+  "column_break_zeiu",
+  "age",
+  "column_break_spwl",
+  "phone",
+  "address_user",
+  "province",
+  "column_break_bvbv",
+  "district",
+  "column_break_ckzs",
+  "canton",
+  "relevant",
+  "relationship",
+  "column_break_bmsw",
+  "column_break_qdxs",
+  "document",
+  "death_certificate"
  ],
  "fields": [
   {
    "fieldname": "crematory",
    "fieldtype": "Select",
-   "label": "\u0e40\u0e21\u0e23\u0e38",
-   "options": "\u0e27\u0e31\u0e141\n\u0e27\u0e31\u0e142\n\u0e27\u0e31\u0e143"
+   "in_list_view": 1,
+   "label": "\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e27\u0e31\u0e14",
+   "options": "\u0e27\u0e31\u0e141\n\u0e27\u0e31\u0e142\n\u0e27\u0e31\u0e143",
+   "reqd": 1
   },
   {
    "fieldname": "crematorium_name",
    "fieldtype": "Select",
-   "label": "\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e15\u0e32",
-   "options": "\u0e40\u0e15\u0e321\n\u0e40\u0e15\u0e322\n\u0e40\u0e15\u0e323"
+   "in_list_view": 1,
+   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32",
+   "options": "\u0e40\u0e15\u0e321\n\u0e40\u0e15\u0e322\n\u0e40\u0e15\u0e323",
+   "reqd": 1
   },
   {
    "fieldname": "date",
    "fieldtype": "Date",
-   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48"
+   "in_list_view": 1,
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48",
+   "reqd": 1
   },
   {
    "fieldname": "time",
-   "fieldtype": "Time",
-   "label": "\u0e40\u0e27\u0e25\u0e32"
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "\u0e40\u0e27\u0e25\u0e32",
+   "options": "14.00\n15.00\n16.00",
+   "reqd": 1
+  },
+  {
+   "fieldname": "booking",
+   "fieldtype": "Column Break",
+   "label": "\u0e17\u0e33\u0e01\u0e32\u0e23\u0e08\u0e2d\u0e07\u0e40\u0e21\u0e23\u0e38\u0e0c\u0e32\u0e1b\u0e19\u0e01\u0e34\u0e08"
+  },
+  {
+   "fieldname": "crematory_booking",
+   "fieldtype": "Tab Break",
+   "label": "\u0e01\u0e32\u0e23\u0e08\u0e2d\u0e07"
+  },
+  {
+   "fieldname": "request",
+   "fieldtype": "Tab Break",
+   "label": "\u0e04\u0e33\u0e02\u0e2d\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e34"
+  },
+  {
+   "columns": 3,
+   "fieldname": "section_break_wgeb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "columns": 3,
+   "fieldname": "column_break_hdwy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "crenatory_type",
+   "fieldtype": "Autocomplete",
+   "label": "\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32"
+  },
+  {
+   "fieldname": "column_break_xisp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_time",
+   "fieldtype": "Autocomplete",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e41\u0e25\u0e30\u0e40\u0e27\u0e25\u0e32"
+  },
+  {
+   "fieldname": "data_user",
+   "fieldtype": "Section Break",
+   "label": "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e1c\u0e39\u0e49\u0e17\u0e35\u0e48\u0e22\u0e37\u0e48\u0e19\u0e04\u0e33\u0e02\u0e2d"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "label": "\u0e0a\u0e37\u0e48\u0e2d - \u0e19\u0e32\u0e21\u0e2a\u0e01\u0e38\u0e25"
+  },
+  {
+   "fieldname": "column_break_zeiu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "age",
+   "fieldtype": "Data",
+   "label": "\u0e2d\u0e32\u0e22\u0e38"
+  },
+  {
+   "fieldname": "column_break_spwl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c"
+  },
+  {
+   "fieldname": "address_user",
+   "fieldtype": "Section Break",
+   "label": "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e02\u0e2d\u0e07\u0e1c\u0e39\u0e49\u0e22\u0e37\u0e48\u0e19\u0e04\u0e33\u0e02\u0e2d"
+  },
+  {
+   "fieldname": "province",
+   "fieldtype": "Select",
+   "label": "\u0e08\u0e31\u0e07\u0e2b\u0e27\u0e31\u0e14"
+  },
+  {
+   "fieldname": "column_break_bvbv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ckzs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Select",
+   "label": "\u0e2d\u0e33\u0e40\u0e20\u0e2d"
+  },
+  {
+   "fieldname": "canton",
+   "fieldtype": "Select",
+   "label": "\u0e15\u0e33\u0e1a\u0e25"
+  },
+  {
+   "fieldname": "relevant",
+   "fieldtype": "Section Break",
+   "label": "\u0e04\u0e27\u0e32\u0e21\u0e40\u0e01\u0e35\u0e48\u0e22\u0e27\u0e02\u0e49\u0e2d\u0e07\u0e01\u0e31\u0e1a\u0e1c\u0e39\u0e49\u0e15\u0e32\u0e22"
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Select",
+   "label": "\u0e40\u0e01\u0e35\u0e48\u0e22\u0e27\u0e02\u0e49\u0e2d\u0e07",
+   "options": "\u0e15\u0e32\n\u0e22\u0e32\u0e22\n\u0e1e\u0e48\u0e2d\n\u0e41\u0e21\u0e48\n\u0e25\u0e39\u0e01\n\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e19\n\u0e2a\u0e32\u0e21\u0e35\n\u0e20\u0e23\u0e23\u0e22\u0e32\n\u0e0d\u0e32\u0e15\u0e34"
+  },
+  {
+   "fieldname": "column_break_bmsw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_qdxs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "document",
+   "fieldtype": "Section Break",
+   "label": "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e41\u0e19\u0e1a"
+  },
+  {
+   "fieldname": "death_certificate",
+   "fieldtype": "Attach",
+   "label": "\u0e2a\u0e33\u0e40\u0e19\u0e32\u0e43\u0e1a\u0e21\u0e23\u0e13\u0e30"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-15 13:39:20.640835",
+ "modified": "2024-09-18 01:46:53.733521",
  "modified_by": "Administrator",
  "module": "Booking",
  "name": "Crematorium",

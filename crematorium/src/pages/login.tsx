@@ -28,7 +28,7 @@ const LoginComponent: React.FC = () => {
     try {
       await login(credentials);
       await updateCurrentUser();
-      navigate('/dashboard'); 
+      navigate('/home'); 
     } catch (err) {
       console.error(err);
       alert('Login failed!');

@@ -3,7 +3,7 @@ import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
 
 
-function Test() {d
+function Test() {
 
     const frappeConfig = useContext(FrappeContext)
 
@@ -101,9 +101,9 @@ export default function HOME() {
               </select>
             </form> */}
 
-              <form class="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
-                <label class="block text-[10px] font-medium dark:text-[#585858] pl-3">Select temple</label>
-                <select id="countries" class="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+              <form className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
+                <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">Select temple</label>
+                <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
                   <option selected >Wat Kasa</option>
                   <option value="US" >United States</option>
                 </select>
@@ -111,9 +111,9 @@ export default function HOME() {
 
               <div className="text-[14px] font-bold mt-2 ml-4">Type of furnace</div>
 
-              <form class="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
-                <label class="block text-[10px] font-medium dark:text-[#585858] pl-3">Type of furnace</label>
-                <select id="countries" class="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+              <form className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
+                <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">Type of furnace</label>
+                <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
                   <option selected >Pollution-free furnace</option>
                   <option value="US" >United States</option>
                 </select>
@@ -121,13 +121,13 @@ export default function HOME() {
 
               <div className="text-[14px] font-bold mt-4 ml-4">Date</div>
 
-              <div class="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
-                <div class="block text-[10px] font-medium dark:text-[#585858] pl-3">Date</div>
-                <div class="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                  <div class="flex-grow">13/04/2024</div>
+              <div className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
+                <div className="block text-[10px] font-medium dark:text-[#585858] pl-3">Date</div>
+                <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                  <div className="flex-grow">13/04/2024</div>
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/8467f280357d0b2ca837f386e93df54352b232312027ea6a8f9d4248e6dbce45?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
-                    class="w-6 h-6 ml-2"
+                    className="w-6 h-6 ml-2"
                     alt="Icon">
                   </img>
                 </div>
