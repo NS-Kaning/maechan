@@ -1,23 +1,20 @@
 import React, { useContext, useState } from 'react'
 import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
+import Nav from './component/nav';
 
 
 export default function HISTORY() {
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
     return (
 
         <div>
             <div className="flex flex-col pt-6 bg-white h-screen">
-                <div className="flex justify-between items-center px-20 w-full max-h-6">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/6af0b2fc646d407ec3b95c5514da7850482402df51d346618df500b9fee0b7d7?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
-                            className="object-contain shrink-0 w-10"
-                            alt="Book Crematorium Logo" />
-                        <div className="text-base font-bold">BOOK CREMATORIUM</div>
-                    </div>
-                    <div className="text-sm ">Natapipan kong</div>
-                </div>
+                <Nav></Nav>
 
                 <div className="mt-6 w-full border border-zinc-120"></div>
 
@@ -27,7 +24,7 @@ export default function HISTORY() {
                     <div className="flex  gap-4 max-md:flex-col ">
                         <div className="flex flex-col  w-[21%]  max-md:w-48 ">
                             <div className="flex flex-col  w-full text-sm font-bold whitespace-nowrap max-md:mt-4 ">
-                                <div className="flex gap-3 px-4 py-3  text-white bg-blue-700 rounded-xl">
+                                <div onClick={() => handleNavigate('/home')} className="flex gap-3 px-4 py-3  text-white bg-blue-700 rounded-xl">
                                     <img
                                         loading="lazy"
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/446a560b0f1e789d60687ba009012a4c5960ccfec7761b3a2d881c8ae4bf5f35?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
@@ -35,7 +32,7 @@ export default function HISTORY() {
                                     />
                                     <div className="grow shrink my-auto w-[80px]">HOME</div>
                                 </div>
-                                <div className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
+                                <div onClick={() => handleNavigate('/history')} className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
                                     <img
                                         loading="lazy"
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/1990d6879800e468960528e5a22a3636c80362dda5f85af89045cd57271a0ade?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
@@ -49,7 +46,7 @@ export default function HISTORY() {
                         {/* munu bar */}
 
 
-                        <div className="flex flex-col pr-4 pt-3.5  pb-14 pl-4 mx-auto w-full font-bold bg-white rounded-md border border-solid border-zinc-300 max-md:pr-5 max-md:pb-24 max-md:mt-5 max-md:max-w-full">
+                        <div className="flex flex-col pr-6 pt-3.5  pb-14 pl-4 mx-auto w-full font-bold bg-white rounded-md border border-solid border-zinc-300 max-md:pr-5 max-md:pb-24 max-md:mt-5 max-md:max-w-full">
 
                             {/* border  */}
 
@@ -87,12 +84,12 @@ export default function HISTORY() {
 
                             {/* list process */}
 
-                            
+
 
 
                             <div className="text-[14px] font-bold mt-4 ml-4">ข้อมูลผู้ยื่นคำขอ</div>
 
-                            
+
                             <div className="flex flex-wrap mr-36 ml-4 px-6 text-[12px] justify-between self-stretch p-6 mt-3.5 whitespace-nowrap rounded-xl bg-zinc-100 bg-opacity-80 text-zinc-600 max-md:px-6 max-md:max-w-full">
                                 <div className="flex  gap-12">
                                     <div>ลำดับ</div>

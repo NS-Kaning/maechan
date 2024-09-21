@@ -1,49 +1,100 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
+import cn from 'classnames';
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import TimeSelect from './component/timeselect';
+import Nav from './component/nav';
+import Menubar from './component/menubar';
 
 
 function Test() {
 
-    const frappeConfig = useContext(FrappeContext)
+  const frappeConfig = useContext(FrappeContext)
 
-    const save = () => {
+  const save = () => {
 
-        frappeConfig?.db.createDoc('Crematorium', {
-            crematory: 'test',
-            crematorium_name: 't12'
-        }).then((doc) => console.log(doc))
-            .catch((error) => console.error(error));
+    frappeConfig?.db.createDoc('Crematorium', {
+      crematory: 'test',
+      crematorium_name: 't12'
+    }).then((doc) => console.log(doc))
+      .catch((error) => console.error(error));
 
-    }
-    return (<div>ADD DATA <button onClick={save}>SAVE</button></div>)
+  }
+  return (<div>ADD DATA <button onClick={save}>SAVE</button></div>)
 }
 
 
 export default function HOME() {
+
+  const frappeConfig = useContext(FrappeContext)
+  const [crematoriumMeta, setCrematorium] = useState({})
+  const [temples, setTemples] = useState([])
+  const [furnace, setFurnaces] = useState([])
+  const [selectedTemple, setSelectedTemple] = useState('');
+  const [selectedFurnace, setSelectedFurnace] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+
+
+  useEffect(() => {
+
+    frappeConfig?.call.get('maechan.booking.doctype.crematorium.crematorium.get_meta').then(r => {
+      // console.log(r)
+      setCrematorium(r.message)
+      const meta = r.message
+      const fieldCrematory = meta.fields.find((f) => f.fieldname == 'crematory')
+      if (fieldCrematory) {
+        const t = fieldCrematory.options.split('\n')
+        setTemples(t)
+      }
+
+      const fieldFurnace = meta.fields.find((f) => f.fieldname == 'furnace')
+      if (fieldFurnace) {
+        const t = fieldFurnace.options.split('\n')
+        console.log('T', t)
+        setFurnaces(t)
+      }
+    })
+  }, [])
+
+  const save = () => {
+
+    frappeConfig?.db.createDoc('Crematorium', {
+      crematory: 'test',
+      crematorium_name: 't12'
+    }).then((doc) => console.log(doc))
+      .catch((error) => console.error(error));
+
+  }
+
+  const handleClear = () => {
+    setSelectedTemple('');
+    setSelectedFurnace('');
+    setSelectedDate('');
+    setSelectedTime('');
+  };
+
+  const navigate = useNavigate();
+
+    const handleNavigate = (path) => {
+        navigate(path);
+    };
+
   return (
     <div>
+      {/* nav */}
       <div className="flex flex-col pt-6 bg-white h-screen">
-        <div className="flex justify-between items-center px-20 w-full max-h-6">
-          <div className="flex items-center gap-3">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/6af0b2fc646d407ec3b95c5514da7850482402df51d346618df500b9fee0b7d7?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
-              className="object-contain shrink-0 w-10"
-              alt="Book Crematorium Logo" />
-            <div className="text-base font-bold">BOOK CREMATORIUM</div>
-          </div>
-          <div className="text-sm ">Natapipan kong</div>
-        </div>
-
+        <Nav></Nav>
         <div className="mt-6 w-full border border-zinc-120"></div>
 
-        {/* nav */}
-
+        {/* munu bar */}
         <div className="px-[82px]  mt-5 w-screen max-w-[1800px] max-md:max-w-full">
           <div className="flex  gap-4 max-md:flex-col ">
             <div className="flex flex-col  w-[21%]  max-md:w-48 ">
               <div className="flex flex-col  w-full text-sm font-bold whitespace-nowrap max-md:mt-4 ">
-                <div className="flex gap-3 px-4 py-3  text-white bg-blue-700 rounded-xl">
+                <div onClick={() => handleNavigate('/home')} className="flex gap-3 px-4 py-3  text-white bg-blue-700 rounded-xl">
                   <img
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/446a560b0f1e789d60687ba009012a4c5960ccfec7761b3a2d881c8ae4bf5f35?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
@@ -51,7 +102,7 @@ export default function HOME() {
                   />
                   <div className="grow shrink my-auto w-[80px]">HOME</div>
                 </div>
-                <div className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
+                <div onClick={() => handleNavigate('/history')} className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
                   <img
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/1990d6879800e468960528e5a22a3636c80362dda5f85af89045cd57271a0ade?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
@@ -62,12 +113,9 @@ export default function HOME() {
               </div>
             </div>
 
-            {/* munu bar */}
-
-
+            {/* border  */}
             <div className="flex flex-col  pt-3.5 pr-4 pb-14 pl-4 mx-auto w-full font-bold bg-white rounded-md border border-solid border-zinc-300 max-md:pr-5 max-md:pb-24 max-md:mt-5 max-md:max-w-full">
 
-              {/* border  */}
 
               <div className="flex gap-3 ml-4 mt-2 items-center self-start text-xs text-black text-opacity-20">
                 <img
@@ -88,74 +136,52 @@ export default function HOME() {
 
               {/* list process */}
 
-              <div className="text-base font-bold mt-4 ml-4">BOOKING A CREMATORIUM</div>
-
-              {/* <form class="max-w-sm mb-4 bg-white dark:bg-gray-800 rounded-lg p-4">
-              <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Select an option
-              </label>
-              <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option selected>Choose a country</option>
-                <option value="US">United States</option>
-
-              </select>
-            </form> */}
+              <div className="text-base font-bold mt-4 ml-4">ทำการจองเมรุฌาปนกิจ</div>
 
               <form className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
-                <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">Select temple</label>
-                <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                  <option selected >Wat Kasa</option>
-                  <option value="US" >United States</option>
+                <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">เลือกวัด</label>
+                <select value={selectedTemple}
+                  onChange={(e) => setSelectedTemple(e.target.value)} id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                  {temples.map(t => (<option key={t} >{t}</option>))}
                 </select>
               </form>
 
-              <div className="text-[14px] font-bold mt-2 ml-4">Type of furnace</div>
+              <div className="text-[14px] font-bold mt-2 ml-4">ประเภทเตาเผา</div>
 
               <form className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
-                <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">Type of furnace</label>
-                <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                  <option selected >Pollution-free furnace</option>
-                  <option value="US" >United States</option>
+                <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ประเภทเตาเผา</label>
+                <select value={selectedFurnace}
+                  onChange={(e) => setSelectedFurnace(e.target.value)} id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                  {furnace.map(t => (<option key={t} >{t}</option>))}
                 </select>
               </form>
 
-              <div className="text-[14px] font-bold mt-4 ml-4">Date</div>
+              <div className="text-[14px] font-bold mt-4 ml-4">วันที่</div>
 
               <div className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
-                <div className="block text-[10px] font-medium dark:text-[#585858] pl-3">Date</div>
+                <div className="block text-[10px] font-medium dark:text-[#585858] pl-3">วันที่</div>
                 <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                  <div className="flex-grow">13/04/2024</div>
-                  <img
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/8467f280357d0b2ca837f386e93df54352b232312027ea6a8f9d4248e6dbce45?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
-                    className="w-6 h-6 ml-2"
-                    alt="Icon">
-                  </img>
+                  <input value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)} type="date" id="date" name="date" className="mt-1 block w-full text-base dark:bg-[#EEEEEE] dark:text-[#000]" />
                 </div>
               </div>
-              <div className="text-[14px] font-bold mt-4 ml-4">Time</div>
+
+              <div className="text-[14px] font-bold mt-4 ml-4">เวลาจอง</div>
 
               <div className="flex items-center  mt-2 ml-4">
-                <div className="flex items-center justify-center text-center  bg-[#E51C23] text-white  rounded-md mr-4" style={{ width: "161px", height: "55px" }}>
-                  12:00 - 01:00 PM
-                </div>
 
-                <div className="flex items-center justify-center text-center bg-[#F9A825] text-white  rounded-md mr-4 " style={{ width: "161px", height: "55px" }}>
-                  01:00 - 02:00 PM
-                </div>
+                <TimeSelect selectedTime={selectedTime} setSelectedTime={setSelectedTime} />
 
-                <div className="flex items-center justify-center text-center bg-[#0A8F08] text-white  rounded-md " style={{ width: "161px", height: "55px" }}>
-                  02:00 - 03:00 PM
-                </div>
               </div>
 
               <div className="flex flex-col  gap-3 sm:flex-row  mt-6 font-bold text-xs sm:text-sm ml-4">
-                <div className="flex items-center justify-center text-centerbg-[#EEEEEE] text-back rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
-                Clear Data
-                </div>
+                <button onClick={handleClear} className="flex items-center justify-center text-centerbg-[#EEEEEE] text-back rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
+                  ล้างข้อมูล
+                </button>
 
-                <div className="flex items-center justify-center text-center  bg-[#225EC4] text-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
-                Confirm to Forward
-                </div>
+                <button onClick={() => handleNavigate('/booking')} className="flex items-center justify-center text-center  bg-[#225EC4] text-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
+                  ยืนยันข้อมูล
+                </button>
               </div>
 
 
