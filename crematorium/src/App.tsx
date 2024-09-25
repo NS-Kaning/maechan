@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import './App.css';
 import { FrappeProvider, useFrappeAuth } from 'frappe-react-sdk';
 import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom';
-import Login from './pages/login';
+import Login from './pages/auth/login';
+import Register from './pages/auth/register'
 import Home from './pages/Home';
 import Booking from './pages/booking';
 import Doc from './pages/doc ';
@@ -36,6 +37,10 @@ function App() {
 		{
 			path: '/',
 			element: <Login />,
+		},
+		{
+			path: '/register',
+			element: <Register />,
 		},
 		{
 			path: 'Home',

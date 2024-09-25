@@ -53,21 +53,22 @@ export default function HOME() {
       const fieldFurnace = meta.fields.find((f) => f.fieldname == 'furnace')
       if (fieldFurnace) {
         const t = fieldFurnace.options.split('\n')
-        console.log('T', t)
+        // console.log('T', t)
         setFurnaces(t)
       }
     })
   }, [])
 
   const save = () => {
-
     frappeConfig?.db.createDoc('Crematorium', {
-      crematory: 'test',
-      crematorium_name: 't12'
+      crematory : selectedTemple,
+      furnace : selectedFurnace,
+      date : selectedDate,
+      time : selectedTime
     }).then((doc) => console.log(doc))
       .catch((error) => console.error(error));
-
   }
+  
 
   const handleClear = () => {
     setSelectedTemple('');
@@ -78,9 +79,9 @@ export default function HOME() {
 
   const navigate = useNavigate();
 
-    const handleNavigate = (path) => {
-        navigate(path);
-    };
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   return (
     <div>
@@ -100,7 +101,7 @@ export default function HOME() {
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/446a560b0f1e789d60687ba009012a4c5960ccfec7761b3a2d881c8ae4bf5f35?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                     className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
                   />
-                  <div className="grow shrink my-auto w-[80px]">HOME</div>
+                  <div className="grow shrink my-auto w-[80px]">หน้าหลัก</div>
                 </div>
                 <div onClick={() => handleNavigate('/history')} className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
                   <img
@@ -108,7 +109,7 @@ export default function HOME() {
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/1990d6879800e468960528e5a22a3636c80362dda5f85af89045cd57271a0ade?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                     className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
                   />
-                  <div className="my-auto">HISTORY</div>
+                  <div className="my-auto">ประวัติ</div>
                 </div>
               </div>
             </div>
@@ -163,6 +164,7 @@ export default function HOME() {
                 <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
                   <input value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)} type="date" id="date" name="date" className="mt-1 block w-full text-base dark:bg-[#EEEEEE] dark:text-[#000]" />
+                
                 </div>
               </div>
 
@@ -179,7 +181,7 @@ export default function HOME() {
                   ล้างข้อมูล
                 </button>
 
-                <button onClick={() => handleNavigate('/booking')} className="flex items-center justify-center text-center  bg-[#225EC4] text-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
+                <button onClick={save} className="flex items-center justify-center text-center  bg-[#225EC4] text-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
                   ยืนยันข้อมูล
                 </button>
               </div>

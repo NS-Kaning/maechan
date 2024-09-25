@@ -24,25 +24,25 @@ export default function BOOKING() {
             const fieldProvince = meta.fields.find((f) => f.fieldname == 'province')
             if (fieldProvince) {
                 const n = fieldProvince.options.split('\n')
-                console.log('P', n)
+                // console.log('P', n)
                 setProvince(n)
             }
             const fieldDistrict = meta.fields.find((f) => f.fieldname == 'district')
             if (fieldDistrict) {
                 const n = fieldDistrict.options.split('\n')
-                console.log('P', n)
+                // console.log('P', n)
                 setDistrict(n)
             }
             const fieldCanton = meta.fields.find((f) => f.fieldname == 'canton')
             if (fieldCanton) {
                 const n = fieldCanton.options.split('\n')
-                console.log('P', n)
+                // console.log('P', n)
                 setCanton(n)
             }
             const fieldRelevant = meta.fields.find((f) => f.fieldname == 'relationship')
             if (fieldRelevant) {
                 const n = fieldRelevant.options.split('\n')
-                console.log('P', n)
+                // console.log('P', n)
                 setRelevant(n)
             }
 
@@ -72,7 +72,7 @@ export default function BOOKING() {
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/446a560b0f1e789d60687ba009012a4c5960ccfec7761b3a2d881c8ae4bf5f35?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                         className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
                                     />
-                                    <div className="grow shrink my-auto w-[80px]">HOME</div>
+                                    <div className="grow shrink my-auto w-[80px]">หน้าหลัก</div>
                                 </div>
                                 <div onClick={() => handleNavigate('/history')} className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
                                     <img
@@ -80,7 +80,7 @@ export default function BOOKING() {
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/1990d6879800e468960528e5a22a3636c80362dda5f85af89045cd57271a0ade?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                         className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
                                     />
-                                    <div className="my-auto">HISTORY</div>
+                                    <div className="my-auto">ประวัติ</div>
                                 </div>
                             </div>
                         </div>
@@ -169,21 +169,29 @@ export default function BOOKING() {
                                 <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">จังหวัด</label>
                                     <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                                        {provincesName.map(n => (<option key={n} >{n}</option>))}
+                                        {provincesName.map((n, index) => (
+                                            <option key={`${n}-${index}`}>{n}</option>
+                                        ))}
                                     </select>
                                 </form>
 
                                 <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">อำเภอ</label>
                                     <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                                        {districtName.map(n => (<option key={n} >{n}</option>))}
+                                        {districtName.map((n, index) => (
+                                            <option key={`${n}-${index}`}>{n}</option>
+                                        ))}
+                                        {/* {districtName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
                                 </form>
 
                                 <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ตำบล</label>
                                     <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                                        {cantonName.map(n => (<option key={n} >{n}</option>))}
+                                        {cantonName.map((n, index) => (
+                                            <option key={`${n}-${index}`}>{n}</option>
+                                        ))}
+                                        {/* {cantonName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
                                 </form>
 
@@ -194,7 +202,10 @@ export default function BOOKING() {
                                 <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ความเกี่ยวข้องกับผู้ตาย</label>
                                     <select id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                                        {relevantName.map(n => (<option key={n} >{n}</option>))}
+                                        {relevantName.map((n, index) => (
+                                            <option key={`${n}-${index}`}>{n}</option>
+                                        ))}
+                                        {/* {relevantName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
 
                                 </form>

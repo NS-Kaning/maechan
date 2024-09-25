@@ -27,7 +27,7 @@ export default function TRANFER() {
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/446a560b0f1e789d60687ba009012a4c5960ccfec7761b3a2d881c8ae4bf5f35?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                         className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
                                     />
-                                    <div className="grow shrink my-auto w-[80px]">HOME</div>
+                                    <div className="grow shrink my-auto w-[80px]">หน้าหลัก</div>
                                 </div>
                                 <div onClick={() => handleNavigate('/history')} className="flex gap-3 px-2 mt-4 ml-2.5 text-black">
                                     <img
@@ -35,7 +35,7 @@ export default function TRANFER() {
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/1990d6879800e468960528e5a22a3636c80362dda5f85af89045cd57271a0ade?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                         className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
                                     />
-                                    <div className="my-auto">HISTORY</div>
+                                    <div className="my-auto">ประวัติ</div>
                                 </div>
                             </div>
                         </div>

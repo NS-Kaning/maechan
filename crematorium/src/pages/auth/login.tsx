@@ -1,6 +1,6 @@
 import { AuthCredentials, useFrappeAuth } from 'frappe-react-sdk';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const LoginComponent: React.FC = () => {
   const {
@@ -16,7 +16,7 @@ const LoginComponent: React.FC = () => {
 
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -28,21 +28,26 @@ const LoginComponent: React.FC = () => {
     try {
       await login(credentials);
       await updateCurrentUser();
-      navigate('/home'); 
+      navigate('/home');
     } catch (err) {
       console.error(err);
       alert('Login failed!');
     }
   };
 
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
   return (
     <div className="flex flex-col pt-6 bg-white h-screen">
       <div className="flex justify-between items-center px-20 w-full max-h-6">
         <div className="flex items-center gap-10">
-          <a href="#" className="text-base font-bold">HOME</a>
-          <a href="#" className="text-sm">HISTORY</a>
+          <a href="#" className="text-base font-bold">หน้าหลัก</a>
+          <a href="#" className="text-sm">ประวัติ</a>
         </div>
-        <a href="#" className="text-sm">For Officer</a>
+        <a href="#" className="text-sm">สำหรับเจ้าหน้าที่</a>
       </div>
 
       <div className="mt-6 w-full border border-zinc-120"></div>
@@ -84,7 +89,7 @@ const LoginComponent: React.FC = () => {
             <div className="relative mt-5">
               <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-4 pointer-events-none">
                 <img
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c1cb0f599709636b2849b0ee3d1603d2c3071eedcb8a34536e7cc327e1591bf?"
+                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/c039750a8177d7f5e2c10f30a94fe08f0a348ca84e4836a1adc2b5b938252a04?placeholderIfAbsent=true&apiKey=bf0b86e0707a42aa8acd2aa478f17610"
                   alt="Phone Icon"
                 />
               </div>
@@ -103,15 +108,27 @@ const LoginComponent: React.FC = () => {
 
             <button
               onClick={handleLogin}
+              disabled={isLoading}
               type="button"
               className="justify-center px-16 py-2.5 mt-6 text-sm text-white bg-black rounded-md max-md:pr-7 max-md:pl-6"
             >
-              Login
+              {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+              
+            </button>
+
+            <div className="pt-5">
+              <p>หรือ</p>
+            </div>
+
+            <button
+              onClick={() => handleNavigate('/register')}
+              type="button"
+              className="justify-center px-16 py-2.5 mt-6 text-sm text-[#000] bg-[#EEEEEE] rounded-md max-md:pr-7 max-md:pl-6"
+            >
+              ลงทะเบียน
             </button>
 
             {error && <div className="text-red-500 mt-2">{error.message}</div>}
-
-            
           </div>
         </div>
       </div>

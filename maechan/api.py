@@ -183,6 +183,7 @@ def sign_up(email: str, full_name: str, redirect_to: str) -> tuple[int, str]:
 @frappe.whitelist(allow_guest=True)
 def register():
     request = frappe.form_dict
+    #request['email']
 
     profileUser = frappe.db.get("User", {"email": request.email})
     if profileUser:
