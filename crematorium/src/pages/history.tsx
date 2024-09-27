@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
 import Nav from './component/nav';
@@ -10,6 +10,37 @@ export default function HISTORY() {
     const handleNavigate = (path) => {
         navigate(path);
     };
+
+    const frappeConfig = useContext(FrappeContext);
+    const [crematoriumMeta, setCrematorium] = useState({});
+
+    // const searchParams = {
+    //     doctype: '',
+    //     txt: '',
+    //   };
+    //   frappeConfig?.call.get('maechan.booking.doctype.crematorium.crematorium.get_meta', searchParams)
+    //     .then((result) => console.log(result))
+    //     .catch((error) => console.error(error));
+
+    //     console.log(searchParams)
+
+    useEffect(() => {
+        const fetchMetaData = async () => {
+          try {
+            const r = await frappeConfig?.call.get('maechan.booking.doctype.crematorium.crematorium.get_meta');
+            setCrematorium(r.message);
+            const meta = r.message;
+            console.log(meta)
+    
+          } catch (error) {
+            console.error(error);
+          }
+        };
+    
+        fetchMetaData();
+      }, [frappeConfig]);
+
+
     return (
 
         <div>

@@ -3,6 +3,7 @@ import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
 import { useNavigate } from 'react-router-dom';
 import Nav from './component/nav';
 
+
 export default function SUCCES() {
     const navigate = useNavigate();
 

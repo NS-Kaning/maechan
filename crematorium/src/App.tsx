@@ -12,6 +12,8 @@ import Line from './pages/line';
 import OTP from './pages/otp';
 import SUCCES from './pages/succes';
 import TRANFER from './pages/tranfer';
+import FileUploadComponent from './pages/component/FileUploadComponent';
+import FuneralPermissionForm from './pages/fromComponents/FuneralPermissionForm';
 
 // LoginGuard Component
 const LoginGuard = ({ children }: React.PropsWithChildren) => {
@@ -87,6 +89,14 @@ function App() {
 		{
 			path: '/tranfer',
 			element: <TRANFER/>,
+		},
+		{
+			path: '/FileUploadComponent',
+			element: <FileUploadComponent attachment={undefined} success={undefined} error={undefined}/>,
+		},
+		{
+			path: '/FuneralPermissionForm',
+			element: <FuneralPermissionForm/>,
 		},
 	]);
 
