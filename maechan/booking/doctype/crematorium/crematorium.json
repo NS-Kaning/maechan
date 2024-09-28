@@ -29,16 +29,12 @@
   "column_break_bmsw",
   "column_break_qdxs",
   "document",
-  "death_certificate",
-  "house_registration",
-  "id_card",
+  "deathcertificate",
+  "houseregistration",
+  "idcard",
   "tab_2_tab",
   "payment",
-  "transaction_date",
-  "section_break_qyhl",
-  "approve",
-  "column_break_cjlr",
-  "reject"
+  "transaction_date"
  ],
  "fields": [
   {
@@ -162,11 +158,6 @@
    "label": "\u0e40\u0e2d\u0e01\u0e2a\u0e32\u0e23\u0e41\u0e19\u0e1a"
   },
   {
-   "fieldname": "death_certificate",
-   "fieldtype": "Attach",
-   "label": "\u0e2a\u0e33\u0e40\u0e19\u0e32\u0e43\u0e1a\u0e21\u0e23\u0e13\u0e30"
-  },
-  {
    "fieldname": "furnace",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -175,34 +166,6 @@
    "options": "\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e1b\u0e23\u0e30\u0e40\u0e20\u0e17\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32\n\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32\u0e44\u0e23\u0e49\u0e21\u0e25\u0e1e\u0e34\u0e29 4,000 \u0e1a\u0e32\u0e17\n\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32\u0e40\u0e21\u0e23\u0e38\u0e16\u0e48\u0e32\u0e19 3,000 \u0e1a\u0e32\u0e17\n\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32\u0e40\u0e21\u0e23\u0e38\u0e19\u0e2d\u0e01\u0e1e\u0e23\u0e49\u0e2d\u0e21\u0e1f\u0e37\u0e19 1,600 \u0e1a\u0e32\u0e17\n\u0e40\u0e15\u0e32\u0e40\u0e1c\u0e32\u0e40\u0e21\u0e23\u0e38\u0e19\u0e2d\u0e01\u0e19\u0e33\u0e1f\u0e37\u0e19\u0e21\u0e32\u0e40\u0e2d\u0e07 1,200 \u0e1a\u0e32\u0e17",
    "search_index": 1,
    "sort_options": 1
-  },
-  {
-   "fieldname": "house_registration",
-   "fieldtype": "Attach",
-   "label": "\u0e2a\u0e4d\u0e32\u0e40\u0e19\u0e32\u0e17\u0e30\u0e40\u0e1a\u0e35\u0e22\u0e19\u0e1a\u0e49\u0e32\u0e19 (\u0e1c\u0e39\u0e49\u0e15\u0e32\u0e22)"
-  },
-  {
-   "fieldname": "id_card",
-   "fieldtype": "Attach",
-   "label": "\u0e2a\u0e4d\u0e32\u0e40\u0e19\u0e32\u0e1a\u0e31\u0e15\u0e23\u0e1b\u0e23\u0e30\u0e08\u0e4d\u0e32\u0e15\u0e31\u0e27\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19 (\u0e1c\u0e39\u0e49\u0e22\u0e37\u0e48\u0e19\u0e04\u0e4d\u0e32\u0e23\u0e49\u0e2d\u0e07)"
-  },
-  {
-   "fieldname": "section_break_qyhl",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "approve",
-   "fieldtype": "Button",
-   "label": "\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e34"
-  },
-  {
-   "fieldname": "column_break_cjlr",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "reject",
-   "fieldtype": "Button",
-   "label": "\u0e44\u0e21\u0e48\u0e2d\u0e19\u0e38\u0e0d\u0e32\u0e15\u0e34"
   },
   {
    "fieldname": "tab_2_tab",
@@ -218,11 +181,26 @@
    "fieldname": "transaction_date",
    "fieldtype": "Date",
    "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e17\u0e33\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23"
+  },
+  {
+   "fieldname": "deathcertificate",
+   "fieldtype": "Attach",
+   "label": "\u0e2a\u0e33\u0e40\u0e19\u0e32\u0e43\u0e1a\u0e21\u0e23\u0e13\u0e30"
+  },
+  {
+   "fieldname": "houseregistration",
+   "fieldtype": "Attach",
+   "label": "\u0e2a\u0e4d\u0e32\u0e40\u0e19\u0e32\u0e17\u0e30\u0e40\u0e1a\u0e35\u0e22\u0e19\u0e1a\u0e49\u0e32\u0e19 (\u0e1c\u0e39\u0e49\u0e15\u0e32\u0e22)"
+  },
+  {
+   "fieldname": "idcard",
+   "fieldtype": "Attach",
+   "label": "\u0e2a\u0e4d\u0e32\u0e40\u0e19\u0e32\u0e1a\u0e31\u0e15\u0e23\u0e1b\u0e23\u0e30\u0e08\u0e4d\u0e32\u0e15\u0e31\u0e27\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19 (\u0e1c\u0e39\u0e49\u0e22\u0e37\u0e48\u0e19\u0e04\u0e4d\u0e32\u0e23\u0e49\u0e2d\u0e07)"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-27 22:06:45.346986",
+ "modified": "2024-09-29 03:10:11.658915",
  "modified_by": "Administrator",
  "module": "Booking",
  "name": "Crematorium",
