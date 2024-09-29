@@ -15,6 +15,7 @@ import TRANFER from './pages/tranfer';
 import FileUploadComponent from './pages/component/FileUploadComponent';
 import FuneralPermissionForm from './pages/fromComponents/FuneralPermissionForm';
 import { MyDocumentList } from './pages/component/MyDocumentList';
+import Stepper from './pages/steper';
 
 // LoginGuard Component
 const LoginGuard = ({ children }: React.PropsWithChildren) => {
@@ -102,6 +103,10 @@ function App() {
 		{
 			path: '/MyDocumentList',
 			element: <MyDocumentList/>,
+		},
+		{
+			path: '/Stepper',
+			element: <Stepper/>,
 		},
 	]);
 

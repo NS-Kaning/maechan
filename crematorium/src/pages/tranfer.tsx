@@ -1,7 +1,42 @@
 import { AuthCredentials, useFrappeAuth } from 'frappe-react-sdk';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { To, useNavigate } from 'react-router-dom';
 import Nav from './component/nav';
+import Payment from '../image/paymant.jpg'
+
+const Popup = ({ show, onClose, countdown }) => {
+    if (!show) return null;
+
+    const formatTime = (timeInSeconds: number) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    return (
+        <div>
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="bg-white p-6 rounded shadow-md text-center flex flex-col items-center">
+                    <img src={Payment} alt="Payment" className="w-[250px] h-[250px] rounded-lg mb-4 object-cover" />
+                    <h2 className="text-lg font-bold mb-4">เทศบาลตำบล</h2>
+                    <p className="mb-4">โปรดชำระเงินให้เสร็จภายใน 10 นาที เหลือเวลา
+                        <span className="text-red-500"> {formatTime(countdown)}</span>
+                    </p>
+                    <button
+                        className="bg-blue-500 text-white px-24 py-2 rounded mt-3"
+                        onClick={onClose}
+                    >
+                        แจ้งหลักฐานการชำระเงิน
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    );
+};
 
 export default function TRANFER() {
     const navigate = useNavigate();
@@ -9,9 +44,33 @@ export default function TRANFER() {
     const handleNavigate = (path: To) => {
         navigate(path);
     };
+
+    const [showPopup, setShowPopup] = useState(true);
+    const [countdown, setCountdown] = useState(600);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCountdown((prevCountdown) => {
+                if (prevCountdown <= 1) {
+                    clearInterval(timer);
+                    setShowPopup(false);
+                    return 0;
+                }
+                return prevCountdown - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    const handleClosePopup = () => {
+        setShowPopup(false);
+    };
+
     return (
 
         <div>
+            <Popup show={showPopup} countdown={countdown} onClose={handleClosePopup} />
             <div className="flex flex-col pt-6 bg-white h-screen">
                 <Nav></Nav>
                 <div className="mt-6 w-full border border-zinc-120"></div>

@@ -9,6 +9,7 @@ import Nav from './component/nav';
 import Menubar from './component/menubar';
 import ModalProps from './component/modalProps'
 import { FaCheckCircle } from 'react-icons/fa';
+import Payment from '../image/paymant.jpg';
 
 
 
@@ -130,44 +131,82 @@ export default function HOME() {
     navigate(path);
   };
 
+  const STEP_ONE = 1;
+  const STEP_TWO = 2;
+  const STEP_THREE = 3;
+
+  const [currentStep, setCurrentStep] = useState(STEP_ONE);
+  const [showPopup, setShowPopup] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [countdown, setCountdown] = useState(5);
+  const [showAlertCard, setShowAlertCard] = useState(false);
 
   const handleNext = () => {
-    setCurrentStep((prevStep) => Math.min(prevStep + 1, 4)); // 4 is the last step
+    setCurrentStep((prevStep) => Math.min(prevStep + 1, STEP_THREE));
   };
 
   const handleBack = () => {
-    setCurrentStep((prevStep) => Math.max(prevStep - 1, 1)); // Ensure it doesn't go below 1
+    setCurrentStep((prevStep) => Math.max(prevStep - 1, STEP_ONE));
   };
 
   const getBreadcrumbs = () => {
+    const commonImg = 'https://cdn.builder.io/api/v1/image/assets/TEMP/3826b149906e5323de1ced14d72b5fc97e53c8a574c31c256ff965e8afabc112?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d';
     switch (currentStep) {
-      case 1:
+      case STEP_ONE:
         return [
-          { img: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3826b149906e5323de1ced14d72b5fc97e53c8a574c31c256ff965e8afabc112?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d' },
+          { img: commonImg },
           { name: 'Book Crematorium' },
-          // { name: 'Stepper', link: '#' },
         ];
-      case 2:
+      case STEP_TWO:
         return [
-          { img: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3826b149906e5323de1ced14d72b5fc97e53c8a574c31c256ff965e8afabc112?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d' },
-          { name: 'Book Crematorium' },
-          { name: 'คำขออนุญาตฌาปณกิจศพ' },
-        ];
-      case 3:
-        return [
-          { img: 'https://cdn.builder.io/api/v1/image/assets/TEMP/3826b149906e5323de1ced14d72b5fc97e53c8a574c31c256ff965e8afabc112?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d' },
+          { img: commonImg },
           { name: 'Book Crematorium' },
           { name: 'คำขออนุญาตฌาปณกิจศพ' },
         ];
-
+      case STEP_THREE:
+        return [
+          { img: commonImg },
+          { name: 'Book Crematorium' },
+          { name: 'คำขออนุญาตฌาปณกิจศพ' },
+        ];
       default:
         return [];
     }
   };
 
   const breadcrumbs = getBreadcrumbs();
+
+  useEffect(() => {
+    if (currentStep === 3) {
+      setShowPopup(true);
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown <= 1) {
+            clearInterval(timer);
+            setShowAlertCard(true); // Show alert card when time runs out
+            return 0;
+          }
+          return prevCountdown - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [currentStep]);
+
+  useEffect(() => {
+    if (showAlertCard) {
+      const timeout = setTimeout(() => {
+        window.location.reload(); // Reload the page after 5 seconds
+      }, 1000); // 5000 milliseconds = 5 seconds
+      return () => clearTimeout(timeout); // Cleanup timeout on unmount
+    }
+  }, [showAlertCard]);
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   const fileInputRef1 = useRef<HTMLInputElement | null>(null); // สำหรับเอกสารที่ 1
   const fileInputRef2 = useRef<HTMLInputElement | null>(null); // สำหรับเอกสารที่ 2
@@ -189,7 +228,7 @@ export default function HOME() {
     }
   };
 
-  
+
 
   return (
     <div>
@@ -241,8 +280,8 @@ export default function HOME() {
                           className={`text-sm font-medium ${index === breadcrumbs.length - 1 ? 'text-black font-bold dark:text-black dark:font-bold' : 'text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white'}`}
                           aria-current={index === breadcrumbs.length - 1 ? 'page' : undefined}
                         >
-                          <span className="flex items-center"  >
-                            {breadcrumb.img && <img src={breadcrumb.img} alt="Home Icon" className="w-4 h-4 mr-1" style={{ width: "20px", height: "20px" }} />}
+                          <span className="flex items-center">
+                            {breadcrumb.img && <img src={breadcrumb.img} alt="Breadcrumb Icon" className="w-4 h-4 mr-1" style={{ width: "20px", height: "20px" }} />}
                             {breadcrumb.name}
                           </span>
                         </a>
@@ -255,7 +294,7 @@ export default function HOME() {
                 {/* Stepper Content */}
                 <div className="mt-5 sm:mt-8">
                   {/* Dynamic Content Based on Current Step */}
-                  <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
+                  <div style={{ display: currentStep === STEP_ONE ? 'block' : 'none' }}>
                     <div className="text-base font-bold mt-4 ml-4">ทำการจองเมรุฌาปนกิจ</div>
 
                     <form className="w-[515px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 ml-4 mt-3.5">
@@ -295,7 +334,8 @@ export default function HOME() {
 
                     </div>
                   </div>
-                  <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+
+                  <div style={{ display: currentStep === STEP_TWO ? 'block' : 'none' }}>
                     <div className="text-[14px] font-bold mt-4 ml-4">ข้อมูลผู้ยื่นคำขอ</div>
 
                     <div className="flex flex-wrap gap-4 mt-3 ml-4">
@@ -476,12 +516,84 @@ export default function HOME() {
                         onChange={(e) => handleFileChange(e, setIsUploaded3)}
                       />
                     </div>
+
+                    <div className="flex flex-col mx-auto sm:flex-row justify-center mt-10 font-bold text-xs sm:text-sm">
+                      <button
+                        onClick={() => setIsModalOpen(true)} // Open modal when clicked
+                        className="flex items-center justify-center text-center bg-[#225EC4] text-white rounded-md p-3 mx-2"
+                        style={{ width: "180px", height: "45px" }}
+                      >
+                        ยืนยัน
+                      </button>
+
+                    </div>
+                  </div>
+
+                  <div style={{ display: currentStep === STEP_THREE ? 'block' : 'none' }}>
+                    <div className="text-base font-bold mt-4 ml-4">แจ้งหลักฐานการชำระเงิน</div>
+                    <div className="text-sm font-semibold mt-3   ml-4">ข้อมูลการชำระเงิน</div>
+
+                    <div className="flex flex-wrap mr-32 pr-6 ml-4 px-6 text-[13px] justify-between self-stretch p-6 mt-4  rounded-xl bg-zinc-100 bg-opacity-80 text-black max-md:px-6 max-md:max-w-50">
+                      <div className="flex ml-3 flex-1 min-w-[150px] gap-12">
+                        <div>อัพโหลดหลักฐานการชำระเงิน</div>
+                      </div>
+                      <img
+                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c63615a723ccfaca2c988e27711f3d09d091070bfb21a6e8978220d7fa342a34?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                        alt="" className="w-[24px] aspect-[1.06]" />
+                    </div>
+
+                    <div className="text-sm font-semibold mt-3 ml-4">จำนวนยอดที่ชำระ</div>
+
+                    <div className="flex flex-wrap gap-4 mt-3 ml-4">
+                      <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                        <div className="block text-[10px] font-medium dark:text-[#585858] pl-2">จำนวน</div>
+                        <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                          <div className="flex-grow">1500</div>
+
+                        </div>
+                      </div>
+
+                      <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                        <div className="block text-[10px] font-medium dark:text-[#585858] pl-3">วันที่</div>
+                        <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                          <div className="flex-grow">13/04/2024</div>
+                          <img
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8467f280357d0b2ca837f386e93df54352b232312027ea6a8f9d4248e6dbce45?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                            className="w-6 h-6 ml-2"
+                            alt="Icon">
+                          </img>
+                        </div>
+                      </div>
+
+                      <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                        <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">เวลา</label>
+                        <input
+                          type="text"
+                          className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
+                          placeholder="กรอกชื่อ-สกุล"
+
+                        />
+                      </div>
+
+
+                      <div className="flex flex-col mx-auto gap-3 sm:flex-row justify-center mt-32 font-bold text-xs sm:text-sm">
+                        <button onClick={() => setCurrentStep(STEP_ONE)}
+                          className="flex items-center justify-center text-center text-black bg-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
+                          แก้ไขข้อมูล
+                        </button>
+
+                        <button onClick={save}
+                          className="flex items-center justify-center text-center text-white bg-blue-700 rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
+                          ยืนยันหลักฐานการชำระเงิน
+                        </button>
+                      </div>
+
+                    </div>
                   </div>
 
                   <div className="mt-5 items-center gap-x-2">
                     <div className="flex justify-start ">
-                      {/* Conditional rendering for "Clear Data" and "Next" buttons on Home page */}
-                      {currentStep === 1 && (
+                      {currentStep === STEP_ONE && (
                         <>
                           <button
                             onClick={handleClear}
@@ -492,27 +604,16 @@ export default function HOME() {
                           </button>
                           <button
                             onClick={handleNext}
-                            className="flex items-center justify-center text-center  bg-[#EEEEEE] text-black rounded-md p-3 mx-2"
+                            className="flex items-center justify-center text-center bg-[#EEEEEE] text-black rounded-md p-3 mx-2"
                             style={{ width: "180px", height: "45px" }}
                           >
                             ยืนยันข้อมูล
                           </button>
                         </>
                       )}
-
                     </div>
 
                     <div className="flex justify-center">
-                      {/* Confirm Data button for other steps */}
-                      {currentStep > 1 && (
-                        <button
-                          onClick={() => setIsModalOpen(true)} // เปิด modal เมื่อคลิก
-                          className="flex items-center justify-center text-center bg-[#225EC4] text-white rounded-md p-3 mx-2"
-                          style={{ width: "180px", height: "45px" }}
-                        >
-                          ยืนยัน
-                        </button>
-                      )}
 
                       {isModalOpen && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -523,17 +624,39 @@ export default function HOME() {
                               <button onClick={() => setIsModalOpen(false)} className="mr-2 px-4 py-2 bg-gray-300 rounded" style={{ width: "150px", height: "39px" }}>
                                 ยกเลิก
                               </button>
-                              <button onClick={save} className="px-4 py-2 bg-blue-600 text-white rounded" style={{ width: "150px", height: "39px" }}>
+                              <button
+                                onClick={() => {
+                                  handleNext();
+                                  setIsModalOpen(false);
+                                }}
+                                className="px-4 py-2 bg-blue-600 text-white rounded" style={{ width: "150px", height: "39px" }}
+                              >
                                 ยืนยัน
                               </button>
                             </div>
                           </div>
                         </div>
+                      )}
 
+                      {/* Payment Popup */}
+                      {showPopup && (
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                          <div className="bg-white p-6 rounded shadow-md text-center flex flex-col items-center">
+                            <img src={Payment} alt="Payment" className="w-[250px] h-[250px] rounded-lg mb-4 object-cover" />
+                            <h2 className="text-lg font-bold mb-4">เทศบาลตำบล</h2>
+                            <p className="mb-4">โปรดชำระเงินให้เสร็จภายใน 10 นาที เหลือเวลา
+                              <span className="text-red-500"> {formatTime(countdown)}</span>
+                            </p>
+                            <button
+                              className="bg-blue-500 text-white px-24 py-2 rounded mt-3"
+                              onClick={() => setShowPopup(false)}
+                            >
+                              แจ้งหลักฐานการชำระเงิน
+                            </button>
+                          </div>
+                        </div>
                       )}
                     </div>
-
-
                   </div>
 
                 </div>
@@ -545,6 +668,15 @@ export default function HOME() {
           </div>
         </div>
       </div>
+      {showAlertCard && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md text-center">
+            <h2 className="text-lg font-bold mb-2">การจองไม่สำเร็จ</h2>
+            <p className="mb-4">โปรดทำการจองใหม่อีกครั้ง</p>
+            {/* Removed the "ตกลง" button */}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
