@@ -138,7 +138,7 @@ export default function HOME() {
   const [currentStep, setCurrentStep] = useState(STEP_ONE);
   const [showPopup, setShowPopup] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(3);
   const [showAlertCard, setShowAlertCard] = useState(false);
 
   const handleNext = () => {
@@ -168,6 +168,7 @@ export default function HOME() {
           { img: commonImg },
           { name: 'Book Crematorium' },
           { name: 'คำขออนุญาตฌาปณกิจศพ' },
+          { name: 'การชำระเงิน' },
         ];
       default:
         return [];
@@ -196,7 +197,7 @@ export default function HOME() {
   useEffect(() => {
     if (showAlertCard) {
       const timeout = setTimeout(() => {
-        window.location.reload(); // Reload the page after 5 seconds
+        window.location.reload(); 
       }, 1000); // 5000 milliseconds = 5 seconds
       return () => clearTimeout(timeout); // Cleanup timeout on unmount
     }
@@ -228,7 +229,14 @@ export default function HOME() {
     }
   };
 
-
+  const images = [
+    {
+      backgroundSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/d8eef06727fe2a410430fc8851ffcb79d64acebb4827e6c762b491d72c4b395c?placeholderIfAbsent=true&apiKey=bf0b86e0707a42aa8acd2aa478f17610",
+      overlaySrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/13fdb75c22fce7f7b14ea4e3a47c7a8804bbc314346786311fcc7ed89fc068c7?placeholderIfAbsent=true&apiKey=bf0b86e0707a42aa8acd2aa478f17610",
+      overlayAlt: "Overlay image description"
+    },
+    // Add more image objects as needed
+  ];
 
   return (
     <div>
@@ -670,12 +678,19 @@ export default function HOME() {
       </div>
       {showAlertCard && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-md text-center">
-            <h2 className="text-lg font-bold mb-2">การจองไม่สำเร็จ</h2>
-            <p className="mb-4">โปรดทำการจองใหม่อีกครั้ง</p>
-            {/* Removed the "ตกลง" button */}
+          <div className="bg-white p-6 rounded shadow-md text-center w-auto h-[180px] flex flex-col items-center">
+            <div className="flex justify-center mb-4"> {/* Added flex and justify-center */}
+              <img
+                className="w-[50px] h-[50px]"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/13fdb75c22fce7f7b14ea4e3a47c7a8804bbc314346786311fcc7ed89fc068c7?placeholderIfAbsent=true&apiKey=bf0b86e0707a42aa8acd2aa478f17610"
+                alt=""
+              />
+            </div>
+            <h2 className="text-lg font-bold mb-2">คำขออนุญาตถูกยกเลิก</h2>
+            <p className="mb-4">ระบบได้ปฏิเสธคำขออนุญาตเนื่องจากการชำระเงินล่าช้า</p>
           </div>
         </div>
+
       )}
     </div>
   );
