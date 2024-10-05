@@ -6,7 +6,7 @@ import { FaCheck } from 'react-icons/fa';
 const TimeSelect = ({ selectedTime, setSelectedTime }) => {
   const frappeConfig = useContext(FrappeContext);
   const [availableTimes, setAvailableTimes] = useState([]);
-  const colors = ['#0A8F08']; 
+  const colors = ['#EEEEEE']; 
   // '#E51C23', '#F9A825', '#0A8F08'
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const TimeSelect = ({ selectedTime, setSelectedTime }) => {
           key={t}
           onClick={() => handleSelectTime(t)}
           className={cn(
-            'flex items-center justify-center text-center text-white rounded-md mr-4',
+            'flex items-center justify-center text-center text-[#000000] rounded-md mr-4',
             { 'opacity-70': selectedTime !== t } 
           )}
           style={{

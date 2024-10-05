@@ -16,6 +16,7 @@ import FileUploadComponent from './pages/component/FileUploadComponent';
 import FuneralPermissionForm from './pages/fromComponents/FuneralPermissionForm';
 import { MyDocumentList } from './pages/component/MyDocumentList';
 import Stepper from './pages/steper';
+import Print from './pages/print';
 
 // LoginGuard Component
 const LoginGuard = ({ children }: React.PropsWithChildren) => {
@@ -38,9 +39,14 @@ const LoginGuard = ({ children }: React.PropsWithChildren) => {
 // App Component
 function App() {
 	const router = createBrowserRouter([
+		
 		{
 			path: '/',
 			element: <Login />,
+		},
+		{
+			path : '/print/:name',
+			element : <Print/>
 		},
 		{
 			path: '/register',

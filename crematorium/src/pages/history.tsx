@@ -17,12 +17,12 @@ export default function HISTORY() {
     const { data, error, isValidating, mutate } = useFrappeGetDocList<CrematoriumDocument>(
         'Crematorium',
         {
-            fields: ['*'], 
-            filters: [], 
+            fields: ['*'],
+            filters: [],
             limit_start: 0,
             limit: 10,
             orderBy: {
-                field: 'creation', 
+                field: 'creation',
                 order: 'desc',
             },
             asDict: false,
@@ -32,15 +32,15 @@ export default function HISTORY() {
     const formatDate = (timestamp: string) => {
         const date = new Date(timestamp + 'Z');
         const year = date.getUTCFullYear();
-        const month = String(date.getUTCMonth() + 1).padStart(2, '0'); 
-        const day = String(date.getUTCDate()).padStart(2, '0'); 
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
 
-        return `${day}/${month}/${year}`; 
+        return `${day}/${month}/${year}`;
     };
 
 
     if (error) {
-        console.error("Error fetching documents:", error); 
+        console.error("Error fetching documents:", error);
         return (
             <div className="text-red-600">
                 <h2>Error fetching documents</h2>
@@ -62,12 +62,12 @@ export default function HISTORY() {
                         <div className="flex  gap-4 max-md:flex-col ">
                             <div className="flex flex-col  w-[21%]  max-md:w-48 ">
                                 <div className="flex flex-col  w-full text-sm font-bold whitespace-nowrap max-md:mt-4 ">
-                                <div onClick={() => handleNavigate('/home')} className="flex gap-3 px-2 ml-2.5 text-black">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c725024562a4bced9b93d4cab2e64d991e699819978d4a45ea71213ea151f006?placeholderIfAbsent=true&apiKey=bf0b86e0707a42aa8acd2aa478f17610"
-                                        className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
-                                    />
+                                    <div onClick={() => handleNavigate('/home')} className="flex gap-3 px-2 ml-2.5 text-black">
+                                        <img
+                                            loading="lazy"
+                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/17e5395adb75fd8542f16d22deff8774e86e1eb5a190d8bd049c5fcccf4f7f30?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                                            className="object-contain shrink-0 w-5 aspect-square" style={{ width: "24px" }}
+                                        />
                                         <div className="my-auto">หน้าหลัก</div>
                                     </div>
 
@@ -79,7 +79,7 @@ export default function HISTORY() {
                                         />
                                         <div className="grow shrink my-auto w-[80px]">ประวัติ</div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
 
@@ -133,8 +133,8 @@ export default function HISTORY() {
                                                 <div>{index + 1}</div>
                                                 {/* Format crematorium[22] to display only date */}
                                                 <div>{crematorium[2] ? formatDate(crematorium[2]) : 'Date Not Available'}</div>
-                                                <div className={`text-red-600 ${crematorium.status ? '' : 'text-gray-500'}`}>
-                                                    {crematorium.status || 'อยู่ระหว่างการตรวจสอบ'}
+                                                <div className={`${crematorium.status ? 'text-green-600' : 'text-red-600'}`}>
+                                                    {crematorium[28]}
                                                 </div>
                                             </div>
                                             <div className="flex gap-[45px] mr-7">
