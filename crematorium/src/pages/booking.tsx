@@ -1,12 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useFrappeAuth, FrappeContext } from 'frappe-react-sdk';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Nav from './component/nav';
 import { FaCheckCircle } from 'react-icons/fa';
 import { Crematorium } from '../types/types';
 
 
 export default function BOOKING() {
+
+    const { name } = useParams();
+
+
+
     const frappeConfig = useContext(FrappeContext)
     const { file } = useContext(FrappeContext);
 
@@ -22,9 +27,29 @@ export default function BOOKING() {
 
     const [form, setForm] = useState<Crematorium>({})
 
+    // const [errors, setErrors] = useState<Partial<Record<string, boolean>>>({
+    //     provinces: false,
+    //     district: false,
+    //     canton: false,
+    //     community: false,
+    //     village: false,
+    //     relevant: false,
+    // });
+
     const updateForm = (key: string, value: any) => {
         const newForm = { ...form, [key]: value }
         setForm(newForm)
+
+        // setErrors((prevErrors) => ({ ...prevErrors, [key]: value.trim() === "" }));
+    }
+
+    const loadBooking = (name: string) => {
+        frappeConfig?.db.getDoc("Crematorium", name).then((doc) => {
+            console.log('load booking doc', doc)
+            setForm({
+                ...doc
+            })
+        })
     }
 
 
@@ -70,6 +95,11 @@ export default function BOOKING() {
                 // console.log('P', n)
                 setRelevant(n)
             }
+
+            if (name) {
+                loadBooking(name)
+            }
+
 
         })
     }, [])
@@ -135,14 +165,19 @@ export default function BOOKING() {
         }
     };
 
-    const handleSave = () => {
-        frappeConfig?.db.createDoc('Crematorium', {
-            ...form
-        })
-            .then((doc) => console.log(doc))
-            .catch((error) => console.error(error));
-        console.log('save')
-    };
+    // const handleSave = () => {
+    //     frappeConfig?.db.createDoc('Crematorium', {
+    //         ...form
+    //     })
+    //         .then((doc) =>{
+    //             console.log(doc)
+    //             setForm({
+    //                 ...doc
+    //             })
+    //         })
+    //         .catch((error) => console.error(error));
+    //     console.log('save')
+    // };
 
     // const handleUpdate = () => {
     //     if(form.name){
@@ -150,8 +185,25 @@ export default function BOOKING() {
     //             ...form
     //         })
     //     }
-        
+
     // }
+
+    const handleUpdate = () => {
+        if (form.name) {
+            frappeConfig?.db.updateDoc('Crematorium', form.name, {
+                ...form
+            }).then(() => {
+                // ใช้ navigate เพื่อไปหน้าถัดไป แต่ยังคงมีชื่ออยู่ใน URL
+                navigate(`/tranfer/${form.name}`, { replace: true });
+            }).catch((error) => {
+                console.error("การอัพเดตล้มเหลว:", error);
+            });
+        } else {
+            console.error("ต้องกรอกชื่อฟอร์ม");
+        }
+    };
+
+
 
     return (
 
@@ -229,36 +281,36 @@ export default function BOOKING() {
 
                             <div className="flex flex-wrap gap-4 mt-3 ml-4">
 
-                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 mb-4">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ชื่อ-สกุล</label>
                                     <input
                                         onChange={(e) => updateForm('username', e.target.value)}
                                         type="text"
-                                        className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
+                                        className={`text-sm font-medium rounded-lg block w-full p-2  `}
                                         placeholder="กรอกชื่อ-สกุล"
-
+                                        required
                                     />
                                 </div>
 
-
-                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 mb-4">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">อายุ</label>
                                     <input
                                         onChange={(e) => updateForm('age', e.target.value)}
                                         type="number"
-                                        className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
+                                        className={`text-sm font-medium rounded-lg block w-full p-2  `}
                                         placeholder="กรอกอายุ"
+                                        required
                                     />
                                 </div>
 
-
-                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 mb-4">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">เบอร์โทรศัพท์</label>
                                     <input
                                         onChange={(e) => updateForm('phone', e.target.value)}
                                         type="tel"
-                                        className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
+                                        className={`text-sm font-medium rounded-lg block w-full p-2  `}
                                         placeholder="กรอกเบอร์โทรศัพท์"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -266,73 +318,97 @@ export default function BOOKING() {
                             <div className="text-[14px] font-bold mt-4 ml-4">ที่อยู่ผู้ขอยื่น</div>
 
                             <div className="flex flex-wrap gap-4 mt-3 ml-4">
-                                <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                {/* จังหวัด */}
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">จังหวัด</label>
-                                    <select onChange={(e) => updateForm('provinces', e.target.value)}
-                                        id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                                    <select
+                                        onChange={(e) => updateForm('provinces', e.target.value)}
+                                        required
+                                        className={`text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000] `}
+                                    >
+                                        <option value="">เลือกจังหวัด</option>
                                         {provincesName.map((n, index) => (
-                                            <option key={`${n}-${index}`}>{n}</option>
+                                            <option key={`${n}-${index}`} value={n}>{n}</option>
                                         ))}
                                     </select>
-                                </form>
+                                </div>
 
-                                <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                {/* อำเภอ */}
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">อำเภอ</label>
-                                    <select onChange={(e) => updateForm('district', e.target.value)}
-                                        id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                                    <select
+                                        onChange={(e) => updateForm('district', e.target.value)}
+                                        required
+                                        className={`text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]`}
+                                    >
+                                        <option value="">เลือกอำเภอ</option>
                                         {districtName.map((n, index) => (
-                                            <option key={`${n}-${index}`}>{n}</option>
+                                            <option key={`${n}-${index}`} value={n}>{n}</option>
                                         ))}
-                                        {/* {districtName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
-                                </form>
+                                </div>
 
-                                <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                {/* ตำบล */}
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ตำบล</label>
-                                    <select onChange={(e) => updateForm('canton', e.target.value)}
-                                        id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                                    <select
+                                        onChange={(e) => updateForm('canton', e.target.value)}
+                                        required
+                                        className={`text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000] `}
+                                    >
+                                        <option value="">เลือกตำบล</option>
                                         {cantonName.map((n, index) => (
-                                            <option key={`${n}-${index}`}>{n}</option>
+                                            <option key={`${n}-${index}`} value={n}>{n}</option>
                                         ))}
-                                        {/* {cantonName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
-                                </form>
+                                </div>
 
-                                <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                {/* ชุมชน */}
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ชุมชน</label>
-                                    <select onChange={(e) => updateForm('community', e.target.value)}
-                                        id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                                    <select
+                                        onChange={(e) => updateForm('community', e.target.value)}
+                                        required
+                                        className={`text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000] `}
+                                    >
+                                        <option value="">เลือกชุมชน</option>
                                         {communityName.map((n, index) => (
-                                            <option key={`${n}-${index}`}>{n}</option>
+                                            <option key={`${n}-${index}`} value={n}>{n}</option>
                                         ))}
-                                        {/* {relevantName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
+                                </div>
 
-                                </form>
-
-                                <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                {/* หมู่ */}
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">หมู่</label>
-                                    <select onChange={(e) => updateForm('village', e.target.value)}
-                                        id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                                    <select
+                                        onChange={(e) => updateForm('village', e.target.value)}
+                                        required
+                                        className={`text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000] `}
+                                    >
+                                        <option value="">เลือกหมู่</option>
                                         {villageName.map((n, index) => (
-                                            <option key={`${n}-${index}`}>{n}</option>
+                                            <option key={`${n}-${index}`} value={n}>{n}</option>
                                         ))}
-                                        {/* {relevantName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
+                                </div>
 
-                                </form>
-
-                                <form className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                                {/* ความเกี่ยวข้องกับผู้ตาย */}
+                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">ความเกี่ยวข้องกับผู้ตาย</label>
-                                    <select onChange={(e) => updateForm('relevant', e.target.value)}
-                                        id="countries" className="text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                                    <select
+                                        onChange={(e) => updateForm('relevant', e.target.value)}
+                                        required
+                                        className={`text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000] `}
+                                    >
+                                        <option value="">เลือกความเกี่ยวข้อง</option>
                                         {relevantName.map((n, index) => (
-                                            <option key={`${n}-${index}`}>{n}</option>
+                                            <option key={`${n}-${index}`} value={n}>{n}</option>
                                         ))}
-                                        {/* {relevantName.map(n => (<option key={n} >{n}</option>))} */}
                                     </select>
 
-                                </form>
+                                </div>
+
 
                             </div>
                             <div className="text-[14px] font-bold mt-4 ml-4">ข้อมูลผู้ตาย</div>
@@ -344,7 +420,7 @@ export default function BOOKING() {
                                         onChange={(e) => updateForm('deceased', e.target.value)}
                                         type="text"
                                         className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
-                                        placeholder="กรอกชื่อ-สกุล"
+                                        placeholder="กรอกชื่อ-สกุล" required
 
                                     />
                                 </div>
@@ -356,7 +432,7 @@ export default function BOOKING() {
                                         onChange={(e) => updateForm('nameregister', e.target.value)}
                                         type="text"
                                         className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
-                                        placeholder="กรอกชื่อ-สกุล"
+                                        placeholder="กรอกชื่อ-สกุล" required
                                     />
                                 </div>
 
@@ -367,7 +443,7 @@ export default function BOOKING() {
                                         onChange={(e) => updateForm('leafnumber', e.target.value)}
                                         type="text"
                                         className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
-                                        placeholder="เลขที่"
+                                        placeholder="เลขที่" required
                                     />
                                 </div>
 
@@ -391,8 +467,8 @@ export default function BOOKING() {
 
                                 {isUploaded1 ? (
                                     <>
-                                    <FaCheckCircle className="w-[20px] h-[20px] text-green-500" /> // ไอคอนติ๊กถูกสีเขียว
-                                    <img src={form.deathcertificate}/>
+                                        <FaCheckCircle className="w-[20px] h-[20px] text-green-500" /> 
+                                        {/* <img src={form.deathcertificate} /> */}
                                     </>
                                 ) : (
                                     <img
@@ -404,7 +480,7 @@ export default function BOOKING() {
                                 )}
 
                                 <input
-                                    type="file"
+                                    type="file" required
                                     ref={fileInputRef1}
                                     className="hidden"
                                     onChange={(e) => handleFileChange(e, setIsUploaded1, 'deathcertificate')}
@@ -429,7 +505,7 @@ export default function BOOKING() {
                                 )}
 
                                 <input
-                                    type="file"
+                                    type="file" required
                                     ref={fileInputRef2}
                                     className="hidden"
                                     accept="application/pdf,image/*"
@@ -455,7 +531,7 @@ export default function BOOKING() {
                                 )}
 
                                 <input
-                                    type="file"
+                                    type="file" required
                                     ref={fileInputRef3}
                                     className="hidden"
                                     accept="application/pdf,image/*"
@@ -480,8 +556,8 @@ export default function BOOKING() {
                                                 </button>
                                                 <button
                                                     onClick={() => {
-                                                        // handleUpdate();
-                                                        handleSave();
+                                                        handleUpdate();
+                                                        // handleSave();
                                                         setIsModalOpen(false);
                                                     }}
                                                     className="px-4 py-2 bg-blue-600 text-white rounded" style={{ width: "150px", height: "39px" }}

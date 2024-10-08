@@ -39,9 +39,10 @@
   "idcard",
   "tab_2_tab",
   "payment",
-  "transaction_date",
-  "approvement_tab",
-  "approve_state"
+  "approve_state",
+  "column_break_rkjg",
+  "transferdate",
+  "transfertime"
  ],
  "fields": [
   {
@@ -185,11 +186,6 @@
    "label": "\u0e2b\u0e25\u0e31\u0e01\u0e10\u0e32\u0e19\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19"
   },
   {
-   "fieldname": "transaction_date",
-   "fieldtype": "Date",
-   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e17\u0e33\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23"
-  },
-  {
    "fieldname": "deathcertificate",
    "fieldtype": "Attach",
    "label": "\u0e2a\u0e33\u0e40\u0e19\u0e32\u0e43\u0e1a\u0e21\u0e23\u0e13\u0e30"
@@ -203,11 +199,6 @@
    "fieldname": "idcard",
    "fieldtype": "Attach",
    "label": "\u0e2a\u0e4d\u0e32\u0e40\u0e19\u0e32\u0e1a\u0e31\u0e15\u0e23\u0e1b\u0e23\u0e30\u0e08\u0e4d\u0e32\u0e15\u0e31\u0e27\u0e1b\u0e23\u0e30\u0e0a\u0e32\u0e0a\u0e19 (\u0e1c\u0e39\u0e49\u0e22\u0e37\u0e48\u0e19\u0e04\u0e4d\u0e32\u0e23\u0e49\u0e2d\u0e07)"
-  },
-  {
-   "fieldname": "approvement_tab",
-   "fieldtype": "Tab Break",
-   "label": "\u0e01\u0e32\u0e23\u0e2d\u0e19\u0e38\u0e21\u0e31\u0e15\u0e34"
   },
   {
    "default": "\u0e2d\u0e22\u0e39\u0e48\u0e23\u0e30\u0e2b\u0e27\u0e48\u0e32\u0e07\u0e01\u0e32\u0e23\u0e15\u0e23\u0e27\u0e08\u0e2a\u0e2d\u0e1a",
@@ -245,11 +236,25 @@
    "fieldname": "leafnumber",
    "fieldtype": "Data",
    "label": "\u0e40\u0e25\u0e02\u0e17\u0e35\u0e48"
+  },
+  {
+   "fieldname": "transferdate",
+   "fieldtype": "Date",
+   "label": "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e42\u0e2d\u0e19\u0e40\u0e07\u0e34\u0e19"
+  },
+  {
+   "fieldname": "column_break_rkjg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transfertime",
+   "fieldtype": "Data",
+   "label": "\u0e40\u0e27\u0e25\u0e32\u0e17\u0e35\u0e48\u0e42\u0e2d\u0e19\u0e40\u0e07\u0e34\u0e19"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-10-03 23:10:21.061692",
+ "modified": "2024-10-07 23:38:46.245181",
  "modified_by": "Administrator",
  "module": "Booking",
  "name": "Crematorium",

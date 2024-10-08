@@ -49,7 +49,7 @@ const Login: React.FC = () => {
           <a href="#" className="text-base font-bold">หน้าหลัก</a>
           <a href="#" className="text-sm">ประวัติ</a>
         </div>
-        <a href="#" className="text-sm">สำหรับเจ้าหน้าที่</a>
+        {/* <a href="#" className="text-sm">สำหรับเจ้าหน้าที่</a> */}
       </div>
 
       <div className="mt-6 w-full border border-zinc-120"></div>

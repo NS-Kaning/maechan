@@ -71,7 +71,7 @@ function App() {
 			],
 		},
 		{
-			path: '/Booking',
+			path: '/Booking/:name',
 			element: <Booking />,
 		},
 		{
@@ -95,7 +95,7 @@ function App() {
 			element: <SUCCES/>,
 		},
 		{
-			path: '/tranfer',
+			path: '/tranfer/:name',
 			element: <TRANFER/>,
 		},
 		{

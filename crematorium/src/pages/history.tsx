@@ -28,6 +28,13 @@ export default function HISTORY() {
             asDict: false,
         }
     );
+    console.log(data);
+
+    const openFile = (fileUrl) => {
+        // Open the file in a new tab or trigger a download
+        window.open(fileUrl, '_blank');
+    };
+
 
     const formatDate = (timestamp: string) => {
         const date = new Date(timestamp + 'Z');
@@ -47,7 +54,15 @@ export default function HISTORY() {
                 <p>{error.message || JSON.stringify(error)}</p>
             </div>
         );
+
+
     }
+
+    const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+
+    const toggleDropdown = (index) => {
+        setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+    };
 
     if (data && data.length > 0) {
         return (
@@ -118,8 +133,8 @@ export default function HISTORY() {
                                     </div>
                                     <div className="flex  gap-3 ml-36">
                                         <div>คำขอ</div>
-                                        <div>เอกสารแนบ</div>
                                         <div>หลักฐานการโอน</div>
+                                        <div>เอกสารแนบ</div>
                                     </div>
                                 </div>
 
@@ -134,25 +149,38 @@ export default function HISTORY() {
                                                 {/* Format crematorium[22] to display only date */}
                                                 <div>{crematorium[2] ? formatDate(crematorium[2]) : 'Date Not Available'}</div>
                                                 <div className={`${crematorium.status ? 'text-green-600' : 'text-red-600'}`}>
-                                                    {crematorium[28]}
+                                                    {crematorium[27]}
                                                 </div>
                                             </div>
                                             <div className="flex gap-[45px] mr-7">
                                                 <img
                                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/137d2199165f7c4c97e97844916fbd7771e08903d41e8c9fd6084a00ab18ece3?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                                     alt="Icon 1"
-                                                    className="w-[25px] aspect-[1.06]"
+                                                    className="w-[25px] aspect-[1.06] cursor-pointer"
                                                 />
-                                                <img
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/42ab84ac8b073b2f2b2efc92fc4012a7c7060a87e3b3d3e8d35b47e3c9b7f796?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                                                <img onClick={() => openFile(crematorium[26])}
+                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/fa856e2e2e09a6d6cb1b65fe5cc75f690c2f506becc22c00978eb13a9642d5b4?placeholderIfAbsent=true&apiKey=bf0b86e0707a42aa8acd2aa478f17610"
                                                     alt="Icon 2"
-                                                    className="w-[25px] aspect-[1.06]"
+                                                    className="w-[25px] aspect-[1.06] cursor-pointer"
                                                 />
-                                                <img
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/c63615a723ccfaca2c988e27711f3d09d091070bfb21a6e8978220d7fa342a34?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
-                                                    alt="Icon 3"
-                                                    className="w-[25px] aspect-[1.06]"
-                                                />
+                                                {/* dropdown */}
+                                                <div className="relative">
+                                                    <img
+                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c63615a723ccfaca2c988e27711f3d09d091070bfb21a6e8978220d7fa342a34?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                                                        alt="Icon 3"
+                                                        className="w-[25px] aspect-[1.06] cursor-pointer"
+                                                        onClick={() => toggleDropdown(index)}
+                                                    />
+                                                    {openDropdownIndex === index && (
+                                                        <div className="absolute right-0 mt-2 min-w-[200px] max-w-[300px] bg-white border border-gray-300 rounded shadow-lg z-10">
+                                                            <ul className="py-1">
+                                                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => openFile(crematorium[23])}>สําเนาใบมรณะบัตร</li>
+                                                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => openFile(crematorium[24])}>สําเนาทะเบียนบ้าน (ผู้ตาย)</li>
+                                                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => openFile(crematorium[25])}>สําเนาบัตรประจําตัวประชาชน (ผู้ยื่นคําร้อง)</li>
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     ))}

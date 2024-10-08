@@ -111,10 +111,13 @@ export default function HOME() {
     frappeConfig?.db.createDoc('Crematorium', {
       ...form
     })
-      .then((doc) => console.log(doc))
+      .then((doc) => {
+        console.log(doc)
+        console.log('save')
+        navigate(`/booking/${doc.name}`);
+      })
       .catch((error) => console.error(error));
-    console.log('save')
-    navigate('/booking');
+
   };
 
   const handleClear = () => {
@@ -249,10 +252,10 @@ export default function HOME() {
                     <div className="flex items-center  mt-2 ml-4">
 
                       <TimeSelect
-                        selectedTime={selectedTime} 
+                        selectedTime={selectedTime}
                         setSelectedTime={(time) => {
-                          setSelectedTime(time);    
-                          updateForm('time', time); 
+                          setSelectedTime(time);
+                          updateForm('time', time);
                         }}
                       />
 

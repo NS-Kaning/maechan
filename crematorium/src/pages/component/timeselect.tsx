@@ -55,7 +55,7 @@ const TimeSelect = ({ selectedTime, setSelectedTime }) => {
                 position: 'absolute',
                 right: '10px',
                 top: '10px',
-                color: 'white',
+                color: 'back',
               }}
             />
           )}

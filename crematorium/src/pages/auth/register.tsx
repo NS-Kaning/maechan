@@ -98,7 +98,7 @@ const RegisterForm = (): JSX.Element => {
                     <a href="#" className="text-base font-bold">หน้าหลัก</a>
                     <a href="#" className="text-sm">ประวัติ</a>
                 </div>
-                <a href="#" className="text-sm">สำหรับเจ้าหน้าที่</a>
+                {/* <a href="#" className="text-sm">สำหรับเจ้าหน้าที่</a> */}
             </div>
 
             <div className="mt-6 w-full border border-zinc-300"></div>
@@ -119,85 +119,75 @@ const RegisterForm = (): JSX.Element => {
                 </div>
 
                 {/* Register Form */}
-                <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md mt-8 mb-[50px]">
+                <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl mt-8 mb-[30px]"> {/* Increased padding and width */}
                     <h2 className="text-center font-bold text-lg mb-4">ลงทะเบียน</h2>
 
-                    {/* First Name */}
-                    <div className="relative mb-4">
-                        <label className="block mb-1">ชื่อ</label>
-                        <input
-                            type="text"
-                            className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="ชื่อ"
-                            value={credential.first_name}
-                            onChange={(e) => handleCredential('first_name', e.target.value)}
-                        />
-                        {error.first_name && <span className="text-red-500 text-sm">{error.first_name}</span>}
-                    </div>
+                    {/* Inputs in two columns */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        {/* First Name */}
+                        <div className="relative">
+                            <label className="block mb-1">ชื่อ</label>
+                            <input
+                                type="text"
+                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="ชื่อ"
+                                value={credential.first_name}
+                                onChange={(e) => handleCredential('first_name', e.target.value)}
+                            />
+                            {error.first_name && <span className="text-red-500 text-sm">{error.first_name}</span>}
+                        </div>
 
-                    {/* Last Name */}
-                    <div className="relative mb-4">
-                        <label className="block mb-1">นามสกุล</label>
-                        <input
-                            type="text"
-                            className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="นามสกุล"
-                            value={credential.last_name}
-                            onChange={(e) => handleCredential('last_name', e.target.value)}
-                        />
-                        {error.last_name && <span className="text-red-500 text-sm">{error.last_name}</span>}
-                    </div>
+                        {/* Last Name */}
+                        <div className="relative">
+                            <label className="block mb-1">นามสกุล</label>
+                            <input
+                                type="text"
+                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="นามสกุล"
+                                value={credential.last_name}
+                                onChange={(e) => handleCredential('last_name', e.target.value)}
+                            />
+                            {error.last_name && <span className="text-red-500 text-sm">{error.last_name}</span>}
+                        </div>
 
-                    {/* Email */}
-                    <div className="relative mb-4">
-                        <label className="block mb-1">อีเมล</label>
-                        <input
-                            type="email"
-                            className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="อีเมล"
-                            value={credential.email}
-                            onChange={(e) => handleCredential('email', e.target.value)}
-                        />
-                        {error.email && <span className="text-red-500 text-sm">{error.email}</span>}
-                    </div>
+                        {/* Mobile No */}
+                        <div className="relative">
+                            <label className="block mb-1">หมายเลขโทรศัพท์</label>
+                            <input
+                                type="text"
+                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="หมายเลขโทรศัพท์"
+                                value={credential.mobile_no}
+                                onChange={(e) => handleCredential('mobile_no', e.target.value)}
+                            />
+                            {error.mobile_no && <span className="text-red-500 text-sm">{error.mobile_no}</span>}
+                        </div>
 
-                    {/* Mobile No */}
-                    <div className="relative mb-4">
-                        <label className="block mb-1">หมายเลขโทรศัพท์</label>
-                        <input
-                            type="text"
-                            className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="หมายเลขโทรศัพท์"
-                            value={credential.mobile_no}
-                            onChange={(e) => handleCredential('mobile_no', e.target.value)}
-                        />
-                        {error.mobile_no && <span className="text-red-500 text-sm">{error.mobile_no}</span>}
-                    </div>
+                        {/* Password */}
+                        <div className="relative">
+                            <label className="block mb-1">รหัสผ่าน</label>
+                            <input
+                                type="password"
+                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="รหัสผ่าน"
+                                value={credential.password}
+                                onChange={(e) => handleCredential('password', e.target.value)}
+                            />
+                            {error.password && <span className="text-red-500 text-sm">{error.password}</span>}
+                        </div>
 
-                    {/* Password */}
-                    <div className="relative mb-4">
-                        <label className="block mb-1">รหัสผ่าน</label>
-                        <input
-                            type="password"
-                            className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="รหัสผ่าน"
-                            value={credential.password}
-                            onChange={(e) => handleCredential('password', e.target.value)}
-                        />
-                        {error.password && <span className="text-red-500 text-sm">{error.password}</span>}
-                    </div>
-
-                    {/* Verify Password */}
-                    <div className="relative mb-4">
-                        <label className="block mb-1">ยืนยันรหัสผ่าน</label>
-                        <input
-                            type="password"
-                            className="w-full p-3 border border-gray-300 rounded-lg"
-                            placeholder="ยืนยันรหัสผ่าน"
-                            value={credential.verify_password}
-                            onChange={(e) => handleCredential('verify_password', e.target.value)}
-                        />
-                        {error.verify_password && <span className="text-red-500 text-sm">{error.verify_password}</span>}
+                        {/* Verify Password */}
+                        <div className="relative col-span-2">
+                            <label className="block mb-1">ยืนยันรหัสผ่าน</label>
+                            <input
+                                type="password"
+                                className="w-full p-3 border border-gray-300 rounded-lg"
+                                placeholder="ยืนยันรหัสผ่าน"
+                                value={credential.verify_password}
+                                onChange={(e) => handleCredential('verify_password', e.target.value)}
+                            />
+                            {error.verify_password && <span className="text-red-500 text-sm">{error.verify_password}</span>}
+                        </div>
                     </div>
 
                     {/* Register Button */}
@@ -220,7 +210,6 @@ const RegisterForm = (): JSX.Element => {
                     </button>
                 </div>
             </div>
-
         </div>
     );
 };

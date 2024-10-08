@@ -1,8 +1,9 @@
-import { AuthCredentials, useFrappeAuth } from 'frappe-react-sdk';
-import React, { useEffect, useState } from 'react';
-import { To, useNavigate } from 'react-router-dom';
+import { AuthCredentials, FrappeContext, useFrappeAuth } from 'frappe-react-sdk';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Nav from './component/nav';
 import Payment from '../image/paymant.jpg'
+import { FaCheckCircle } from 'react-icons/fa';
 
 const Popup = ({ show, onClose, countdown }) => {
     if (!show) return null;
@@ -38,7 +39,217 @@ const Popup = ({ show, onClose, countdown }) => {
     );
 };
 
+const UploadSection = () => {
+    const frappeConfig = useContext(FrappeContext)
+    const { file } = useContext(FrappeContext);
+    const [isUploaded, setIsUploaded] = useState(false);
+    const [currentDate, setCurrentDate] = useState<string>('');
+
+    useEffect(() => {
+        // กำหนดวันที่ปัจจุบันในรูปแบบ DD/MM/YYYY
+        const today = new Date();
+        const formattedDate = `${today.getDate().toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+        setCurrentDate(formattedDate);
+    }, []);
+
+    const [form, setForm] = useState<Crematorium>({})
+
+    const updateForm = (key: string, value: any) => {
+        const newForm = { ...form, [key]: value }
+        setForm(newForm)
+    }
+
+
+    // ฟังก์ชัน handleFileChange รวมเข้ากับ UploadSection
+    const handleFileChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        setIsUploaded: React.Dispatch<React.SetStateAction<boolean>>,
+        key: string
+    ) => {
+        if (e.target.files) {
+            const myFile = e.target.files[0];
+            console.log('Uploaded file:', myFile);
+
+            const fileArgs = {
+                "isPrivate": false,
+                "folder": "home/RequestLicenseAttachment",
+            };
+
+            // จำลองการอัพโหลดไฟล์
+            file.uploadFile(
+                myFile,
+                fileArgs,
+                (completedBytes, totalBytes) =>
+                    console.log(Math.round((completedBytes / (totalBytes ?? completedBytes)) * 100), " completed")
+            )
+                .then((response: Response) => {
+                    console.log(response);
+                    const message = response.data.message;
+                    const url = message.file_url;
+
+                    setForm({
+                        ...form,
+                        [key]: url
+                    });
+                })
+                .catch((e: any) => console.error(e))
+
+            setIsUploaded(true); // อัปเดตสถานะเมื่ออัปโหลดสำเร็จ
+        }
+    };
+
+    const [crematoriumMeta, setCrematorium] = useState({})
+    const { name } = useParams();
+
+    const loadtranfer = (name: string) => {
+        frappeConfig?.db.getDoc("Crematorium", name).then((doc) => {
+            console.log('load booking doc', doc)
+            setForm({
+                ...doc
+            })
+        })
+    }
+
+
+    useEffect(() => {
+
+        frappeConfig?.call.get('maechan.booking.doctype.crematorium.crematorium.get_meta').then(r => {
+            // console.log(r)
+            setCrematorium(r.message)
+            const meta = r.message
+            if (name) {
+                loadtranfer(name)
+            }
+
+
+        })
+    }, [])
+
+
+    // const handleSave = () => {
+    //     frappeConfig?.db.createDoc('Crematorium', {
+    //         ...form
+    //     })
+    //         .then((doc) => console.log(doc))
+    //         .catch((error) => console.error(error));
+    //     console.log('save')
+    // };
+
+    const handleUpdate = () => {
+        if (form.name) {
+            frappeConfig?.db.updateDoc('Crematorium', form.name, {
+                ...form
+            }).then(() => {
+                // แสดงข้อความเมื่ออัพเดตเสร็จสิ้น
+                alert("อัปเดตข้อมูลเสร็จสิ้น");
+            }).catch((error) => {
+                // แสดงข้อผิดพลาดหากการอัพเดตล้มเหลว
+                console.error("การอัปเดตล้มเหลว:", error);
+            });
+        } else {
+            console.error("ต้องกรอกชื่อฟอร์ม");
+        }
+    };
+
+    return (
+        <div>
+            <div className="flex flex-wrap mr-32 pr-6 ml-4 px-6 text-[13px] justify-between self-stretch p-6 mt-4 rounded-xl bg-zinc-100 bg-opacity-80 text-black max-md:px-6 max-md:max-w-50">
+                <div className="flex ml-3 flex-1 min-w-[150px] gap-12">
+                    <div>อัพโหลดหลักฐานการชำระเงิน</div>
+                </div>
+
+                {!isUploaded ? (
+                    <label>
+                        <input
+                            type="file"
+                            onChange={(e) => handleFileChange(e, setIsUploaded, "payment")}
+                            style={{ display: 'none' }} required
+                        />
+                        <img
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/c63615a723ccfaca2c988e27711f3d09d091070bfb21a6e8978220d7fa342a34?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                            alt="อัพโหลดไฟล์"
+                            className="w-[24px] aspect-[1.06] cursor-pointer"
+                            onClick={() => document.querySelector('input[type="file"]')?.click()} // คลิกเพื่อเรียก input file
+                        />
+                    </label>
+                ) : (
+                    <FaCheckCircle className="w-[20px] h-[20px] text-green-500" />
+                )}
+            </div>
+            <div className="text-sm font-semibold mt-3 ml-4">จำนวนยอดที่ชำระ</div>
+
+            <div className="flex flex-wrap gap-4 mt-3 ml-4">
+                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                    <div className="block text-[10px] font-medium dark:text-[#585858] pl-2">จำนวน</div>
+                    <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                        <div className="flex-grow">{form.furnace || "ไม่พบข้อมูล"}</div>
+
+                    </div>
+                </div>
+
+                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                    <div className="block text-[10px] font-medium dark:text-[#585858] pl-3">วันที่โอนเงิน</div>
+                    <div className="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
+                        {/* <div className="flex-grow">{currentDate}</div> */}
+                        {/* <input
+                            value={form.transferdate || getCurrentDate()} // ตั้งค่าเริ่มต้นเป็นวันที่ปัจจุบัน
+                            onChange={(e) => updateForm('transferdate', e.target.value)}
+                            type="date"
+                            id="date"
+                            name="date"
+                            className="mt-1 block w-full text-base dark:bg-[#EEEEEE] dark:text-[#000]"
+                            readOnly // ป้องกันการแก้ไขค่า
+                        />
+                        <img
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8467f280357d0b2ca837f386e93df54352b232312027ea6a8f9d4248e6dbce45?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
+                            className="w-6 h-6 ml-2"
+                            alt="Icon">
+                        </img> */}
+                        <input value={form.transferdate || ''}
+                            onChange={(e) => updateForm('transferdate', e.target.value)} type="date" id="date" name="date" className="mt-1 block w-full text-base dark:bg-[#EEEEEE] dark:text-[#000]" />
+
+
+                    </div>
+                </div>
+
+                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
+                    <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">เวลาที่โอนเงิน</label>
+                    <input onChange={(e) => updateForm('transfertime', e.target.value)}
+                        type="text"
+                        className="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
+                        placeholder="กรอกชื่อ-สกุล"
+
+                    />
+                </div>
+
+
+                <div className="flex flex-col mx-auto gap-3 sm:flex-row justify-center mt-32 font-bold text-xs sm:text-sm">
+                    <button className="flex items-center justify-center text-center text-black bg-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
+                        แก้ไขข้อมูล
+                    </button>
+
+                    <button onClick={handleUpdate}
+                        className="flex items-center justify-center text-center text-white bg-blue-700 rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
+                        หลักฐานการชำระเงิน
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    );
+};
+
+
 export default function TRANFER() {
+    const frappeConfig = useContext(FrappeContext)
+    // const [form, setForm] = useState({});
+
+    // const updateForm = (key: string, value: any) => {
+    //     const newForm = { ...form, [key]: value }
+    //     setForm(newForm)
+    // }
+
     const navigate = useNavigate();
 
     const handleNavigate = (path: To) => {
@@ -66,6 +277,16 @@ export default function TRANFER() {
     const handleClosePopup = () => {
         setShowPopup(false);
     };
+
+
+    // const handleUpdate = () => {
+    //     if(form.name){
+    //         frappeConfig?.db.updateDoc('Crematorium',form.name, {
+    //             ...form
+    //         })
+    //     }
+
+    // }
 
     return (
 
@@ -101,8 +322,6 @@ export default function TRANFER() {
 
                         {/* border  */}
                         <div className="flex flex-col  pt-3.5 pr-4 pb-14 pl-4 mx-auto w-full font-bold bg-white rounded-md border border-solid border-zinc-300 max-md:pr-5 max-md:pb-24 max-md:mt-5 max-md:max-w-full">
-
-
                             <div className="flex  gap-3 ml-4 mt-2 items-center self-start text-xs text-black text-opacity-20">
                                 <img
                                     loading="lazy"
@@ -145,60 +364,15 @@ export default function TRANFER() {
                             <div className="text-base font-bold mt-4 ml-4">แจ้งหลักฐานการชำระเงิน</div>
                             <div className="text-sm font-semibold mt-3   ml-4">ข้อมูลการชำระเงิน</div>
 
-                            <div className="flex flex-wrap mr-32 pr-6 ml-4 px-6 text-[13px] justify-between self-stretch p-6 mt-4  rounded-xl bg-zinc-100 bg-opacity-80 text-black max-md:px-6 max-md:max-w-50">
+                            {/* <div className="flex flex-wrap mr-32 pr-6 ml-4 px-6 text-[13px] justify-between self-stretch p-6 mt-4  rounded-xl bg-zinc-100 bg-opacity-80 text-black max-md:px-6 max-md:max-w-50">
                                 <div className="flex ml-3 flex-1 min-w-[150px] gap-12">
                                     <div>อัพโหลดหลักฐานการชำระเงิน</div>
                                 </div>
                                 <img
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/c63615a723ccfaca2c988e27711f3d09d091070bfb21a6e8978220d7fa342a34?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                     alt="" className="w-[24px] aspect-[1.06]" />
-                            </div>
-
-                            <div className="text-sm font-semibold mt-3 ml-4">จำนวนยอดที่ชำระ</div>
-
-                            <div class="flex flex-wrap gap-4 mt-3 ml-4">
-                                <div class="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
-                                    <div class="block text-[10px] font-medium dark:text-[#585858] pl-2">จำนวน</div>
-                                    <div class="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                                        <div class="flex-grow">1500</div>
-
-                                    </div>
-                                </div>
-
-                                <div class="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
-                                    <div class="block text-[10px] font-medium dark:text-[#585858] pl-3">วันที่</div>
-                                    <div class="flex items-center justify-between text-sm font-medium max-w-lg rounded-lg block w-full p-2 dark:bg-[#EEEEEE] dark:text-[#000]">
-                                        <div class="flex-grow">13/04/2024</div>
-                                        <img
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8467f280357d0b2ca837f386e93df54352b232312027ea6a8f9d4248e6dbce45?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
-                                            class="w-6 h-6 ml-2"
-                                            alt="Icon">
-                                        </img>
-                                    </div>
-                                </div>
-
-                                <div class="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3">
-                                    <label class="block text-[10px] font-medium dark:text-[#585858] pl-3">เวลา</label>
-                                    <input
-                                        type="text"
-                                        class="text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]"
-                                        placeholder="กรอกชื่อ-สกุล"
-
-                                    />
-                                </div>
-
-
-                                <div className="flex flex-col mx-auto gap-3 sm:flex-row justify-center mt-32 font-bold text-xs sm:text-sm">
-                                    <div className="flex items-center justify-center text-center text-black bg-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
-                                        แก้ไขข้อมูล
-                                    </div>
-
-                                    <div className="flex items-center justify-center text-center text-white bg-blue-700 rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
-                                        หลักฐานการชำระเงิน
-                                    </div>
-                                </div>
-
-                            </div>
+                            </div> */}
+                            <UploadSection></UploadSection>
                         </div>
                     </div>
                 </div>
