@@ -203,7 +203,14 @@ export default function BOOKING() {
         }
     };
 
+    const formatDate = (timestamp: string) => {
+        const date = new Date(timestamp + 'Z');
+        const year = date.getUTCFullYear() + 543;
+        const month = date.toLocaleString('th-TH', { month: 'long' });
+        const day = String(date.getUTCDate()).padStart(2, '0');
 
+        return ` วันที่ ${day} เดือน ${month} ปี ${year}`;
+    };
 
     return (
 
@@ -265,16 +272,18 @@ export default function BOOKING() {
 
                             {/* list process */}
 
-                            {/* <div className="flex flex-wrap ml-4 gap-2 mt-3 text-xs text-black">
+                            <div className="flex flex-wrap ml-4 gap-2 mt-3 text-xs text-black">
                                 <div className="my-auto">ประสงค์จะเผาใน</div>
                                 <div className="px-3 py-1.5 whitespace-nowrap rounded-md bg-zinc-100 bg-opacity-80">
-                                    เตาเผาไร้มลพิษ
+                                    {form.furnace || "ไม่พบข้อมูล"}
                                 </div>
                                 <div className="my-auto">วันเวลา</div>
                                 <div className="px-3 py-1.5 rounded-md bg-zinc-100 bg-opacity-80">
-                                    เวลา 14 : 00 - 15 : 00 น. วันที่ 13 เดือน เมษายน พ.ศ. 2567
+                                    {/* formatDate({form.date || "ไม่พบข้อมูล"}) */}
+                                    {form.time || "ไม่พบข้อมูล"} 
+                                    {formatDate(form?.date)}
                                 </div>
-                            </div> */}
+                            </div>
 
 
                             <div className="text-[14px] font-bold mt-4 ml-4">ข้อมูลผู้ยื่นคำขอ</div>
@@ -286,7 +295,7 @@ export default function BOOKING() {
                                     <input
                                         onChange={(e) => updateForm('username', e.target.value)}
                                         type="text"
-                                        className={`text-sm font-medium rounded-lg block w-full p-2  `}
+                                        className={`text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000] `}
                                         placeholder="กรอกชื่อ-สกุล"
                                         required
                                     />
@@ -297,18 +306,18 @@ export default function BOOKING() {
                                     <input
                                         onChange={(e) => updateForm('age', e.target.value)}
                                         type="number"
-                                        className={`text-sm font-medium rounded-lg block w-full p-2  `}
+                                        className={`text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]`}
                                         placeholder="กรอกอายุ"
                                         required
                                     />
                                 </div>
 
-                                <div className="w-[300px] h-[70px] bg-white dark:bg-[#EEEEEE] rounded-lg p-3 mb-4">
+                                <div className="w-[300px] h-[70px] dark:bg-[#EEEEEE] rounded-lg p-3 mb-4">
                                     <label className="block text-[10px] font-medium dark:text-[#585858] pl-3">เบอร์โทรศัพท์</label>
                                     <input
                                         onChange={(e) => updateForm('phone', e.target.value)}
                                         type="tel"
-                                        className={`text-sm font-medium rounded-lg block w-full p-2  `}
+                                        className={`text-sm font-medium rounded-lg block w-full p-2 bg-[#EEEEEE] dark:bg-[#EEEEEE] dark:text-[#000]`}
                                         placeholder="กรอกเบอร์โทรศัพท์"
                                         required
                                     />
@@ -467,7 +476,7 @@ export default function BOOKING() {
 
                                 {isUploaded1 ? (
                                     <>
-                                        <FaCheckCircle className="w-[20px] h-[20px] text-green-500" /> 
+                                        <FaCheckCircle className="w-[20px] h-[20px] text-green-500" />
                                         {/* <img src={form.deathcertificate} /> */}
                                     </>
                                 ) : (

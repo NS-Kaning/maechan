@@ -30,6 +30,10 @@ export default function HISTORY() {
     );
     console.log(data);
 
+    const openInNewTab = (name: string) => {
+        window.open(`${window.location.origin}/print/${name}`);
+    };
+
     const openFile = (fileUrl) => {
         // Open the file in a new tab or trigger a download
         window.open(fileUrl, '_blank');
@@ -153,7 +157,7 @@ export default function HISTORY() {
                                                 </div>
                                             </div>
                                             <div className="flex gap-[45px] mr-7">
-                                                <img
+                                                <img onClick={() => openInNewTab(crematorium[0])}
                                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/137d2199165f7c4c97e97844916fbd7771e08903d41e8c9fd6084a00ab18ece3?placeholderIfAbsent=true&apiKey=d2ea1981bd5246b0a7a3b636b55c7b9d"
                                                     alt="Icon 1"
                                                     className="w-[25px] aspect-[1.06] cursor-pointer"

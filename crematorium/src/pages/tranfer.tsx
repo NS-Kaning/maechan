@@ -125,23 +125,15 @@ const UploadSection = () => {
         })
     }, [])
 
-
-    // const handleSave = () => {
-    //     frappeConfig?.db.createDoc('Crematorium', {
-    //         ...form
-    //     })
-    //         .then((doc) => console.log(doc))
-    //         .catch((error) => console.error(error));
-    //     console.log('save')
-    // };
-
+    const navigate = useNavigate();
+    
     const handleUpdate = () => {
         if (form.name) {
             frappeConfig?.db.updateDoc('Crematorium', form.name, {
                 ...form
             }).then(() => {
                 // แสดงข้อความเมื่ออัพเดตเสร็จสิ้น
-                alert("อัปเดตข้อมูลเสร็จสิ้น");
+                navigate(`/doc/${form.name}`, { replace: true });
             }).catch((error) => {
                 // แสดงข้อผิดพลาดหากการอัพเดตล้มเหลว
                 console.error("การอัปเดตล้มเหลว:", error);
@@ -223,14 +215,11 @@ const UploadSection = () => {
                 </div>
 
 
-                <div className="flex flex-col mx-auto gap-3 sm:flex-row justify-center mt-32 font-bold text-xs sm:text-sm">
-                    <button className="flex items-center justify-center text-center text-black bg-white rounded-md p-3 mx-2" style={{ width: "180px", height: "45px", border: "2px solid #EEEEEE" }}>
-                        แก้ไขข้อมูล
-                    </button>
+                <div className="flex flex-col mx-auto sm:flex-row justify-center mt-32 font-bold text-xs sm:text-sm">
 
                     <button onClick={handleUpdate}
                         className="flex items-center justify-center text-center text-white bg-blue-700 rounded-md p-3 mx-2" style={{ width: "180px", height: "45px" }}>
-                        หลักฐานการชำระเงิน
+                        ยืนยันหลักฐานการชำระเงิน
                     </button>
                 </div>
 

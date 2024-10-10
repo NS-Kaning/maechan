@@ -81,7 +81,7 @@ const Login: React.FC = () => {
                 aria-describedby="helper-text-explanation"
                 className="flex flex-col justify-center px-7 py-2.5 rounded-md bg-gray-200 bg-opacity-70"
                 style={{ paddingLeft: '40px' }}
-                placeholder="Enter Code ID"
+                placeholder="กรอกชื่อ"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -101,7 +101,7 @@ const Login: React.FC = () => {
                 aria-describedby="helper-text-explanation"
                 className="flex flex-col justify-center px-7 py-2.5 rounded-md bg-gray-200 bg-opacity-70"
                 style={{ paddingLeft: '40px' }}
-                placeholder="Enter Password"
+                placeholder="กรอกรหัสผ่าน"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

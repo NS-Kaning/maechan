@@ -48,6 +48,10 @@ function App() {
 			path : '/print/:name',
 			element : <Print/>
 		},
+		// {
+		// 	path : '/print',
+		// 	element : <Print/>
+		// },
 		{
 			path: '/register',
 			element: <Register />,
@@ -75,7 +79,7 @@ function App() {
 			element: <Booking />,
 		},
 		{
-			path: '/doc',
+			path: '/doc/:name',
 			element: <Doc />,
 		},
 		{
